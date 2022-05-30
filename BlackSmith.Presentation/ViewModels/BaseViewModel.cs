@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlackSmith.Presentation.ViewModels;
-public class BaseViewModel : INotifyPropertyChanged
+
+public class BaseViewModel : INotifyPropertyChanged, IDisposable
 {
+    public virtual void Dispose()
+    {
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     protected void OnPropertyChanged(string propertyName)

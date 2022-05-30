@@ -1,16 +1,17 @@
-﻿using BlackSmith.Data;
+﻿using System;
+using System.Windows;
+using BlackSmith.Data;
 using BlackSmith.Data.Repositories;
-using BlackSmith.Presentation.State.Navigators;
+using BlackSmith.Domain.Repositories;
+using BlackSmith.Presentation.Commands;
+using BlackSmith.Presentation.Store;
 using BlackSmith.Presentation.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Windows;
-using BlackSmith.Domain.Repositories;
-using BlackSmith.Presentation.ViewModels.Factories;
 
 namespace BlackSmith.Presentation;
+
 /// <summary>
-/// Interaction logic for App.xaml
+///     Interaction logic for App.xaml
 /// </summary>
 public partial class App : Application
 {
@@ -38,13 +39,11 @@ public partial class App : Application
         services.AddSingleton<AppDbContextFactory>();
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
-        services.AddScoped<INavigator, Navigator>();
         services.AddScoped<MainViewModel>();
         services.AddSingleton<MainWindow>();
 
-        services.AddSingleton<IViewModelAbstractFactory, ViewModelAbstractFactory>();
-        services.AddSingleton<IViewModelFactory<HomeViewModel>, HomeViewModelFactory>();
-        services.AddSingleton<IViewModelFactory<AppointmentViewModel>, AppointmentViewModelFactory>();
+        services.AddSingleton<NavigationStore>();
+        services.AddSingleton<UpdateSelectedViewModelCommand>();
 
         return services.BuildServiceProvider();
     }
