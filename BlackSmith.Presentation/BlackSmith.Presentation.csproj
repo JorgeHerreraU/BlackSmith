@@ -18,6 +18,7 @@
   <ItemGroup>
     <PackageReference Include="AdonisUI" Version="1.17.1" />
     <PackageReference Include="AdonisUI.ClassicTheme" Version="1.17.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
   </ItemGroup>
 
@@ -40,11 +41,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BlackSmith.Business\BlackSmith.Business.csproj" />
     <ProjectReference Include="..\BlackSmith.Data\BlackSmith.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Components" />
+    <Folder Include="Profiles" />
     <Folder Include="Services" />
   </ItemGroup>
 

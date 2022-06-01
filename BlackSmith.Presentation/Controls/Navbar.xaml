@@ -50,7 +50,7 @@
                     </DockPanel>
                 </Button>
                 <Button Height="40" Background="#2A2B34" BorderBrush="#2A2B34" HorizontalContentAlignment="Left"
-                        Margin="4">
+                        Margin="4" Command="{Binding Quit}">
                     <DockPanel>
                         <Image Source="../Assets/Images/shutdown.png" Width="24px" Height="24px"
                                Margin="0px 0px 10px 0px" />

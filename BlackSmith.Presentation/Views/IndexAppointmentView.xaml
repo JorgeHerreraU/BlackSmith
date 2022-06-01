@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="BlackSmith.Presentation.Views.IndexAppointmentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d">
+    <Grid>
+        <DataGrid ItemsSource="{Binding Appointments }" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=Title}" Header="Title" IsReadOnly="True" />
+                <DataGridTextColumn Binding="{Binding Path=Description}" Header="Description" IsReadOnly="True" />
+                <DataGridTextColumn Binding="{Binding Path=Patient.FirstName}" Header="Patient" IsReadOnly="True" />
+                <DataGridTextColumn Binding="{Binding Path=Doctor.FirstName}" Header="Doctor" IsReadOnly="True" />
+                <DataGridTextColumn Binding="{Binding Path=Start, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}}"
+                                    Header="Date" IsReadOnly="True" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

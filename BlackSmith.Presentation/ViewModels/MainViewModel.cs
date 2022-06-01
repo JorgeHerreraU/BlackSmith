@@ -6,11 +6,14 @@ public class MainViewModel : BaseViewModel
 {
     private readonly NavigationStore _navigationStore;
 
-    public MainViewModel(NavigationStore navigationStore)
+    public MainViewModel(NavigationStore navigationStore, NavbarViewModel navbarViewModel)
     {
         _navigationStore = navigationStore;
+        NavbarViewModel = navbarViewModel;
         _navigationStore.SelectedViewModelChanged += OnSelectedViewModelChanged;
     }
+
+    public NavbarViewModel NavbarViewModel { get; }
 
     public BaseViewModel SelectedViewModel => _navigationStore.SelectedViewModel;
 
