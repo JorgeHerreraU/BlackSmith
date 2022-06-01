@@ -1,17 +1,24 @@
-﻿using BlackSmith.Presentation.State.Navigators;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BlackSmith.Presentation.Store;
 
 namespace BlackSmith.Presentation.ViewModels;
+
 public class MainViewModel : BaseViewModel
 {
-    public INavigator Navigator { get; set; }
+    private readonly NavigationStore _navigationStore;
 
-    public MainViewModel(INavigator navigator)
+    public MainViewModel(NavigationStore navigationStore, NavbarViewModel navbarViewModel)
     {
-        Navigator = navigator;
+        _navigationStore = navigationStore;
+        NavbarViewModel = navbarViewModel;
+        _navigationStore.SelectedViewModelChanged += OnSelectedViewModelChanged;
+    }
+
+    public NavbarViewModel NavbarViewModel { get; }
+
+    public BaseViewModel SelectedViewModel => _navigationStore.SelectedViewModel;
+
+    private void OnSelectedViewModelChanged()
+    {
+        OnPropertyChanged(nameof(SelectedViewModel));
     }
 }
