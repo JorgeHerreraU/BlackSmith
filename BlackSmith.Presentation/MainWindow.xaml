@@ -5,8 +5,8 @@
                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      xmlns:controls="clr-namespace:BlackSmith.Presentation.Controls"
-                     xmlns:viewmodels="clr-namespace:BlackSmith.Presentation.ViewModels"
-                     xmlns:views="clr-namespace:BlackSmith.Presentation.Views"
+                     xmlns:appointments="clr-namespace:BlackSmith.Presentation.Modules.Appointments"
+                     xmlns:home="clr-namespace:BlackSmith.Presentation.Modules.Home"
                      mc:Ignorable="d"
                      Title="MainWindows" Height="768" Width="1024">
     <Grid>
@@ -17,11 +17,11 @@
         <controls:Navbar Grid.Column="0" DataContext="{Binding NavbarViewModel}" />
         <ContentControl Grid.Column="1" Content="{Binding SelectedViewModel}" Margin="10">
             <ContentControl.Resources>
-                <DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
-                    <views:HomeView />
+                <DataTemplate DataType="{x:Type home:HomeViewModel}">
+                    <home:HomeView />
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type viewmodels:AppointmentViewModel}">
-                    <views:AppointmentView />
+                <DataTemplate DataType="{x:Type appointments:AppointmentViewModel}">
+                    <appointments:AppointmentView />
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>

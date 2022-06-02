@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Windows;
+using BlackSmith.Core.IoC;
 using BlackSmith.Data;
-using BlackSmith.Data.Repositories;
-using BlackSmith.Domain.Repositories;
+using BlackSmith.Presentation.Controls;
+using BlackSmith.Presentation.Modules.Appointments;
+using BlackSmith.Presentation.Modules.Home;
 using BlackSmith.Presentation.Store;
-using BlackSmith.Presentation.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BlackSmith.Presentation;
@@ -18,39 +19,33 @@ public partial class App : Application
 
     public App()
     {
-        _services = RegisterServices();
-        // using var scope = _services.CreateScope();
-        // var services = scope.ServiceProvider;
-        // SeedData.Initialize(services);
         SeedData.Initialize();
+        var servicesCollection = new ServiceCollection();
+        DependencyInjection.RegisterSharedDependencies(ref servicesCollection);
+        RegisterLocalDependencies(ref servicesCollection);
+        _services = servicesCollection.BuildServiceProvider();
     }
 
     protected override void OnStartup(StartupEventArgs e)
     {
         var mainWindow = _services.GetRequiredService<MainWindow>();
 
-        mainWindow.DataContext = _services.GetRequiredService<MainViewModel>();
+        mainWindow.DataContext = _services.GetRequiredService<MainWindowViewModel>();
         mainWindow.Show();
 
         base.OnStartup(e);
     }
 
-    private IServiceProvider RegisterServices()
+    private static void RegisterLocalDependencies(ref ServiceCollection services)
     {
-        var services = new ServiceCollection();
-
-        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<NavigationStore>();
-        services.AddScoped<MainViewModel>();
-        services.AddSingleton<AppDbContextFactory>();
-        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        services.AddScoped<MainWindowViewModel>();
+
         services.AddSingleton<MainWindow>();
         services.AddSingleton<NavbarViewModel>();
         services.AddSingleton<HomeViewModel>();
         services.AddSingleton<AppointmentViewModel>();
         services.AddSingleton<AppointmentCreateViewModel>();
-        services.AddSingleton<AppointmentIndexViewModel>();
-
-        return services.BuildServiceProvider();
+        services.AddSingleton<AppointmentListViewModel>();
     }
 }

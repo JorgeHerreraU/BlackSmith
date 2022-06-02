@@ -1,16 +1,19 @@
-﻿using BlackSmith.Domain.Models;
+﻿using System.Linq.Expressions;
+using BlackSmith.Domain.Interfaces;
+using BlackSmith.Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
-using BlackSmith.Domain.Repositories;
 
 namespace BlackSmith.Data.Repositories;
+
 public class Repository<T> : IRepository<T> where T : BaseEntity
 {
     private readonly AppDbContextFactory _context;
+
     public Repository(AppDbContextFactory context)
     {
         _context = context;
     }
+
     public async Task<T> Add(T entity)
     {
         await using var context = _context.CreateDbContext();

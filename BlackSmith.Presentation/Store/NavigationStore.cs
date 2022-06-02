@@ -1,20 +1,20 @@
 ﻿using System;
-using BlackSmith.Presentation.ViewModels;
+using BlackSmith.Presentation.Modules.Appointments;
 
 namespace BlackSmith.Presentation.Store;
 
 public class NavigationStore
 {
-    private readonly AppointmentIndexViewModel _indexViewModel;
+    private readonly AppointmentListViewModel _appointmentListViewModel;
+    private BindableBase? _selectedAppointmentViewModel;
+    private BindableBase? _selectedViewModel;
 
-    public NavigationStore(AppointmentIndexViewModel indexViewModel)
+    public NavigationStore(AppointmentListViewModel appointmentListViewModel)
     {
-        _indexViewModel = indexViewModel;
+        _appointmentListViewModel = appointmentListViewModel;
     }
-    private BaseViewModel? _selectedAppointmentViewModel;
-    private BaseViewModel? _selectedViewModel;
 
-    public BaseViewModel SelectedViewModel
+    public BindableBase SelectedViewModel
     {
         get => _selectedViewModel!;
         set
@@ -25,9 +25,9 @@ public class NavigationStore
         }
     }
 
-    public BaseViewModel SelectedAppointmentViewModel
+    public BindableBase SelectedAppointmentViewModel
     {
-        get => _selectedAppointmentViewModel ?? _indexViewModel;
+        get => _selectedAppointmentViewModel ?? _appointmentListViewModel;
         set
         {
             _selectedAppointmentViewModel?.Dispose();
