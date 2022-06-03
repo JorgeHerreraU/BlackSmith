@@ -8,19 +8,7 @@ public static class SeedData
     {
         using var context = new AppDbContextFactory().CreateDbContext();
 
-        // context.Database.Migrate();
-
         if (context.Appointments.Any()) return;
-
-        var user = new User
-        {
-            FirstName = "George",
-            LastName = "Michael",
-            Email = "georgemichael@email.com",
-            Role = "user",
-            Password = "password"
-        };
-        context.Users.Add(user);
 
         var address = new Address
         {
@@ -54,6 +42,7 @@ public static class SeedData
             LastName = "San Toro",
             Email = "lucassantoro@email.com",
             PhoneNumber = "1-807-84832991",
+            Age = 32,
             Address = address
         };
 

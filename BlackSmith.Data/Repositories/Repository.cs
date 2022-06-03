@@ -43,6 +43,12 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
         return await query.ToListAsync();
     }
 
+    public async Task<T?> Get(Expression<Func<T, bool>> predicate)
+    {
+        await using var context = _context.CreateDbContext();
+        return await context.Set<T>().Where(predicate).FirstOrDefaultAsync();
+    }
+
     public async Task<T?> GetById(int id)
     {
         await using var context = _context.CreateDbContext();
