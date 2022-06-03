@@ -1,6 +1,5 @@
 ﻿namespace BlackSmith.Presentation.Modules.Patients;
 
-public class PatientCreateViewModel
+public class PatientCreateViewModel : BindableBase
 {
-    
 }

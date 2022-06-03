@@ -5,6 +5,7 @@ using BlackSmith.Data;
 using BlackSmith.Presentation.Controls;
 using BlackSmith.Presentation.Modules.Appointments;
 using BlackSmith.Presentation.Modules.Home;
+using BlackSmith.Presentation.Modules.Patients;
 using BlackSmith.Presentation.Store;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -47,5 +48,8 @@ public partial class App : Application
         services.AddSingleton<AppointmentViewModel>();
         services.AddSingleton<AppointmentCreateViewModel>();
         services.AddSingleton<AppointmentListViewModel>();
+        services.AddSingleton<PatientViewModel>();
+        services.AddSingleton<PatientCreateViewModel>();
+        services.AddSingleton<PatientListViewModel>();
     }
 }

@@ -1,12 +1,11 @@
-﻿$HEADER$using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
-namespace $NAMESPACE$
+namespace BlackSmith.Presentation.Modules.Patients;
+
+public partial class PatientListView : UserControl
 {
-    public partial class $CLASS$ : UserControl
+    public PatientListView()
     {
-        public $CLASS$()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

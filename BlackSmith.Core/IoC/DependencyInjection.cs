@@ -32,6 +32,7 @@ public static class DependencyInjection
         services.AddSingleton<AppointmentsBL>();
         services.AddSingleton<PatientsBL>();
         services.AddSingleton<IAppointmentService, AppointmentService>();
+        services.AddSingleton<IPatientService, PatientService>();
 
         services.AddScoped<IValidator<Patient>, PatientValidator>();
     }

@@ -23,6 +23,8 @@
                 <DataGridTextColumn Binding="{Binding Path=Title}" Header="Title" IsReadOnly="True" />
                 <DataGridTextColumn Binding="{Binding Path=Description}" Header="Description" IsReadOnly="True" />
                 <DataGridTextColumn Binding="{Binding Path=Patient.FullName}" Header="Patient" IsReadOnly="True" />
+                <DataGridTextColumn Binding="{Binding Path=Patient.Email}" Header="Patient Email" IsReadOnly="True" />
+                <DataGridTextColumn Binding="{Binding Path=Patient.Age}" Header="Patient Age" IsReadOnly="True" />
                 <DataGridTextColumn Binding="{Binding Path=Doctor.FullName}" Header="Doctor" IsReadOnly="True" />
                 <DataGridTextColumn
                     Binding="{Binding Path=Doctor.Speciality}"

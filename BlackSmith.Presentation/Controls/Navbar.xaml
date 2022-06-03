@@ -32,20 +32,20 @@
                     </DockPanel>
                 </Button>
                 <Button Height="40" Background="#2A2B34" BorderBrush="#2A2B34" HorizontalContentAlignment="Left"
-                        Margin="4">
+                        Margin="4" Command="{Binding GoToPatients}">
                     <DockPanel>
-                        <Image Source="../Assets/Images/doctor.png" Width="24px" Height="24px"
+                        <Image Source="../Assets/Images/patient.png" Width="24px" Height="24px"
                                Margin="0px 0px 10px 0px" />
-                        <TextBlock VerticalAlignment="center" Text="Doctors" Foreground="#949DAE" FontSize="18"
+                        <TextBlock VerticalAlignment="center" Text="Patients" Foreground="#949DAE" FontSize="18"
                                    FontFamily="Segoe UI" FontWeight="SemiBold" />
                     </DockPanel>
                 </Button>
                 <Button Height="40" Background="#2A2B34" BorderBrush="#2A2B34" HorizontalContentAlignment="Left"
                         Margin="4">
                     <DockPanel>
-                        <Image Source="../Assets/Images/patient.png" Width="24px" Height="24px"
+                        <Image Source="../Assets/Images/doctor.png" Width="24px" Height="24px"
                                Margin="0px 0px 10px 0px" />
-                        <TextBlock VerticalAlignment="center" Text="Patients" Foreground="#949DAE" FontSize="18"
+                        <TextBlock VerticalAlignment="center" Text="Doctors" Foreground="#949DAE" FontSize="18"
                                    FontFamily="Segoe UI" FontWeight="SemiBold" />
                     </DockPanel>
                 </Button>

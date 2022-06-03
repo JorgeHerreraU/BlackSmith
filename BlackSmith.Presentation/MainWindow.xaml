@@ -7,6 +7,7 @@
                      xmlns:controls="clr-namespace:BlackSmith.Presentation.Controls"
                      xmlns:appointments="clr-namespace:BlackSmith.Presentation.Modules.Appointments"
                      xmlns:home="clr-namespace:BlackSmith.Presentation.Modules.Home"
+                     xmlns:patients="clr-namespace:BlackSmith.Presentation.Modules.Patients"
                      mc:Ignorable="d"
                      Title="MainWindows" Height="768" Width="1024">
     <Grid>
@@ -22,6 +23,9 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type appointments:AppointmentViewModel}">
                     <appointments:AppointmentView />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type patients:PatientViewModel}">
+                    <patients:PatientView />
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>

@@ -1,17 +1,24 @@
 ﻿using System;
 using BlackSmith.Presentation.Modules.Appointments;
+using BlackSmith.Presentation.Modules.Patients;
 
 namespace BlackSmith.Presentation.Store;
 
 public class NavigationStore
 {
     private readonly AppointmentListViewModel _appointmentListViewModel;
+    private readonly PatientListViewModel _patientListViewModel;
     private BindableBase? _selectedAppointmentViewModel;
+    private BindableBase? _selectedPatientViewModel;
     private BindableBase? _selectedViewModel;
 
-    public NavigationStore(AppointmentListViewModel appointmentListViewModel)
+    public NavigationStore(
+        AppointmentListViewModel appointmentListViewModel,
+        PatientListViewModel patientListViewModel
+    )
     {
         _appointmentListViewModel = appointmentListViewModel;
+        _patientListViewModel = patientListViewModel;
     }
 
     public BindableBase SelectedViewModel
@@ -36,6 +43,18 @@ public class NavigationStore
         }
     }
 
+    public BindableBase SelectedPatientViewModel
+    {
+        get => _selectedPatientViewModel ?? _patientListViewModel;
+        set
+        {
+            _selectedPatientViewModel?.Dispose();
+            _selectedPatientViewModel = value;
+            SelectedPatientViewModelChanged?.Invoke();
+        }
+    }
+
     public event Action? SelectedViewModelChanged;
     public event Action? SelectedAppointmentViewModelChanged;
+    public event Action? SelectedPatientViewModelChanged;
 }

@@ -53,7 +53,8 @@ public class AppointmentListViewModel : BindableBase
         var filteredAppointments = new ObservableCollection<AppointmentDTO>(
             _appointments.ToList().Where(c =>
                 c.Doctor.FullName.ToLower().Contains(searchInput.ToLower()) ||
-                c.Patient.FullName.ToLower().Contains(searchInput.ToLower())
+                c.Patient.FullName.ToLower().Contains(searchInput.ToLower()) ||
+                c.Patient.Email.ToLower().Contains(searchInput.ToLower())
             ));
 
         Appointments = isSearchInputNull ? appointments : filteredAppointments;

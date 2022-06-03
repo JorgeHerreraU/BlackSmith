@@ -8,18 +8,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Remove="Assets\Images\calendar.png"/>
-        <None Remove="Assets\Images\doctor.png"/>
-        <None Remove="Assets\Images\home.png"/>
-        <None Remove="Assets\Images\patient.png"/>
-        <None Remove="Assets\Images\shutdown.png"/>
+        <None Remove="Assets\Images\calendar.png" />
+        <None Remove="Assets\Images\doctor.png" />
+        <None Remove="Assets\Images\home.png" />
+        <None Remove="Assets\Images\patient.png" />
+        <None Remove="Assets\Images\shutdown.png" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="AdonisUI" Version="1.17.1"/>
-        <PackageReference Include="AdonisUI.ClassicTheme" Version="1.17.1"/>
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0"/>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0"/>
+        <PackageReference Include="AdonisUI" Version="1.17.1" />
+        <PackageReference Include="AdonisUI.ClassicTheme" Version="1.17.1" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -41,16 +41,15 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\BlackSmith.Business\BlackSmith.Business.csproj"/>
-        <ProjectReference Include="..\BlackSmith.Core\BlackSmith.Core.csproj"/>
-        <ProjectReference Include="..\BlackSmith.Data\BlackSmith.Data.csproj"/>
-        <ProjectReference Include="..\BlackSmith.Service\BlackSmith.Service.csproj"/>
+        <ProjectReference Include="..\BlackSmith.Business\BlackSmith.Business.csproj" />
+        <ProjectReference Include="..\BlackSmith.Core\BlackSmith.Core.csproj" />
+        <ProjectReference Include="..\BlackSmith.Data\BlackSmith.Data.csproj" />
+        <ProjectReference Include="..\BlackSmith.Service\BlackSmith.Service.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Modules\Doctors"/>
-        <Folder Include="Modules\Patients"/>
-        <Folder Include="Services"/>
+        <Folder Include="Modules\Doctors" />
+        <Folder Include="Services" />
     </ItemGroup>
 
     <ItemGroup>
