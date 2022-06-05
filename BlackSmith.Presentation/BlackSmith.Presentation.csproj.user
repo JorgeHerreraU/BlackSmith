@@ -10,12 +10,6 @@
     <Compile Update="Controls\Navbar.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\AppointmentView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\HomeView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\Navbar.xaml">
@@ -25,12 +19,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Styles\Common.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\AppointmentView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\HomeView.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

@@ -16,4 +16,14 @@ public class AppointmentsBL
     {
         return await _repository.GetAll(x => x.Doctor, x => x.Patient);
     }
+
+    public async Task<Appointment> UpdateAppointment(Appointment appointment)
+    {
+        return await _repository.Update(appointment);
+    }
+
+    public async Task<Appointment> Add(Appointment appointment)
+    {
+        return await _repository.Add(appointment);
+    }
 }

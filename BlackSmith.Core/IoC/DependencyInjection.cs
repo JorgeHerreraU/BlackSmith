@@ -19,21 +19,18 @@ public static class DependencyInjection
     {
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddSingleton<AppDbContextFactory>();
-
-        var config = new MapperConfiguration(cfg =>
-        {
-            cfg.AddProfile(new AppointmentsProfile());
-            cfg.AddProfile(new DoctorsProfile());
-            cfg.AddProfile(new PatientsProfile());
-            cfg.AddProfile(new AddressesProfile());
-        });
-        services.AddSingleton(config.CreateMapper());
-
         services.AddSingleton<AppointmentsBL>();
         services.AddSingleton<PatientsBL>();
         services.AddSingleton<IAppointmentService, AppointmentService>();
         services.AddSingleton<IPatientService, PatientService>();
-
         services.AddScoped<IValidator<Patient>, PatientValidator>();
+    }
+
+    public static void RegisterSharedAutoMapperConfiguration(ref MapperConfigurationExpression mapperConfig)
+    {
+        mapperConfig.AddProfile(new AppointmentsProfile());
+        mapperConfig.AddProfile(new DoctorsProfile());
+        mapperConfig.AddProfile(new PatientsProfile());
+        mapperConfig.AddProfile(new AddressesProfile());
     }
 }

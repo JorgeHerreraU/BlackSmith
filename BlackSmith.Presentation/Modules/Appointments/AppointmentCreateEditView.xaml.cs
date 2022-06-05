@@ -2,9 +2,9 @@
 
 namespace BlackSmith.Presentation.Modules.Appointments;
 
-public partial class AppointmentCreateView : UserControl
+public partial class AppointmentCreateEditView : UserControl
 {
-    public AppointmentCreateView()
+    public AppointmentCreateEditView()
     {
         InitializeComponent();
     }

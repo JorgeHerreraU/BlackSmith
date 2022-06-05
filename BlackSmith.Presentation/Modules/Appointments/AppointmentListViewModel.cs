@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using BlackSmith.Presentation.Commands;
@@ -19,6 +20,7 @@ public class AppointmentListViewModel : BindableBase
         _appointmentService = appointmentService;
         LoadAppointments();
         ClearSearchCommand = new RelayCommand(OnClearSearch);
+        EditAppointmentCommand = new RelayCommand<AppointmentDTO>(OnEditAppointment);
     }
 
     public string SearchInput
@@ -37,8 +39,15 @@ public class AppointmentListViewModel : BindableBase
         private set => SetPropertyChanged(ref _appointmentsObs!, value);
     }
 
+    public RelayCommand<AppointmentDTO> EditAppointmentCommand { get; }
     public RelayCommand ClearSearchCommand { get; }
 
+    private void OnEditAppointment(AppointmentDTO appointment)
+    {
+        EditAppointmentRequested(appointment);
+    }
+
+    public event Action<AppointmentDTO> EditAppointmentRequested = delegate { };
 
     private async void LoadAppointments()
     {

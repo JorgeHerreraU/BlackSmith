@@ -45,7 +45,6 @@ public class RelayCommand<T> : ICommand
 
     public bool CanExecute(object? parameter)
     {
-        if (parameter is null) return false;
         return _canExecute?.Invoke((T)parameter) ?? true;
     }
 

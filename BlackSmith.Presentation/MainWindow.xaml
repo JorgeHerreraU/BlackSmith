@@ -9,7 +9,8 @@
                      xmlns:home="clr-namespace:BlackSmith.Presentation.Modules.Home"
                      xmlns:patients="clr-namespace:BlackSmith.Presentation.Modules.Patients"
                      mc:Ignorable="d"
-                     Title="MainWindows" Height="768" Width="1024">
+                     Title="MainWindows" Width="1366" Height="768"
+                     FontSize="16">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />

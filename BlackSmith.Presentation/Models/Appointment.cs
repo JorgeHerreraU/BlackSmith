@@ -1,6 +1,8 @@
-﻿namespace BlackSmith.Domain.Models;
+﻿using System;
 
-public class Appointment : BaseEntity
+namespace BlackSmith.Presentation.Models;
+
+public class Appointment
 {
     public int PatientId { get; set; }
     public int DoctorId { get; set; }

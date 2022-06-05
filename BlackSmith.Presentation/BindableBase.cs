@@ -18,7 +18,7 @@ public class BindableBase : INotifyPropertyChanged, IDisposable
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    protected void SetPropertyChanged<T>(ref T member, T val, [CallerMemberName] string propertyName = null!)
+    protected virtual void SetPropertyChanged<T>(ref T member, T val, [CallerMemberName] string propertyName = null!)
     {
         if (Equals(member, val)) return;
         member = val;

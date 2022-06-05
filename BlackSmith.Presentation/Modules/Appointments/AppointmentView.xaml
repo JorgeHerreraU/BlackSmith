@@ -25,8 +25,8 @@
                 <DataTemplate DataType="{x:Type local:AppointmentListViewModel}">
                     <local:AppointmentListView />
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type local:AppointmentCreateViewModel}">
-                    <local:AppointmentCreateView />
+                <DataTemplate DataType="{x:Type local:AppointmentCreateEditViewModel}">
+                    <local:AppointmentCreateEditView />
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>
