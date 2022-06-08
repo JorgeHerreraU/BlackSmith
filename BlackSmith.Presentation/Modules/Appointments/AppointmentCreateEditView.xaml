@@ -56,23 +56,21 @@
                                                                 BorderThickness="{TemplateBinding BorderThickness}"
                                                                 CornerRadius="0" Opacity="0">
                                                             <Border.BorderBrush>
-                                                                <SolidColorBrush Color="#3D3D4C"></SolidColorBrush>
+                                                                <SolidColorBrush Color="#3D3D4C" />
                                                             </Border.BorderBrush>
                                                         </Border>
                                                         <Border x:Name="FocusVisual"
                                                                 BorderThickness="{TemplateBinding BorderThickness}"
                                                                 CornerRadius="0" Opacity="0">
                                                             <Border.BorderBrush>
-                                                                <SolidColorBrush Color="#3D3D4C"></SolidColorBrush>
+                                                                <SolidColorBrush Color="#3D3D4C" />
                                                             </Border.BorderBrush>
                                                         </Border>
                                                         <ScrollViewer x:Name="PART_ContentHost"
                                                                       SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                                                       Background="#3D3D4C"
                                                                       BorderBrush="Transparent"
-                                                                      BorderThickness="0"
-
-                                                        />
+                                                                      BorderThickness="0" />
                                                         <ContentPresenter x:Name="PART_WatermarkHost"
                                                                           ContentTemplate="{TemplateBinding WatermarkTemplate}"
                                                                           Content="{TemplateBinding Watermark}"
@@ -135,10 +133,14 @@
                                                                     InnerCornerRadius="0,1.75,1.75,0"
                                                                     RenderMouseOver="{TemplateBinding IsMouseOver}"
                                                                     RenderPressed="{TemplateBinding IsPressed}"
-                                                                    BorderBrush="{x:Null}">
+                                                                    BorderBrush="#3D3D4C">
                                                                     <xctk:ButtonChrome.Background>
                                                                         <SolidColorBrush Color="#3D3D4C" />
                                                                     </xctk:ButtonChrome.Background>
+                                                                    <xctk:ButtonChrome.BorderThickness>
+                                                                        <Thickness Left="0" Bottom="0" Right="0"
+                                                                            Top="0" />
+                                                                    </xctk:ButtonChrome.BorderThickness>
                                                                 </xctk:ButtonChrome>
                                                                 <Grid>
                                                                     <Grid.ColumnDefinitions>
@@ -182,17 +184,18 @@
                                             <SolidColorBrush Color="#3D3D4C" />
                                         </Border.Background>
                                         <StackPanel Background="{x:Null}">
-                                            <Calendar x:Name="Part_Calendar" 
+                                            <Calendar x:Name="Part_Calendar"
+                                                      SelectedDate="{Binding Value, RelativeSource={RelativeSource TemplatedParent}}"
                                                       BorderThickness="0"
-                                                      DisplayDate="2011-06-28" 
-                                                      Background="#3D3D4C"
-                                                      
-                                                      />
+                                                      DisplayDate="2011-06-28"
+                                                      Background="#3D3D4C" />
                                             <xctk:TimePicker x:Name="Part_TimeUpDown" Format="ShortTime"
                                                              ShowButtonSpinner="False"
                                                              BorderBrush="Transparent"
                                                              Value="{Binding Value, RelativeSource={RelativeSource TemplatedParent}}"
                                                              Foreground="White"
+                                                             Maximum="{Binding Maximum, RelativeSource={RelativeSource TemplatedParent}}"
+                                                             Minimum="{Binding Minimum, RelativeSource={RelativeSource TemplatedParent}}"
                                                              WatermarkTemplate="{TemplateBinding TimeWatermarkTemplate}"
                                                              Watermark="{TemplateBinding TimeWatermark}"
                                                              Background="{x:Null}"
@@ -246,13 +249,14 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="CalendarButtonStyle" TargetType="CalendarDayButton" BasedOn="{StaticResource {x:Type CalendarDayButton}}">
+        <Style x:Key="CalendarButtonStyle" TargetType="CalendarDayButton"
+               BasedOn="{StaticResource {x:Type CalendarDayButton}}">
             <Style.Setters>
-                <Setter Property="Foreground" Value="White"></Setter>
+                <Setter Property="Foreground" Value="White" />
             </Style.Setters>
             <Style.Triggers>
                 <Trigger Property="IsBlackedOut" Value="True">
-                    <Setter Property="Background" Value="Red"/>
+                    <Setter Property="Background" Value="Red" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -273,7 +277,7 @@
                 </Setter.Value>
             </Setter>
             <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="CalendarDayButtonStyle" Value="{StaticResource CalendarButtonStyle}"></Setter>
+            <Setter Property="CalendarDayButtonStyle" Value="{StaticResource CalendarButtonStyle}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate
@@ -285,15 +289,14 @@
                                               BorderBrush="{TemplateBinding BorderBrush}"
                                               BorderThickness="{TemplateBinding BorderThickness}"
                                               Background="{TemplateBinding Background}"
-                                              Foreground="{TemplateBinding Foreground}">
-                                </CalendarItem>
+                                              Foreground="{TemplateBinding Foreground}" />
                             </StackPanel>
                         </Viewbox>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
     </UserControl.Resources>
     <Grid Margin="0,0,-187,0">
         <Grid.RowDefinitions>
@@ -362,7 +365,7 @@
                 Grid.Row="2"
                 Grid.Column="1"
                 Format="Custom"
-                FormatString="yyyy-MM-dd hh:mm:ss"
+                FormatString="yyyy-MM-dd HH:mm:ss"
                 Value="{Binding Start}" />
         </Grid>
         <Grid Grid.Row="1">
