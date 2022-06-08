@@ -1,74 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <OutputType>WinExe</OutputType>
-        <TargetFramework>net6.0-windows</TargetFramework>
-        <Nullable>enable</Nullable>
-        <UseWPF>true</UseWPF>
-    </PropertyGroup>
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <None Remove="Assets\Images\calendar.png" />
-        <None Remove="Assets\Images\doctor.png" />
-        <None Remove="Assets\Images\home.png" />
-        <None Remove="Assets\Images\patient.png" />
-        <None Remove="Assets\Images\shutdown.png" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="AdonisUI" Version="1.17.1" />
-        <PackageReference Include="AdonisUI.ClassicTheme" Version="1.17.1" />
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
-        <PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="5.0.103" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Content Include="Assets\Images\calendar.png">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="Assets\Images\doctor.png">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="Assets\Images\home.png">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="Assets\Images\patient.png">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="Assets\Images\shutdown.png">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\BlackSmith.Business\BlackSmith.Business.csproj" />
-        <ProjectReference Include="..\BlackSmith.Core\BlackSmith.Core.csproj" />
-        <ProjectReference Include="..\BlackSmith.Data\BlackSmith.Data.csproj" />
-        <ProjectReference Include="..\BlackSmith.Service\BlackSmith.Service.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Modules\Doctors" />
-        <Folder Include="Services" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Page Update="Components\Appointments\AppointmentView.xaml">
-            <SubType>Designer</SubType>
-        </Page>
-        <Page Update="Modules\Home\HomeView.xaml">
-            <SubType>Designer</SubType>
-        </Page>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Compile Update="Components\Appointments\AppointmentView.xaml.cs">
-            <SubType>Code</SubType>
-        </Compile>
-        <Compile Update="Modules\Home\HomeView.xaml.cs">
-            <SubType>Code</SubType>
-        </Compile>
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="WPF-UI" Version="1.2.7" />
+  </ItemGroup>
 
 </Project>

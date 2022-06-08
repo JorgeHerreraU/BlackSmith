@@ -5,15 +5,15 @@ VisualStudioVersion = 17.2.32519.379
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackSmith.Domain", "BlackSmith.Domain\BlackSmith.Domain.csproj", "{81AB67A2-DB0C-4509-9CF5-455F0EC08895}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackSmith.Data", "BlackSmith.Data\BlackSmith.Data.csproj", "{9B045849-49AF-4C2B-BEC0-5E82E1B04DD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackSmith.Data", "BlackSmith.Data\BlackSmith.Data.csproj", "{9B045849-49AF-4C2B-BEC0-5E82E1B04DD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackSmith.Business", "BlackSmith.Business\BlackSmith.Business.csproj", "{56609471-8CF2-461D-B0A2-0C975AD5637C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackSmith.Business", "BlackSmith.Business\BlackSmith.Business.csproj", "{56609471-8CF2-461D-B0A2-0C975AD5637C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackSmith.Presentation", "BlackSmith.Presentation\BlackSmith.Presentation.csproj", "{96764593-3314-4E0A-84FD-178ED91E75D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackSmith.Service", "BlackSmith.Service\BlackSmith.Service.csproj", "{CA85DB9C-6DC6-4930-80ED-59747611623A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackSmith.Service", "BlackSmith.Service\BlackSmith.Service.csproj", "{CA85DB9C-6DC6-4930-80ED-59747611623A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackSmith.Core", "BlackSmith.Core\BlackSmith.Core.csproj", "{40967DE2-1A7F-4945-9F82-7C388FC26996}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackSmith.Core", "BlackSmith.Core\BlackSmith.Core.csproj", "{40967DE2-1A7F-4945-9F82-7C388FC26996}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackSmith.Presentation", "BlackSmith.Presentation\BlackSmith.Presentation.csproj", "{8855B70C-AED4-4D97-80F5-B2050CFA3A78}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +33,6 @@ Global
 		{56609471-8CF2-461D-B0A2-0C975AD5637C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56609471-8CF2-461D-B0A2-0C975AD5637C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56609471-8CF2-461D-B0A2-0C975AD5637C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{96764593-3314-4E0A-84FD-178ED91E75D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{96764593-3314-4E0A-84FD-178ED91E75D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{96764593-3314-4E0A-84FD-178ED91E75D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{96764593-3314-4E0A-84FD-178ED91E75D3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CA85DB9C-6DC6-4930-80ED-59747611623A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CA85DB9C-6DC6-4930-80ED-59747611623A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA85DB9C-6DC6-4930-80ED-59747611623A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +41,10 @@ Global
 		{40967DE2-1A7F-4945-9F82-7C388FC26996}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40967DE2-1A7F-4945-9F82-7C388FC26996}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40967DE2-1A7F-4945-9F82-7C388FC26996}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8855B70C-AED4-4D97-80F5-B2050CFA3A78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8855B70C-AED4-4D97-80F5-B2050CFA3A78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8855B70C-AED4-4D97-80F5-B2050CFA3A78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8855B70C-AED4-4D97-80F5-B2050CFA3A78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

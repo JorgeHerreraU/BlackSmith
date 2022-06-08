@@ -13,13 +13,13 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BlackSmith.Presentation;
+namespace BlackSmith.Presentation.Views.Pages;
 /// <summary>
-/// Interaction logic for MainWindow.xaml
+/// Interaction logic for Settings.xaml
 /// </summary>
-public partial class MainWindow : Window
+public partial class Settings : Page
 {
-    public MainWindow()
+    public Settings()
     {
         InitializeComponent();
     }
