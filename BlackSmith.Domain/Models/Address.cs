@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace BlackSmith.Domain.Models;
 
-namespace BlackSmith.Domain.Models;
 public class Address : BaseEntity
 {
     public string Street { get; set; } = "";

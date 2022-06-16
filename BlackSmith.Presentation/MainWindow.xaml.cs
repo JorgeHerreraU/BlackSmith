@@ -1,26 +1,103 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using BlackSmith.Presentation.Enums;
+using BlackSmith.Presentation.Interfaces;
+using BlackSmith.Presentation.Models;
+using BlackSmith.Presentation.Services;
+using BlackSmith.Presentation.ViewModels;
+using BlackSmith.Presentation.Views.Pages;
+using WPFUI.Appearance;
+using WPFUI.Common;
+using WPFUI.Controls.Interfaces;
 
 namespace BlackSmith.Presentation;
+
 /// <summary>
-/// Interaction logic for MainWindow.xaml
+///     Interaction logic for MainWindow.xaml
 /// </summary>
 public partial class MainWindow : Window
 {
-    public MainWindow()
+    private readonly Dashboard _dashboardPage;
+    private readonly PatientCreate _patientCreatePage;
+    private readonly PatientCreateViewModel _patientCreateViewModel;
+    private readonly PatientEdit _patientEditPage;
+    private readonly PatientEditViewModel _patientEditViewModel;
+    private readonly PatientList _patientListPage;
+    private readonly PatientListViewModel _patientListViewModel;
+
+    public MainWindow(
+        INavService navService,
+        Dashboard dashboardPage,
+        PatientListViewModel patientListViewModel,
+        PatientList patientListPage,
+        PatientCreateViewModel patientCreateViewModel,
+        PatientCreate patientCreatePage,
+        PatientEdit patientEditPage,
+        PatientEditViewModel patientEditViewModel
+    )
     {
+        _dashboardPage = dashboardPage;
+        _patientListPage = patientListPage;
+        _patientListViewModel = patientListViewModel;
+        _patientCreatePage = patientCreatePage;
+        _patientEditPage = patientEditPage;
+        _patientEditViewModel = patientEditViewModel;
+        _patientCreateViewModel = patientCreateViewModel;
+
+        navService.NavigationTriggered += OnNavigationTriggered;
         InitializeComponent();
+    }
+
+    private void OnNavigationTriggered(object? sender, NavigationTriggeredEventArgs e)
+    {
+        GoToPage(e.Page, e.Model);
+    }
+
+    private void RootNavigation_OnNavigated(INavigation sender, RoutedNavigationEventArgs e)
+    {
+        Enum.TryParse<Pages>(sender.Current.Page.Name, out var pageEnum);
+        GoToPage(pageEnum);
+    }
+
+    private void GoToPage(Pages page, object? model = null)
+    {
+        Page pageToGo;
+        switch (page)
+        {
+            case Pages.PatientCreate:
+                _patientCreatePage.DataContext = _patientCreateViewModel;
+                pageToGo = _patientCreatePage;
+                break;
+            case Pages.PatientList:
+                _patientListPage.DataContext = _patientListViewModel;
+                pageToGo = _patientListPage;
+                break;
+            case Pages.PatientEdit:
+                _patientEditPage.DataContext = _patientEditViewModel;
+                if (model is not null) _patientEditViewModel.Patient = (Patient)model;
+                pageToGo = _patientEditPage;
+                break;
+            case Pages.Home:
+                pageToGo = _dashboardPage;
+                break;
+            default:
+                pageToGo = null;
+                break;
+        }
+
+        RootFrame.NavigationService.Navigate(pageToGo);
+    }
+
+    private void NavigationButtonTheme_OnClick(object sender, RoutedEventArgs e)
+    {
+        // We check what theme is currently
+        // active and choose its opposite.
+        var newTheme = Theme.GetAppTheme() == ThemeType.Dark
+            ? ThemeType.Light
+            : ThemeType.Dark;
+
+        // We apply the theme to the entire application.
+        Theme.Apply(newTheme);
     }
 }

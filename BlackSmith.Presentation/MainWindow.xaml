@@ -8,7 +8,7 @@
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
         xmlns:pages="clr-namespace:BlackSmith.Presentation.Views.Pages"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="768" Width="1024">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -35,6 +35,10 @@
                                           Icon="Home24"
                                           Page="{x:Type pages:Dashboard}"
                                           PageTag="dashboard" />
+                    <wpfui:NavigationItem Content="Patients"
+                                          Icon="Doctor24"
+                                          Page="{x:Type pages:PatientList}"
+                                          DataContext="Hello" />
                 </wpfui:NavigationStore.Items>
                 <wpfui:NavigationStore.Footer>
                     <wpfui:NavigationItem Content="Settings"
@@ -58,14 +62,14 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <Frame x:Name="RootFrame"
-                           Grid.Row="1" />
                     <wpfui:Breadcrumb Grid.Row="0"
                                       Margin="18"
                                       HorizontalAlignment="Left"
                                       VerticalAlignment="Top"
                                       FontSize="24"
                                       Navigation="{Binding ElementName=RootNavigation}" />
+                    <Frame x:Name="RootFrame" Grid.Row="1" />
+
                 </Grid>
             </Border>
         </Grid>

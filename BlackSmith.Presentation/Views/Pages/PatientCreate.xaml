@@ -1,0 +1,543 @@
+﻿<Page
+    x:Class="BlackSmith.Presentation.Views.Pages.PatientCreate"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:s="clr-namespace:System;assembly=System.Runtime"
+    xmlns:vm="clr-namespace:BlackSmith.Presentation.ViewModels"
+    xmlns:wpfui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    Title="Create Patient"
+    d:DataContext="{d:DesignInstance vm:PatientCreateViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <ControlTemplate x:Key="TextBoxErrorTemplate">
+            <Grid>
+                <wpfui:SymbolIcon
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Filled="False"
+                    Foreground="Orange"
+                    Symbol="ErrorCircle24" />
+                <AdornedElementPlaceholder />
+            </Grid>
+        </ControlTemplate>
+        <Style
+            x:Key="ToolTipError"
+            BasedOn="{StaticResource {x:Type TextBox}}"
+            TargetType="{x:Type TextBox}">
+            <!--  Some style setters  -->
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)/ErrorContent}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style
+            x:Key="ToolTipErrorNumberBox"
+            BasedOn="{StaticResource {x:Type wpfui:NumberBox}}"
+            TargetType="{x:Type wpfui:NumberBox}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type wpfui:NumberBox}">
+                        <Border
+                            x:Name="MainBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="1,1,1,0"
+                            CornerRadius="4">
+                            <Border
+                                x:Name="BottomBorder"
+                                Padding="6,4"
+                                BorderThickness="0,0,0,2"
+                                CornerRadius="4">
+                                <Border.BorderBrush>
+                                    <SolidColorBrush Color="{DynamicResource ControlStrokeColorSecondary}" />
+                                </Border.BorderBrush>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid Grid.Column="0">
+                                        <wpfui:SymbolIcon
+                                            x:Name="IconLeft"
+                                            Margin="6,0,2,0"
+                                            Filled="{TemplateBinding IconFilled}"
+                                            Foreground="{TemplateBinding IconForeground}"
+                                            Symbol="{TemplateBinding Icon}"
+                                            Visibility="Collapsed" />
+                                    </Grid>
+
+                                    <Grid Grid.Column="1">
+                                        <Decorator
+                                            x:Name="PART_ContentHost"
+                                            Margin="0"
+                                            VerticalAlignment="Center" />
+                                        <TextBlock
+                                            x:Name="Placeholder"
+                                            Margin="0"
+                                            Padding="7,0,0,0"
+                                            VerticalAlignment="Center"
+                                            Text="{TemplateBinding Placeholder}">
+                                            <TextBlock.Foreground>
+                                                <SolidColorBrush Color="{DynamicResource TextFillColorTertiary}" />
+                                            </TextBlock.Foreground>
+                                        </TextBlock>
+                                    </Grid>
+
+                                    <wpfui:Button
+                                        x:Name="IncrementButton"
+                                        Grid.Column="2"
+                                        Width="25"
+                                        Margin="2,0,0,0"
+                                        Padding="0,5"
+                                        Appearance="Secondary"
+                                        Background="Transparent"
+                                        BorderBrush="Transparent"
+                                        Command="{Binding Path=ButtonCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                        CommandParameter="increment"
+                                        Icon="ChevronUp20">
+                                        <wpfui:Button.Foreground>
+                                            <SolidColorBrush Color="{DynamicResource TextFillColorTertiary}" />
+                                        </wpfui:Button.Foreground>
+                                    </wpfui:Button>
+
+                                    <wpfui:Button
+                                        x:Name="DecrementButton"
+                                        Grid.Column="3"
+                                        Width="25"
+                                        Margin="2,0,0,0"
+                                        Padding="0,5"
+                                        Appearance="Secondary"
+                                        Background="Transparent"
+                                        BorderBrush="Transparent"
+                                        Command="{Binding Path=ButtonCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                        CommandParameter="decrement"
+                                        Icon="ChevronDown20">
+                                        <wpfui:Button.Foreground>
+                                            <SolidColorBrush Color="{DynamicResource TextFillColorTertiary}" />
+                                        </wpfui:Button.Foreground>
+                                    </wpfui:Button>
+
+                                    <Grid Grid.Column="4">
+                                        <wpfui:SymbolIcon
+                                            x:Name="IconRight"
+                                            Margin="2,0,6,0"
+                                            Filled="{TemplateBinding IconFilled}"
+                                            Foreground="{TemplateBinding IconForeground}"
+                                            Symbol="{TemplateBinding Icon}"
+                                            Visibility="Collapsed" />
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="BottomBorder" Property="BorderBrush">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="{DynamicResource SystemAccentColorLight2}" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="PlaceholderVisible" Value="False">
+                                <Setter TargetName="Placeholder" Property="Visibility" Value="Collapsed" />
+                            </Trigger>
+                            <Trigger Property="ControlsVisible" Value="False">
+                                <Setter TargetName="IncrementButton" Property="Visibility" Value="Collapsed" />
+                                <Setter TargetName="IncrementButton" Property="Margin" Value="0" />
+                                <Setter TargetName="DecrementButton" Property="Visibility" Value="Collapsed" />
+                                <Setter TargetName="DecrementButton" Property="Margin" Value="0" />
+                            </Trigger>
+
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <!--  Some style setters  -->
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)/ErrorContent}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <SolidColorBrush x:Key="TextBox.Foreground" Color="{DynamicResource TextFillColorPrimary}" />
+        <SolidColorBrush x:Key="TextBox.Background" Color="{DynamicResource ControlFillColorDefault}" />
+        <!--  MaskedTextBox  -->
+        <Style x:Key="MaskedTextBoxStyleModern" TargetType="{x:Type xctk:MaskedTextBox}">
+            <Setter Property="Background" Value="{StaticResource TextBox.Background}" />
+            <Setter Property="Foreground" Value="{StaticResource TextBox.Foreground}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="AllowDrop" Value="true" />
+            <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Padding" Value="6,4" />
+            <Setter Property="MinHeight" Value="34" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ControlElevationBorderBrush}" />
+            <Setter Property="CaretBrush">
+                <Setter.Value>
+                    <SolidColorBrush Color="{DynamicResource TextFillColorPrimary}" />
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type xctk:MaskedTextBox}">
+                        <Border
+                            x:Name="border"
+                            VerticalAlignment="Center"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="1,1,1,0"
+                            CornerRadius="4"
+                            SnapsToDevicePixels="True">
+                            <Border
+                                x:Name="BottomBorder"
+                                Padding="2"
+                                BorderThickness="0,0,0,2"
+                                CornerRadius="4">
+                                <Border.BorderBrush>
+                                    <SolidColorBrush Color="{DynamicResource ControlStrokeColorSecondary}" />
+                                </Border.BorderBrush>
+                                <ScrollViewer
+                                    x:Name="PART_ContentHost"
+                                    Margin="0"
+                                    Padding="0"
+                                    VerticalAlignment="Center" />
+                            </Border>
+
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Validation.HasError" Value="true">
+                                <Setter Property="ToolTip"
+                                        Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)/ErrorContent}" />
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="BottomBorder" Property="BorderBrush">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="{DynamicResource SystemAccentColorLight2}" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true" />
+                        <Condition Property="IsSelectionActive" Value="false" />
+                    </MultiTrigger.Conditions>
+                    <Setter Property="SelectionBrush"
+                            Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}" />
+                </MultiTrigger>
+
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
+    <b:Interaction.Triggers>
+        <b:EventTrigger EventName="Loaded">
+            <b:CallMethodAction MethodName="SetNewPatient" TargetObject="{Binding}" />
+        </b:EventTrigger>
+    </b:Interaction.Triggers>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid
+            Margin="17,15,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            DataContext="{Binding Patient}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Margin="0,0,0,25"
+                Orientation="Horizontal">
+                <Image VerticalAlignment="Center" Source="../../Assets/patient.png" />
+                <Border
+                    Padding="10"
+                    BorderBrush="{StaticResource TextBox.Foreground}"
+                    BorderThickness="0.1"
+                    CornerRadius="10">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontSize="18"
+                        Text="Register a new patient">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{DynamicResource TextFillColorSecondary}" />
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                </Border>
+
+            </StackPanel>
+
+            <StackPanel
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="2">
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Foreground="{StaticResource TextBox.Foreground}"
+                    Text="Personal Details" />
+                <Separator
+                    Margin="0,5,0,5"
+                    Background="White"
+                    BorderBrush="{StaticResource TextBox.Background}"
+                    BorderThickness="1" />
+            </StackPanel>
+            <wpfui:Button
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="0,-25,15,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Appearance="Secondary"
+                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.ClearCommand}"
+                Content="Clear Form"
+                FontSize="12"
+                Icon="EditOff48" />
+
+            <Label
+                Grid.Row="2"
+                Grid.Column="0"
+                Margin="3"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Content="First Name:" />
+            <TextBox
+                Grid.Row="2"
+                Grid.Column="1"
+                Width="250"
+                Height="23"
+                Margin="3"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Style="{StaticResource ToolTipError}"
+                Text="{Binding FirstName, ValidatesOnNotifyDataErrors=True}"
+                Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
+            <Label
+                Grid.Row="3"
+                Grid.Column="0"
+                Margin="3"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Content="Last Name:" />
+            <TextBox
+                Grid.Row="3"
+                Grid.Column="1"
+                Width="250"
+                Height="23"
+                Margin="3"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Style="{StaticResource ToolTipError}"
+                Text="{Binding LastName, ValidatesOnNotifyDataErrors=True}"
+                Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
+            <Label
+                Grid.Row="4"
+                Grid.Column="0"
+                Margin="3"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Content="Age:" />
+
+            <wpfui:NumberBox
+                Grid.Row="4"
+                Grid.Column="1"
+                Width="250"
+                Height="23"
+                Margin="3"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                ControlsVisible="False"
+                IntegersOnly="True"
+                Min="0"
+                Style="{StaticResource ToolTipErrorNumberBox}"
+                Text="{Binding Age, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
+
+            <Label
+                Grid.Row="5"
+                Grid.Column="0"
+                Margin="3"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Content="E-mail:" />
+            <TextBox
+                Grid.Row="5"
+                Grid.Column="1"
+                Width="250"
+                Height="23"
+                Margin="3"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Style="{StaticResource ToolTipError}"
+                Text="{Binding Email, ValidatesOnNotifyDataErrors=True}"
+                Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
+            <Label
+                Grid.Row="6"
+                Grid.Column="0"
+                Margin="3"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Content="Phone:" />
+            <xctk:MaskedTextBox
+                Grid.Row="6"
+                Grid.Column="1"
+                Width="250"
+                CaretIndex="0"
+                Mask="(0)-000-00000000"
+                PromptChar=" "
+                Style="{DynamicResource MaskedTextBoxStyleModern}"
+                Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
+                ValueDataType="{x:Type s:String}"
+                Value="{Binding PhoneNumber, ValidatesOnNotifyDataErrors=True}" />
+            <StackPanel
+                Grid.Row="7"
+                Grid.Column="1"
+                Margin="0,25,0,0"
+                Orientation="Horizontal">
+                <wpfui:Button
+                    Margin="5,5,5,5"
+                    Appearance="Secondary"
+                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.SaveCommand}"
+                    Content="Save"
+                    FontSize="16"
+                    Icon="Save24"
+                    IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.IsTouched, UpdateSourceTrigger=PropertyChanged}" />
+                <wpfui:Button
+                    Margin="5,5,5,5"
+                    Appearance="Secondary"
+                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.GoBack}"
+                    Content="Go Back"
+                    FontSize="16"
+                    Icon="ArrowLeft48" />
+
+            </StackPanel>
+
+            <StackPanel
+                Grid.Row="1"
+                Grid.Column="2"
+                Grid.ColumnSpan="2">
+                <TextBlock Foreground="{StaticResource TextBox.Foreground}" Text="Address" />
+                <Separator
+                    Margin="0,5,0,5"
+                    Background="White"
+                    BorderBrush="{StaticResource TextBox.Background}"
+                    BorderThickness="1" />
+            </StackPanel>
+            <Label
+                Grid.Row="2"
+                Grid.Column="2"
+                Margin="3"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Content="Number:" />
+            <wpfui:NumberBox
+                Grid.Row="2"
+                Grid.Column="3"
+                Width="250"
+                Height="23"
+                Margin="3"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                ControlsVisible="False"
+                IntegersOnly="True"
+                Min="0"
+                Style="{StaticResource ToolTipErrorNumberBox}"
+                Text="{Binding Address.Number, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
+
+            <Label
+                Grid.Row="3"
+                Grid.Column="2"
+                Margin="3"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Content="Street:" />
+            <TextBox
+                Grid.Row="3"
+                Grid.Column="3"
+                Width="250"
+                Height="23"
+                Margin="3"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Style="{StaticResource ToolTipError}"
+                Text="{Binding Address.Street, ValidatesOnNotifyDataErrors=True}"
+                Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
+            <Label
+                Grid.Row="4"
+                Grid.Column="2"
+                Margin="3"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Content="City:" />
+            <TextBox
+                Grid.Row="4"
+                Grid.Column="3"
+                Width="250"
+                Height="23"
+                Margin="3"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Style="{StaticResource ToolTipError}"
+                Text="{Binding Address.City, ValidatesOnNotifyDataErrors=True}"
+                Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
+            <Label
+                Grid.Row="5"
+                Grid.Column="2"
+                Margin="3"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Content="State:" />
+            <TextBox
+                Grid.Row="5"
+                Grid.Column="3"
+                Width="250"
+                Height="23"
+                Margin="3"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Style="{StaticResource ToolTipError}"
+                Text="{Binding Address.State, ValidatesOnNotifyDataErrors=True}"
+                Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
+
+        </Grid>
+    </Grid>
+</Page>

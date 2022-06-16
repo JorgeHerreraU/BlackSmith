@@ -8,7 +8,7 @@ public static class SeedData
     {
         using var context = new AppDbContextFactory().CreateDbContext();
 
-        if (context.Appointments.Any()) return;
+        if (context.Patients.Any()) return;
 
         var address = new Address
         {
@@ -28,7 +28,7 @@ public static class SeedData
             FirstName = "Ron",
             LastName = "Howard",
             Email = "ronhoward@email.com",
-            Phone = "1-808-87484329",
+            Phone = "(1)-808-87484329",
             Speciality = Speciality.Cardiology,
             WorkingDays = workingDays
         };
@@ -41,7 +41,7 @@ public static class SeedData
             FirstName = "Lucas",
             LastName = "San Toro",
             Email = "lucassantoro@email.com",
-            PhoneNumber = "1-807-84832991",
+            PhoneNumber = "(1)-807-84832991",
             Age = 32,
             Address = address
         };

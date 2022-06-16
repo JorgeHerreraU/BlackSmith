@@ -17,21 +17,32 @@ public class PatientsBL
 
     public async Task<IEnumerable<Patient>> GetPatients()
     {
-        return await _repository.GetAll();
+        return await _repository.GetAll(x => x.Address);
     }
 
     public async Task<Patient> CreatePatient(Patient patient)
     {
+        await _validator.ValidateAndThrowAsync(patient);
         if (await PatientEmailExists(patient.Email))
             throw new ArgumentException("Patient e-mail address is already registered");
-        await _validator.ValidateAndThrowAsync(patient);
         await _repository.Add(patient);
         return patient;
     }
 
     private async Task<bool> PatientEmailExists(string email)
     {
-        return await _repository.Get(x =>
-            string.Equals(x.Email, email, StringComparison.CurrentCultureIgnoreCase)) is not null;
+        return await _repository.Get(x => x.Email.ToLower() == email.ToLower()) is not null;
+    }
+
+    public async Task<Patient> UpdatePatient(Patient patient)
+    {
+        await _validator.ValidateAndThrowAsync(patient);
+        await _repository.Update(patient);
+        return patient;
+    }
+
+    public async Task<bool> DeletePatient(Patient patient)
+    {
+        return await _repository.Delete(patient);
     }
 }

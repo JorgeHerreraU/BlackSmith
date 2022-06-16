@@ -8,7 +8,38 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\error.png" />
+    <None Remove="Assets\fluent-ui-microsoft.png" />
+    <None Remove="Assets\patient.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="5.0.103" />
+    <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="WPF-UI" Version="1.2.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BlackSmith.Core\BlackSmith.Core.csproj" />
+    <ProjectReference Include="..\BlackSmith.Data\BlackSmith.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\error.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\fluent-ui-microsoft.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\patient.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Profiles\" />
   </ItemGroup>
 
 </Project>

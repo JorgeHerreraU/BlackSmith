@@ -1,5 +1,5 @@
 ﻿namespace BlackSmith.Presentation;
 
-public class MainWindowViewModel
+public class MainWindowViewModel : BindableBase
 {
 }

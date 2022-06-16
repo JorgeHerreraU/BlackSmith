@@ -11,5 +11,4 @@ public class PatientDTO
     [Required] public string PhoneNumber { get; set; } = "";
     [Required] public int Age { get; set; }
     [Required] public AddressDTO Address { get; set; } = new();
-    public string FullName => $"{FirstName} {LastName}";
 }
