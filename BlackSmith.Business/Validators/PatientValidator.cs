@@ -10,7 +10,7 @@ public class PatientValidator : AbstractValidator<Patient>
     {
         RuleFor(x => x.FirstName).NotNull().NotEmpty();
         RuleFor(x => x.LastName).NotNull().NotEmpty().NotEqual(x => x.FirstName);
-        RuleFor(x => x.PhoneNumber)
+        RuleFor(x => x.Phone)
             .NotNull()
             .NotEmpty()
             .MinimumLength(16)

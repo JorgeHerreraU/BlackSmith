@@ -384,7 +384,6 @@
                 Margin="3"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                ControlsVisible="False"
                 IntegersOnly="True"
                 Min="0"
                 Style="{StaticResource ToolTipErrorNumberBox}"

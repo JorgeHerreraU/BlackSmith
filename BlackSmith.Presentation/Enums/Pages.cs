@@ -5,5 +5,8 @@ public enum Pages
     Home,
     PatientCreate,
     PatientList,
-    PatientEdit
+    PatientEdit,
+    DoctorList,
+    ScheduleList,
+    Settings
 }

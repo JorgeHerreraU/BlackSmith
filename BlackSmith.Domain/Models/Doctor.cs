@@ -6,6 +6,7 @@ public class Doctor : BaseEntity
     public string LastName { get; set; } = "";
     public string Email { get; set; } = "";
     public string Phone { get; set; } = "";
+    public int Age { get; set; }
     public Speciality Speciality { get; set; } = Speciality.GeneralPractice;
     public Address Address { get; set; } = new();
     public ICollection<WorkingDay> WorkingDays { get; set; } = new HashSet<WorkingDay>();

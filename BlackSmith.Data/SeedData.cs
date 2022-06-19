@@ -20,7 +20,9 @@ public static class SeedData
 
         var workingDays = new List<WorkingDay>
         {
-            new() { StartTime = DateTime.Now, EndTime = DateTime.Now, Day = DayOfWeek.Monday }
+            new() { StartTime = DateTime.Now, EndTime = DateTime.Now, Day = DayOfWeek.Monday },
+            new() { StartTime = DateTime.Now, EndTime = DateTime.Now, Day = DayOfWeek.Tuesday },
+            new() { StartTime = DateTime.Now, EndTime = DateTime.Now, Day = DayOfWeek.Wednesday }
         };
 
         var doctor = new Doctor
@@ -30,7 +32,8 @@ public static class SeedData
             Email = "ronhoward@email.com",
             Phone = "(1)-808-87484329",
             Speciality = Speciality.Cardiology,
-            WorkingDays = workingDays
+            WorkingDays = workingDays,
+            Address = address
         };
 
         context.Doctors.Add(doctor);
@@ -41,7 +44,7 @@ public static class SeedData
             FirstName = "Lucas",
             LastName = "San Toro",
             Email = "lucassantoro@email.com",
-            PhoneNumber = "(1)-807-84832991",
+            Phone = "(1)-807-84832991",
             Age = 32,
             Address = address
         };

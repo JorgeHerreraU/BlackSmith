@@ -21,9 +21,12 @@ public static class DependencyInjection
         services.AddSingleton<AppDbContextFactory>();
         services.AddSingleton<AppointmentsBL>();
         services.AddSingleton<PatientsBL>();
+        services.AddSingleton<DoctorsBL>();
         services.AddSingleton<IAppointmentService, AppointmentService>();
         services.AddSingleton<IPatientService, PatientService>();
+        services.AddSingleton<IDoctorService, DoctorService>();
         services.AddScoped<IValidator<Patient>, PatientValidator>();
+        services.AddScoped<IValidator<Doctor>, DoctorValidator>();
     }
 
     public static void RegisterSharedAutoMapperConfiguration(ref MapperConfigurationExpression mapperConfig)

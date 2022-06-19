@@ -40,10 +40,10 @@ public class DoctorDTO
     [Required] public string Email { get; set; } = "";
 
     [Required] public string Phone { get; set; } = "";
+    [Required] public int Age { get; set; }
 
     [Required] public Speciality Speciality { get; set; } = Speciality.GeneralPractice;
 
     [Required] public AddressDTO Address { get; set; } = new();
-
-    public string FullName => $"{FirstName} {LastName}";
+    [Required] public ICollection<WorkingDayDTO> WorkingDays { get; set; } = new List<WorkingDayDTO>();
 }

@@ -83,7 +83,6 @@
                                             Margin="0"
                                             VerticalAlignment="Center" />
                                         <TextBlock
-                                            x:Name="Placeholder"
                                             Margin="0"
                                             Padding="7,0,0,0"
                                             VerticalAlignment="Center"
@@ -366,7 +365,6 @@
                 Margin="3"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                ControlsVisible="False"
                 IntegersOnly="True"
                 Min="0"
                 Style="{StaticResource ToolTipErrorNumberBox}"
@@ -458,7 +456,6 @@
                 Margin="3"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                ControlsVisible="False"
                 IntegersOnly="True"
                 Min="0"
                 Style="{StaticResource ToolTipErrorNumberBox}"

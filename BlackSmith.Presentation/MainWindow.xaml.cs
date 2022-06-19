@@ -7,9 +7,6 @@ using BlackSmith.Presentation.Models;
 using BlackSmith.Presentation.Services;
 using BlackSmith.Presentation.ViewModels;
 using BlackSmith.Presentation.Views.Pages;
-using WPFUI.Appearance;
-using WPFUI.Common;
-using WPFUI.Controls.Interfaces;
 
 namespace BlackSmith.Presentation;
 
@@ -19,12 +16,16 @@ namespace BlackSmith.Presentation;
 public partial class MainWindow : Window
 {
     private readonly Dashboard _dashboardPage;
+    private readonly DoctorList _doctorListPage;
+    private readonly DoctorListViewModel _doctorListViewModel;
     private readonly PatientCreate _patientCreatePage;
     private readonly PatientCreateViewModel _patientCreateViewModel;
     private readonly PatientEdit _patientEditPage;
     private readonly PatientEditViewModel _patientEditViewModel;
     private readonly PatientList _patientListPage;
     private readonly PatientListViewModel _patientListViewModel;
+    private readonly ScheduleList _scheduleListPage;
+    private readonly Settings _settingsPage;
 
     public MainWindow(
         INavService navService,
@@ -34,7 +35,11 @@ public partial class MainWindow : Window
         PatientCreateViewModel patientCreateViewModel,
         PatientCreate patientCreatePage,
         PatientEdit patientEditPage,
-        PatientEditViewModel patientEditViewModel
+        PatientEditViewModel patientEditViewModel,
+        DoctorList doctorListPage,
+        DoctorListViewModel doctorListViewModel,
+        ScheduleList scheduleListPage,
+        Settings settingsPage
     )
     {
         _dashboardPage = dashboardPage;
@@ -43,6 +48,10 @@ public partial class MainWindow : Window
         _patientCreatePage = patientCreatePage;
         _patientEditPage = patientEditPage;
         _patientEditViewModel = patientEditViewModel;
+        _doctorListPage = doctorListPage;
+        _doctorListViewModel = doctorListViewModel;
+        _scheduleListPage = scheduleListPage;
+        _settingsPage = settingsPage;
         _patientCreateViewModel = patientCreateViewModel;
 
         navService.NavigationTriggered += OnNavigationTriggered;
@@ -80,6 +89,16 @@ public partial class MainWindow : Window
                 break;
             case Pages.Home:
                 pageToGo = _dashboardPage;
+                break;
+            case Pages.DoctorList:
+                _doctorListPage.DataContext = _doctorListViewModel;
+                pageToGo = _doctorListPage;
+                break;
+            case Pages.ScheduleList:
+                pageToGo = _scheduleListPage;
+                break;
+            case Pages.Settings:
+                pageToGo = _settingsPage;
                 break;
             default:
                 pageToGo = null;

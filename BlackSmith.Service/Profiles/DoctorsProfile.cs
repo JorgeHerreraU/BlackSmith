@@ -9,5 +9,6 @@ public class DoctorsProfile : Profile
     public DoctorsProfile()
     {
         CreateMap<Doctor, DoctorDTO>().ReverseMap();
+        CreateMap<WorkingDay, WorkingDayDTO>().ReverseMap();
     }
 }

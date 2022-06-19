@@ -37,9 +37,9 @@ public class PatientListViewModel : BindableBase
         LoadPatients();
 
         ClearSearchCommand = new RelayCommand(OnClearSearch);
-        GoToCreate = new RelayCommand(OpenCreatePatient);
-        EditPatientCommand = new RelayCommand<Patient>(OpenEditPatient);
-        DeleteCommand = new RelayCommand<Patient>(DeletePatient);
+        GoToCreate = new RelayCommand(OnCreate);
+        EditPatientCommand = new RelayCommand<Patient>(OnEdit);
+        DeleteCommand = new RelayCommand<Patient>(OnDelete);
     }
 
     public string SearchInput
@@ -68,7 +68,7 @@ public class PatientListViewModel : BindableBase
     public RelayCommand<Patient> EditPatientCommand { get; }
     public RelayCommand<Patient> DeleteCommand { get; }
 
-    private async void DeletePatient(Patient patient)
+    private async void OnDelete(Patient patient)
     {
         var confirmDeletion = await _messageService.ShowConfirmDialog("Are you sure you want to delete this patient?");
         if (!confirmDeletion) return;
@@ -76,12 +76,12 @@ public class PatientListViewModel : BindableBase
         LoadPatients();
     }
 
-    private void OpenEditPatient(Patient patient)
+    private void OnEdit(Patient patient)
     {
         _navService.Navigate(new NavigationTriggeredEventArgs { Page = Pages.PatientEdit, Model = patient });
     }
 
-    private void OpenCreatePatient()
+    private void OnCreate()
     {
         OnClearSearch();
         _navService.Navigate(new NavigationTriggeredEventArgs { Page = Pages.PatientCreate });
@@ -98,13 +98,13 @@ public class PatientListViewModel : BindableBase
     private void FilterPatients(string searchInput)
     {
         var isSearchInputNull = string.IsNullOrWhiteSpace(searchInput);
-        var appointments = new ObservableCollection<Patient>(_allPatients);
-        var filteredAppointments = new ObservableCollection<Patient>(
+        var patients = new ObservableCollection<Patient>(_allPatients);
+        var filteredResults = new ObservableCollection<Patient>(
             _allPatients.ToList().Where(c =>
                 c.FullName.ToLower().Contains(searchInput.ToLower())
             ));
 
-        Patients = isSearchInputNull ? appointments : filteredAppointments;
+        Patients = isSearchInputNull ? patients : filteredResults;
     }
 
     private void OnClearSearch()

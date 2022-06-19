@@ -52,19 +52,23 @@ public partial class App
         services.AddSingleton<IMessageService, MessageService>();
         services.AddSingleton<MainWindow>();
         services.AddSingleton<Dashboard>();
+        services.AddSingleton<Settings>();
         services.AddSingleton<PatientCreate>();
         services.AddSingleton<PatientCreateViewModel>();
         services.AddSingleton<PatientList>();
         services.AddSingleton<PatientListViewModel>();
         services.AddSingleton<PatientEdit>();
         services.AddSingleton<PatientEditViewModel>();
+        services.AddSingleton<ScheduleList>();
+        services.AddSingleton<DoctorList>();
+        services.AddSingleton<DoctorListViewModel>();
     }
 
     private static void RegisterLocalAutoMapperConfiguration(ref MapperConfigurationExpression mapperConfig)
     {
-        mapperConfig.CreateMap<Patient, PatientDTO>();
-        mapperConfig.CreateMap<PatientDTO, Patient>();
-        mapperConfig.CreateMap<Address, AddressDTO>();
-        mapperConfig.CreateMap<AddressDTO, Address>();
+        mapperConfig.CreateMap<Patient, PatientDTO>().ReverseMap();
+        mapperConfig.CreateMap<Address, AddressDTO>().ReverseMap();
+        mapperConfig.CreateMap<Doctor, DoctorDTO>().ReverseMap();
+        mapperConfig.CreateMap<WorkingDay, WorkingDayDTO>().ReverseMap();
     }
 }
