@@ -15,7 +15,7 @@ namespace BlackSmith.Data.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.5");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.6");
 
             modelBuilder.Entity("BlackSmith.Domain.Models.Address", b =>
                 {
@@ -24,6 +24,10 @@ namespace BlackSmith.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Country")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -37,6 +41,9 @@ namespace BlackSmith.Data.Migrations
                     b.Property<string>("Street")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("ZipCode")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -136,6 +143,10 @@ namespace BlackSmith.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Identification")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -163,10 +174,10 @@ namespace BlackSmith.Data.Migrations
                     b.Property<int?>("DoctorId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("EndTime")
+                    b.Property<TimeOnly>("EndTime")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("StartTime")
+                    b.Property<TimeOnly>("StartTime")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

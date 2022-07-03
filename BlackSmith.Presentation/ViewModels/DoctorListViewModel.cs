@@ -4,8 +4,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using AutoMapper;
 using BlackSmith.Presentation.Commands;
+using BlackSmith.Presentation.Enums;
 using BlackSmith.Presentation.Interfaces;
 using BlackSmith.Presentation.Models;
+using BlackSmith.Presentation.Services;
 using BlackSmith.Service.Interfaces;
 using JetBrains.Annotations;
 
@@ -22,10 +24,7 @@ public class DoctorListViewModel : BindableBase
     private string _searchInput = "";
 
 
-    public DoctorListViewModel(
-        IMapper mapper,
-        IMessageService messageService,
-        INavService navService,
+    public DoctorListViewModel(IMapper mapper, IMessageService messageService, INavService navService,
         IDoctorService doctorService)
     {
         _mapper = mapper;
@@ -39,12 +38,13 @@ public class DoctorListViewModel : BindableBase
         GoToCreate = new RelayCommand(OnCreate);
         EditCommand = new RelayCommand<Doctor>(OnEdit);
         DeleteCommand = new RelayCommand<Doctor>(OnDelete);
+        DetailsCommand = new RelayCommand<Doctor>(OnDetails);
     }
 
     public ObservableCollection<Doctor> Doctors
     {
         get => _doctors;
-        set
+        private set
         {
             _doctors = value;
             NotifyPropertyChanged();
@@ -66,15 +66,19 @@ public class DoctorListViewModel : BindableBase
     public RelayCommand ClearSearchCommand { get; }
     public RelayCommand<Doctor> EditCommand { get; }
     public RelayCommand<Doctor> DeleteCommand { get; }
+    public RelayCommand<Doctor> DetailsCommand { get; }
+
+    private void OnDetails(Doctor doctor)
+    {
+        _navService.Navigate(new NavigationTriggeredEventArgs { Page = Pages.DoctorDetails, Model = doctor });
+    }
 
     private void FilterData(string searchInput)
     {
         var isSearchInputNull = string.IsNullOrWhiteSpace(searchInput);
         var doctors = new ObservableCollection<Doctor>(_allDoctors);
         var filteredResults = new ObservableCollection<Doctor>(
-            _allDoctors.ToList().Where(c =>
-                c.FullName.ToLower().Contains(searchInput.ToLower())
-            ));
+            _allDoctors.ToList().Where(c => c.FullName.ToLower().Contains(searchInput.ToLower())));
         Doctors = isSearchInputNull ? doctors : filteredResults;
     }
 
@@ -90,7 +94,7 @@ public class DoctorListViewModel : BindableBase
 
     private void OnCreate()
     {
-        throw new NotImplementedException();
+        _navService.Navigate(new NavigationTriggeredEventArgs { Page = Pages.DoctorCreate });
     }
 
     private void OnClearSearch()

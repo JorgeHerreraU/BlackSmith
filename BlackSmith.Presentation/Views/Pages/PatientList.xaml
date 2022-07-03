@@ -385,11 +385,7 @@
             Margin="0,0,0,6"
             HorizontalAlignment="Left">
 
-            <wpfui:CardAction
-                Margin="0,0,4,0"
-                Icon="Search24"
-                ShowChevron="False"
-                Tag="search">
+            <wpfui:Card Margin="0,0,4,0" Tag="search">
                 <StackPanel>
                     <TextBlock
                         Margin="0,0,0,4"
@@ -400,6 +396,11 @@
                         Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                         Text="Search for a resource" />
                     <StackPanel Orientation="Horizontal">
+                        <wpfui:SymbolIcon
+                            Margin="0,5,10,0"
+                            VerticalAlignment="Center"
+                            Filled="True"
+                            Symbol="Search48" />
                         <TextBox
                             Width="250"
                             Margin="0,7,0,0"
@@ -537,7 +538,7 @@
                     </StackPanel>
 
                 </StackPanel>
-            </wpfui:CardAction>
+            </wpfui:Card>
         </StackPanel>
         <Separator
             Grid.Row="3"
@@ -572,8 +573,12 @@
                     Header="E-mail"
                     IsReadOnly="True" />
                 <DataGridTextColumn
-                    Binding="{Binding Path=PhoneNumber}"
+                    Binding="{Binding Path=Phone}"
                     Header="Phone"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding Path=Identification}"
+                    Header="Identification"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Width="Auto"

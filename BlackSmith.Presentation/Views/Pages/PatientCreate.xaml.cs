@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace BlackSmith.Presentation.Views.Pages;
 
@@ -10,6 +11,13 @@ public partial class PatientCreate : Page
     public PatientCreate()
     {
         InitializeComponent();
-        Name = "PatientCreate";
+    }
+
+    private void OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (PhoneTextBox.MaskedTextProvider.MaskCompleted) return;
+        PhoneTextBox.Focus();
+        PhoneTextBox.Select(0, 0);
+        e.Handled = true;
     }
 }

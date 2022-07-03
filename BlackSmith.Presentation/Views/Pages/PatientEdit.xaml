@@ -5,8 +5,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:s="clr-namespace:System;assembly=System.Runtime"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:vm="clr-namespace:BlackSmith.Presentation.ViewModels"
-    xmlns:wpfui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     Title="Edit a Patient"
     d:DataContext="{d:DesignInstance vm:PatientEditViewModel}"
@@ -16,7 +16,7 @@
     <Page.Resources>
         <ControlTemplate x:Key="TextBoxErrorTemplate">
             <Grid>
-                <wpfui:SymbolIcon
+                <ui:SymbolIcon
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
                     Filled="False"
@@ -29,139 +29,6 @@
             x:Key="ToolTipError"
             BasedOn="{StaticResource {x:Type TextBox}}"
             TargetType="{x:Type TextBox}">
-            <!--  Some style setters  -->
-            <Style.Triggers>
-                <Trigger Property="Validation.HasError" Value="true">
-                    <Setter Property="ToolTip"
-                            Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)/ErrorContent}" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style
-            x:Key="ToolTipErrorNumberBox"
-            BasedOn="{StaticResource {x:Type wpfui:NumberBox}}"
-            TargetType="{x:Type wpfui:NumberBox}">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type wpfui:NumberBox}">
-                        <Border
-                            x:Name="MainBorder"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="1,1,1,0"
-                            CornerRadius="4">
-                            <Border
-                                x:Name="BottomBorder"
-                                Padding="6,4"
-                                BorderThickness="0,0,0,2"
-                                CornerRadius="4">
-                                <Border.BorderBrush>
-                                    <SolidColorBrush Color="{DynamicResource ControlStrokeColorSecondary}" />
-                                </Border.BorderBrush>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-
-                                    <Grid Grid.Column="0">
-                                        <wpfui:SymbolIcon
-                                            x:Name="IconLeft"
-                                            Margin="6,0,2,0"
-                                            Filled="{TemplateBinding IconFilled}"
-                                            Foreground="{TemplateBinding IconForeground}"
-                                            Symbol="{TemplateBinding Icon}"
-                                            Visibility="Collapsed" />
-                                    </Grid>
-
-                                    <Grid Grid.Column="1">
-                                        <Decorator
-                                            x:Name="PART_ContentHost"
-                                            Margin="0"
-                                            VerticalAlignment="Center" />
-                                        <TextBlock
-                                            Margin="0"
-                                            Padding="7,0,0,0"
-                                            VerticalAlignment="Center"
-                                            Text="{TemplateBinding Placeholder}">
-                                            <TextBlock.Foreground>
-                                                <SolidColorBrush Color="{DynamicResource TextFillColorTertiary}" />
-                                            </TextBlock.Foreground>
-                                        </TextBlock>
-                                    </Grid>
-
-                                    <wpfui:Button
-                                        x:Name="IncrementButton"
-                                        Grid.Column="2"
-                                        Width="25"
-                                        Margin="2,0,0,0"
-                                        Padding="0,5"
-                                        Appearance="Secondary"
-                                        Background="Transparent"
-                                        BorderBrush="Transparent"
-                                        Command="{Binding Path=ButtonCommand, RelativeSource={RelativeSource TemplatedParent}}"
-                                        CommandParameter="increment"
-                                        Icon="ChevronUp20">
-                                        <wpfui:Button.Foreground>
-                                            <SolidColorBrush Color="{DynamicResource TextFillColorTertiary}" />
-                                        </wpfui:Button.Foreground>
-                                    </wpfui:Button>
-
-                                    <wpfui:Button
-                                        x:Name="DecrementButton"
-                                        Grid.Column="3"
-                                        Width="25"
-                                        Margin="2,0,0,0"
-                                        Padding="0,5"
-                                        Appearance="Secondary"
-                                        Background="Transparent"
-                                        BorderBrush="Transparent"
-                                        Command="{Binding Path=ButtonCommand, RelativeSource={RelativeSource TemplatedParent}}"
-                                        CommandParameter="decrement"
-                                        Icon="ChevronDown20">
-                                        <wpfui:Button.Foreground>
-                                            <SolidColorBrush Color="{DynamicResource TextFillColorTertiary}" />
-                                        </wpfui:Button.Foreground>
-                                    </wpfui:Button>
-
-                                    <Grid Grid.Column="4">
-                                        <wpfui:SymbolIcon
-                                            x:Name="IconRight"
-                                            Margin="2,0,6,0"
-                                            Filled="{TemplateBinding IconFilled}"
-                                            Foreground="{TemplateBinding IconForeground}"
-                                            Symbol="{TemplateBinding Icon}"
-                                            Visibility="Collapsed" />
-                                    </Grid>
-                                </Grid>
-                            </Border>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsFocused" Value="True">
-                                <Setter TargetName="BottomBorder" Property="BorderBrush">
-                                    <Setter.Value>
-                                        <SolidColorBrush Color="{DynamicResource SystemAccentColorLight2}" />
-                                    </Setter.Value>
-                                </Setter>
-                            </Trigger>
-                            <Trigger Property="PlaceholderVisible" Value="False">
-                                <Setter TargetName="Placeholder" Property="Visibility" Value="Collapsed" />
-                            </Trigger>
-                            <Trigger Property="ControlsVisible" Value="False">
-                                <Setter TargetName="IncrementButton" Property="Visibility" Value="Collapsed" />
-                                <Setter TargetName="IncrementButton" Property="Margin" Value="0" />
-                                <Setter TargetName="DecrementButton" Property="Visibility" Value="Collapsed" />
-                                <Setter TargetName="DecrementButton" Property="Margin" Value="0" />
-                            </Trigger>
-
-
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
             <!--  Some style setters  -->
             <Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="true">
@@ -206,11 +73,14 @@
                             <Border
                                 x:Name="BottomBorder"
                                 Padding="2"
-                                BorderThickness="0,0,0,2"
+                                BorderThickness="0,0,0,1"
                                 CornerRadius="4">
                                 <Border.BorderBrush>
-                                    <SolidColorBrush Color="{DynamicResource ControlStrokeColorSecondary}" />
+                                    <SolidColorBrush Color="{DynamicResource ControlStrongStrokeColorDefault}" />
                                 </Border.BorderBrush>
+                                <Border.Background>
+                                    <SolidColorBrush Color="{DynamicResource ControlFillColorTransparent}" />
+                                </Border.Background>
                                 <ScrollViewer
                                     x:Name="PART_ContentHost"
                                     Margin="0"
@@ -227,7 +97,20 @@
                             <Trigger Property="IsFocused" Value="True">
                                 <Setter TargetName="BottomBorder" Property="BorderBrush">
                                     <Setter.Value>
-                                        <SolidColorBrush Color="{DynamicResource SystemAccentColorLight2}" />
+                                        <SolidColorBrush Color="{DynamicResource SystemAccentColorPrimary}" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="BottomBorder" Property="Background">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="{DynamicResource ControlFillColorInputActive}" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="BottomBorder" Property="BorderThickness" Value="0,0,0,2" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="BottomBorder" Property="Background">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="{DynamicResource ControlFillColorSecondary}" />
                                     </Setter.Value>
                                 </Setter>
                             </Trigger>
@@ -259,6 +142,7 @@
             VerticalAlignment="Top"
             DataContext="{Binding Patient}">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -323,8 +207,8 @@
             <TextBox
                 Grid.Row="2"
                 Grid.Column="1"
-                Width="250"
-                Height="23"
+                MinWidth="250"
+                MinHeight="23"
                 Margin="3"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
@@ -341,8 +225,8 @@
             <TextBox
                 Grid.Row="3"
                 Grid.Column="1"
-                Width="250"
-                Height="23"
+                MinWidth="250"
+                MinHeight="23"
                 Margin="3"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
@@ -357,17 +241,16 @@
                 VerticalAlignment="Center"
                 Content="Age:" />
 
-            <wpfui:NumberBox
+            <ui:NumberBox
                 Grid.Row="4"
                 Grid.Column="1"
-                Width="250"
-                Height="23"
+                MinWidth="250"
+                MinHeight="23"
                 Margin="3"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 IntegersOnly="True"
                 Min="0"
-                Style="{StaticResource ToolTipErrorNumberBox}"
                 Text="{Binding Age, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
                 Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
 
@@ -381,8 +264,8 @@
             <TextBox
                 Grid.Row="5"
                 Grid.Column="1"
-                Width="250"
-                Height="23"
+                MinWidth="250"
+                MinHeight="23"
                 Margin="3"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
@@ -406,13 +289,31 @@
                 Style="{DynamicResource MaskedTextBoxStyleModern}"
                 Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                 ValueDataType="{x:Type s:String}"
-                Value="{Binding PhoneNumber, ValidatesOnNotifyDataErrors=True}" />
-            <StackPanel
+                Value="{Binding Phone, ValidatesOnNotifyDataErrors=True}" />
+            <Label
+                Grid.Row="7"
+                Grid.Column="0"
+                Margin="3"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Content="Identification:" />
+            <TextBox
                 Grid.Row="7"
                 Grid.Column="1"
-                Margin="0,25,0,0"
+                MinWidth="250"
+                MinHeight="23"
+                Margin="3"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Style="{StaticResource ToolTipError}"
+                Text="{Binding Identification, ValidatesOnNotifyDataErrors=True}"
+                Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
+            <StackPanel
+                Grid.Row="8"
+                Grid.Column="1"
+                Margin="0,5,0,0"
                 Orientation="Horizontal">
-                <wpfui:Button
+                <ui:Button
                     Margin="5,5,5,5"
                     Appearance="Secondary"
                     Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.SaveCommand}"
@@ -420,7 +321,7 @@
                     FontSize="16"
                     Icon="Save24"
                     IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.IsTouched, UpdateSourceTrigger=PropertyChanged}" />
-                <wpfui:Button
+                <ui:Button
                     Margin="5,5,5,5"
                     Appearance="Secondary"
                     Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.GoBack}"
@@ -448,17 +349,16 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Content="Number:" />
-            <wpfui:NumberBox
+            <ui:NumberBox
                 Grid.Row="2"
                 Grid.Column="3"
-                Width="250"
-                Height="23"
+                MinWidth="250"
+                MinHeight="23"
                 Margin="3"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 IntegersOnly="True"
                 Min="0"
-                Style="{StaticResource ToolTipErrorNumberBox}"
                 Text="{Binding Address.Number, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
                 Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
 
@@ -472,8 +372,8 @@
             <TextBox
                 Grid.Row="3"
                 Grid.Column="3"
-                Width="250"
-                Height="23"
+                MinWidth="250"
+                MinHeight="23"
                 Margin="3"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
@@ -490,8 +390,8 @@
             <TextBox
                 Grid.Row="4"
                 Grid.Column="3"
-                Width="250"
-                Height="23"
+                MinWidth="250"
+                MinHeight="23"
                 Margin="3"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
@@ -508,13 +408,50 @@
             <TextBox
                 Grid.Row="5"
                 Grid.Column="3"
-                Width="250"
-                Height="23"
+                MinWidth="250"
+                MinHeight="23"
                 Margin="3"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolTipError}"
                 Text="{Binding Address.State, ValidatesOnNotifyDataErrors=True}"
+                Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
+            <Label
+                Grid.Row="6"
+                Grid.Column="2"
+                Margin="3"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Content="Zipcode:" />
+            <ui:NumberBox
+                Grid.Row="6"
+                Grid.Column="3"
+                MinWidth="250"
+                MinHeight="23"
+                Margin="3"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                IntegersOnly="True"
+                Min="0"
+                Text="{Binding Address.ZipCode, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
+            <Label
+                Grid.Row="7"
+                Grid.Column="2"
+                Margin="3"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Content="Country:" />
+            <TextBox
+                Grid.Row="7"
+                Grid.Column="3"
+                MinWidth="250"
+                MinHeight="23"
+                Margin="3"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Style="{StaticResource ToolTipError}"
+                Text="{Binding Address.Country, ValidatesOnNotifyDataErrors=True}"
                 Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
 
         </Grid>

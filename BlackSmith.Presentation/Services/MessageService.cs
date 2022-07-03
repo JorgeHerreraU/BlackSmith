@@ -3,7 +3,7 @@ using System.Windows;
 using BlackSmith.Presentation.Controls;
 using BlackSmith.Presentation.Enums;
 using BlackSmith.Presentation.Interfaces;
-using MessageBox = WPFUI.Controls.MessageBox;
+using MessageBox = Wpf.Ui.Controls.MessageBox;
 
 namespace BlackSmith.Presentation.Services;
 

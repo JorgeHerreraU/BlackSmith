@@ -5,6 +5,12 @@
     <Compile Update="Controls\Modal.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\Pages\DoctorCreate.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Pages\DoctorDetail.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Pages\PatientCreate.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -20,6 +26,12 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\Modal.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Pages\DoctorCreate.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Pages\DoctorDetail.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Pages\PatientCreate.xaml">

@@ -5,10 +5,12 @@ namespace BlackSmith.Presentation.Models;
 public class Address : ValidatableBase
 {
     private string _city = "";
+    private string _country = "";
     private int _id;
     private int _number;
     private string _state = "";
     private string _street = "";
+    private int _zipcode;
 
 
     public int Id
@@ -65,6 +67,29 @@ public class Address : ValidatableBase
         set
         {
             _state = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    [Required]
+    public int ZipCode
+    {
+        get => _zipcode;
+        set
+        {
+            _zipcode = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    [Required(AllowEmptyStrings = false)]
+    [MaxLength(250)]
+    public string Country
+    {
+        get => _country;
+        set
+        {
+            _country = value;
             NotifyPropertyChanged();
         }
     }

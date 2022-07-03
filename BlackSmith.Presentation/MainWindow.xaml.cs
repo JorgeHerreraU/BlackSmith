@@ -7,15 +7,22 @@ using BlackSmith.Presentation.Models;
 using BlackSmith.Presentation.Services;
 using BlackSmith.Presentation.ViewModels;
 using BlackSmith.Presentation.Views.Pages;
+using Wpf.Ui.Appearance;
+using Wpf.Ui.Common;
+using Wpf.Ui.Controls.Interfaces;
 
 namespace BlackSmith.Presentation;
 
 /// <summary>
 ///     Interaction logic for MainWindow.xaml
 /// </summary>
-public partial class MainWindow : Window
+public partial class MainWindow
 {
     private readonly Dashboard _dashboardPage;
+    private readonly DoctorCreate _doctorCreate;
+    private readonly DoctorCreateViewModel _doctorCreateViewModel;
+    private readonly DoctorDetail _doctorDetail;
+    private readonly DoctorDetailViewModel _doctorDetailViewModel;
     private readonly DoctorList _doctorListPage;
     private readonly DoctorListViewModel _doctorListViewModel;
     private readonly PatientCreate _patientCreatePage;
@@ -27,20 +34,12 @@ public partial class MainWindow : Window
     private readonly ScheduleList _scheduleListPage;
     private readonly Settings _settingsPage;
 
-    public MainWindow(
-        INavService navService,
-        Dashboard dashboardPage,
-        PatientListViewModel patientListViewModel,
-        PatientList patientListPage,
-        PatientCreateViewModel patientCreateViewModel,
-        PatientCreate patientCreatePage,
-        PatientEdit patientEditPage,
-        PatientEditViewModel patientEditViewModel,
-        DoctorList doctorListPage,
-        DoctorListViewModel doctorListViewModel,
-        ScheduleList scheduleListPage,
-        Settings settingsPage
-    )
+    public MainWindow(INavService navService, Dashboard dashboardPage, PatientListViewModel patientListViewModel,
+        PatientList patientListPage, PatientCreateViewModel patientCreateViewModel, PatientCreate patientCreatePage,
+        PatientEdit patientEditPage, PatientEditViewModel patientEditViewModel, DoctorList doctorListPage,
+        DoctorListViewModel doctorListViewModel, DoctorDetail doctorDetail, DoctorDetailViewModel doctorDetailViewModel,
+        ScheduleList scheduleListPage, Settings settingsPage, DoctorCreate doctorCreate,
+        DoctorCreateViewModel doctorCreateViewModel)
     {
         _dashboardPage = dashboardPage;
         _patientListPage = patientListPage;
@@ -52,6 +51,10 @@ public partial class MainWindow : Window
         _doctorListViewModel = doctorListViewModel;
         _scheduleListPage = scheduleListPage;
         _settingsPage = settingsPage;
+        _doctorCreate = doctorCreate;
+        _doctorCreateViewModel = doctorCreateViewModel;
+        _doctorDetail = doctorDetail;
+        _doctorDetailViewModel = doctorDetailViewModel;
         _patientCreateViewModel = patientCreateViewModel;
 
         navService.NavigationTriggered += OnNavigationTriggered;
@@ -61,12 +64,6 @@ public partial class MainWindow : Window
     private void OnNavigationTriggered(object? sender, NavigationTriggeredEventArgs e)
     {
         GoToPage(e.Page, e.Model);
-    }
-
-    private void RootNavigation_OnNavigated(INavigation sender, RoutedNavigationEventArgs e)
-    {
-        Enum.TryParse<Pages>(sender.Current.Page.Name, out var pageEnum);
-        GoToPage(pageEnum);
     }
 
     private void GoToPage(Pages page, object? model = null)
@@ -90,9 +87,18 @@ public partial class MainWindow : Window
             case Pages.Home:
                 pageToGo = _dashboardPage;
                 break;
+            case Pages.DoctorCreate:
+                _doctorCreate.DataContext = _doctorCreateViewModel;
+                pageToGo = _doctorCreate;
+                break;
             case Pages.DoctorList:
                 _doctorListPage.DataContext = _doctorListViewModel;
                 pageToGo = _doctorListPage;
+                break;
+            case Pages.DoctorDetails:
+                _doctorDetail.DataContext = _doctorDetailViewModel;
+                if (model is not null) _doctorDetailViewModel.Doctor = (Doctor)model;
+                pageToGo = _doctorDetail;
                 break;
             case Pages.ScheduleList:
                 pageToGo = _scheduleListPage;
@@ -112,11 +118,15 @@ public partial class MainWindow : Window
     {
         // We check what theme is currently
         // active and choose its opposite.
-        var newTheme = Theme.GetAppTheme() == ThemeType.Dark
-            ? ThemeType.Light
-            : ThemeType.Dark;
+        var newTheme = Theme.GetAppTheme() == ThemeType.Dark ? ThemeType.Light : ThemeType.Dark;
 
         // We apply the theme to the entire application.
         Theme.Apply(newTheme);
+    }
+
+    private void OnNavigated(INavigation sender, RoutedNavigationEventArgs e)
+    {
+        Enum.TryParse<Pages>(sender.Current.PageType.Name, out var pageEnum);
+        GoToPage(pageEnum);
     }
 }

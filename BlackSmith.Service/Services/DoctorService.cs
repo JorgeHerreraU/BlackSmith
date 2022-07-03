@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BlackSmith.Business.Components;
+using BlackSmith.Domain.Models;
 using BlackSmith.Service.DTOs;
 using BlackSmith.Service.Interfaces;
 
@@ -23,7 +24,7 @@ public class DoctorService : IDoctorService
 
     public async Task<PatientDTO> CreateDoctor(DoctorDTO doctor)
     {
-        throw new NotImplementedException();
+        return _mapper.Map<PatientDTO>(await _doctorsBL.CreateDoctor(_mapper.Map<Doctor>(doctor)));
     }
 
     public async Task<DoctorDTO> UpdateDoctor(DoctorDTO doctor)

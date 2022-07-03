@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Profiles\**" />
+    <EmbeddedResource Remove="Profiles\**" />
+    <None Remove="Profiles\**" />
+    <Page Remove="Profiles\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Assets\error.png" />
     <None Remove="Assets\fluent-ui-microsoft.png" />
     <None Remove="Assets\patient.png" />
@@ -36,10 +43,6 @@
     <Content Include="Assets\patient.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Profiles\" />
   </ItemGroup>
 
 </Project>

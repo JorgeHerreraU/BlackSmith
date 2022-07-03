@@ -1,34 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using BlackSmith.Presentation.Enums;
 
 namespace BlackSmith.Presentation.Models;
-
-public enum Speciality
-{
-    Allergology,
-    Anesthesiology,
-    Cardiology,
-    Dermatology,
-    Endocrinology,
-    Gastroenterology,
-    GeneralPractice,
-    Hematology,
-    InfectiousDiseases,
-    Nephrology,
-    Neurology,
-    Oncology,
-    Ophthalmology,
-    Orthopedics,
-    Osteopathy,
-    Pathology,
-    Pediatrics,
-    PhysicalMedicine,
-    Psychiatry,
-    Radiology,
-    Rheumatology,
-    Surgery,
-    Urology
-}
 
 public class Doctor : ValidatableBase
 {
@@ -132,4 +107,6 @@ public class Doctor : ValidatableBase
     }
 
     public string FullName => $"{FirstName} {LastName}";
+
+    public string DaysWorking => string.Join(", ", WorkingDays.Select(x => x.Day.ToString()).ToList());
 }

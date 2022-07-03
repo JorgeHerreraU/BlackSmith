@@ -9,8 +9,9 @@ public class Patient : ValidatableBase
     private string _email = "";
     private string _firstName = "";
     private int _id;
+    private string _identification = "";
     private string _lastName = "";
-    private string _phoneNumber = "";
+    private string _phone = "";
 
     public int Id
     {
@@ -62,12 +63,12 @@ public class Patient : ValidatableBase
 
     [Required(AllowEmptyStrings = false)]
     [Phone]
-    public string PhoneNumber
+    public string Phone
     {
-        get => _phoneNumber;
+        get => _phone;
         set
         {
-            _phoneNumber = value;
+            _phone = value;
             NotifyPropertyChanged();
         }
     }
@@ -91,6 +92,17 @@ public class Patient : ValidatableBase
         set
         {
             _address = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    [Required(AllowEmptyStrings = false)]
+    public string Identification
+    {
+        get => _identification;
+        set
+        {
+            _identification = value;
             NotifyPropertyChanged();
         }
     }

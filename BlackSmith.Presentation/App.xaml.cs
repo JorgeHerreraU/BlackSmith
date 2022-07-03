@@ -23,6 +23,7 @@ public partial class App
     public App()
     {
         SeedData.Initialize();
+
         var servicesCollection = new ServiceCollection();
         var mapperConfig = new MapperConfigurationExpression();
         DependencyInjection.RegisterSharedDependencies(ref servicesCollection);
@@ -62,6 +63,10 @@ public partial class App
         services.AddSingleton<ScheduleList>();
         services.AddSingleton<DoctorList>();
         services.AddSingleton<DoctorListViewModel>();
+        services.AddSingleton<DoctorDetail>();
+        services.AddSingleton<DoctorDetailViewModel>();
+        services.AddSingleton<DoctorCreate>();
+        services.AddSingleton<DoctorCreateViewModel>();
     }
 
     private static void RegisterLocalAutoMapperConfiguration(ref MapperConfigurationExpression mapperConfig)

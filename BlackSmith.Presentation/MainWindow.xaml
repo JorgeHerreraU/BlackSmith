@@ -5,11 +5,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:pages="clr-namespace:BlackSmith.Presentation.Views.Pages"
-    xmlns:wpfui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="MainWindow"
-    Width="1024"
+    Width="1366"
     Height="768"
-    Style="{StaticResource UiWindow}"
+    Style="{DynamicResource UiWindow}"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Grid>
@@ -28,47 +28,43 @@
             </Grid.ColumnDefinitions>
 
             <!--  This is the main navigation of the application.  -->
-            <wpfui:NavigationStore
+            <ui:NavigationStore
                 x:Name="RootNavigation"
                 Grid.Column="0"
                 Margin="6,0,6,0"
                 Frame="{Binding ElementName=RootFrame}"
-                Navigated="RootNavigation_OnNavigated"
+                Navigated="OnNavigated"
                 SelectedPageIndex="0">
-                <wpfui:NavigationStore.Items>
-                    <wpfui:NavigationItem
+                <ui:NavigationStore.Items>
+                    <ui:NavigationItem
                         Content="Home"
                         Icon="Home24"
-                        PageTag="dashboard"
-                        PageSource="{x:Type pages:Dashboard}" />
-                    <wpfui:NavigationItem
+                        PageType="{x:Type pages:Dashboard}" />
+                    <ui:NavigationItem
                         Content="Patients"
-                        DataContext="Hello"
                         Icon="PersonPill24"
-                        Page="{x:Type pages:PatientList}" />
-                    <wpfui:NavigationItem
+                        PageType="{x:Type pages:PatientList}" />
+                    <ui:NavigationItem
                         Content="Doctors"
-                        DataContext="Hello"
                         Icon="Doctor24"
-                        Page="{x:Type pages:DoctorList}" />
-                    <wpfui:NavigationItem
+                        PageType="{x:Type pages:DoctorList}" />
+                    <ui:NavigationItem
                         Content="Schedule"
-                        DataContext="Hello"
                         Icon="CalendarClock24"
-                        Page="{x:Type pages:ScheduleList}" />
-                </wpfui:NavigationStore.Items>
-                <wpfui:NavigationStore.Footer>
-                    <wpfui:NavigationItem
+                        PageType="{x:Type pages:ScheduleList}" />
+                </ui:NavigationStore.Items>
+                <ui:NavigationStore.Footer>
+                    <ui:NavigationItem
                         Content="Settings"
                         Icon="Diversity24"
-                        Page="{x:Type pages:Settings}" />
+                        PageType="{x:Type pages:Settings}" />
                     <!--  A navigation element that does not point to the page can be used as a button.  -->
-                    <wpfui:NavigationItem
+                    <ui:NavigationItem
                         Click="NavigationButtonTheme_OnClick"
                         Content="Theme"
                         Icon="DarkTheme24" />
-                </wpfui:NavigationStore.Footer>
-            </wpfui:NavigationStore>
+                </ui:NavigationStore.Footer>
+            </ui:NavigationStore>
 
             <!--  This is the main navigation of the application.  -->
 
@@ -82,7 +78,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <wpfui:Breadcrumb
+                    <ui:Breadcrumb
                         Grid.Row="0"
                         Margin="18"
                         HorizontalAlignment="Left"
@@ -98,17 +94,17 @@
         <!--  The title bar contains window navigation elements and some Tray related extras.  -->
         <!--  You can put additional controls in the header, such as a search bar.  -->
         <!--  <wpfui:TitleBar.Header />  -->
-        <wpfui:TitleBar Title="BlackSmith Medical Center" Grid.Row="0">
-            <wpfui:TitleBar.Tray>
-                <wpfui:NotifyIcon
+        <ui:TitleBar Title="BlackSmith Medical Center" Grid.Row="0">
+            <ui:TitleBar.Tray>
+                <ui:NotifyIcon
                     FocusOnLeftClick="True"
                     MenuOnRightClick="True"
                     TooltipText="WPF UI">
-                    <wpfui:NotifyIcon.Menu>
+                    <ui:NotifyIcon.Menu>
                         <ContextMenu />
-                    </wpfui:NotifyIcon.Menu>
-                </wpfui:NotifyIcon>
-            </wpfui:TitleBar.Tray>
-        </wpfui:TitleBar>
+                    </ui:NotifyIcon.Menu>
+                </ui:NotifyIcon>
+            </ui:TitleBar.Tray>
+        </ui:TitleBar>
     </Grid>
 </Window>

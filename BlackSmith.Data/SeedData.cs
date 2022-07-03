@@ -15,20 +15,23 @@ public static class SeedData
             Street = "Boulevard",
             Number = 100,
             City = "Adelaide",
-            State = "Northwind"
+            State = "Northwind",
+            Country = "Unites States",
+            ZipCode = 392982
         };
 
         var workingDays = new List<WorkingDay>
         {
-            new() { StartTime = DateTime.Now, EndTime = DateTime.Now, Day = DayOfWeek.Monday },
-            new() { StartTime = DateTime.Now, EndTime = DateTime.Now, Day = DayOfWeek.Tuesday },
-            new() { StartTime = DateTime.Now, EndTime = DateTime.Now, Day = DayOfWeek.Wednesday }
+            new() { StartTime = new TimeOnly(10, 30), EndTime = new TimeOnly(18, 00), Day = DayOfWeek.Monday },
+            new() { StartTime = new TimeOnly(10, 30), EndTime = new TimeOnly(18, 00), Day = DayOfWeek.Tuesday },
+            new() { StartTime = new TimeOnly(10, 30), EndTime = new TimeOnly(18, 00), Day = DayOfWeek.Wednesday }
         };
 
         var doctor = new Doctor
         {
             FirstName = "Ron",
             LastName = "Howard",
+            Age = 42,
             Email = "ronhoward@email.com",
             Phone = "(1)-808-87484329",
             Speciality = Speciality.Cardiology,
@@ -44,6 +47,7 @@ public static class SeedData
             FirstName = "Lucas",
             LastName = "San Toro",
             Email = "lucassantoro@email.com",
+            Identification = "F38492282",
             Phone = "(1)-807-84832991",
             Age = 32,
             Address = address
