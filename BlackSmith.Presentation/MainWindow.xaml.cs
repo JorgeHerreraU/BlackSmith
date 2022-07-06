@@ -34,11 +34,21 @@ public partial class MainWindow
     private readonly ScheduleList _scheduleListPage;
     private readonly Settings _settingsPage;
 
-    public MainWindow(INavService navService, Dashboard dashboardPage, PatientListViewModel patientListViewModel,
-        PatientList patientListPage, PatientCreateViewModel patientCreateViewModel, PatientCreate patientCreatePage,
-        PatientEdit patientEditPage, PatientEditViewModel patientEditViewModel, DoctorList doctorListPage,
-        DoctorListViewModel doctorListViewModel, DoctorDetail doctorDetail, DoctorDetailViewModel doctorDetailViewModel,
-        ScheduleList scheduleListPage, Settings settingsPage, DoctorCreate doctorCreate,
+    public MainWindow(INavService navService,
+        Dashboard dashboardPage,
+        PatientListViewModel patientListViewModel,
+        PatientList patientListPage,
+        PatientCreateViewModel patientCreateViewModel,
+        PatientCreate patientCreatePage,
+        PatientEdit patientEditPage,
+        PatientEditViewModel patientEditViewModel,
+        DoctorList doctorListPage,
+        DoctorListViewModel doctorListViewModel,
+        DoctorDetail doctorDetail,
+        DoctorDetailViewModel doctorDetailViewModel,
+        ScheduleList scheduleListPage,
+        Settings settingsPage,
+        DoctorCreate doctorCreate,
         DoctorCreateViewModel doctorCreateViewModel)
     {
         _dashboardPage = dashboardPage;
@@ -61,12 +71,14 @@ public partial class MainWindow
         InitializeComponent();
     }
 
-    private void OnNavigationTriggered(object? sender, NavigationTriggeredEventArgs e)
+    private void OnNavigationTriggered(object? sender,
+        NavigationTriggeredEventArgs e)
     {
         GoToPage(e.Page, e.Model);
     }
 
-    private void GoToPage(Pages page, object? model = null)
+    private void GoToPage(Pages page,
+        object? model = null)
     {
         Page pageToGo;
         switch (page)
@@ -114,7 +126,8 @@ public partial class MainWindow
         RootFrame.NavigationService.Navigate(pageToGo);
     }
 
-    private void NavigationButtonTheme_OnClick(object sender, RoutedEventArgs e)
+    private void NavigationButtonTheme_OnClick(object sender,
+        RoutedEventArgs e)
     {
         // We check what theme is currently
         // active and choose its opposite.
@@ -124,7 +137,8 @@ public partial class MainWindow
         Theme.Apply(newTheme);
     }
 
-    private void OnNavigated(INavigation sender, RoutedNavigationEventArgs e)
+    private void OnNavigated(INavigation sender,
+        RoutedNavigationEventArgs e)
     {
         Enum.TryParse<Pages>(sender.Current.PageType.Name, out var pageEnum);
         GoToPage(pageEnum);

@@ -10,7 +10,9 @@ public enum Speciality
     Dermatology,
     Endocrinology,
     Gastroenterology,
-    [Display(Name = "General Practice")] GeneralPractice,
+
+    [Display(Name = "General Practice")]
+    GeneralPractice,
     Hematology,
 
     [Display(Name = "Infectious Diseases")]
@@ -23,7 +25,9 @@ public enum Speciality
     Osteopathy,
     Pathology,
     Pediatrics,
-    [Display(Name = "Physical Medicine")] PhysicalMedicine,
+
+    [Display(Name = "Physical Medicine")]
+    PhysicalMedicine,
     Psychiatry,
     Radiology,
     Rheumatology,
