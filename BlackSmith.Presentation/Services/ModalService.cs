@@ -7,7 +7,7 @@ using MessageBox = Wpf.Ui.Controls.MessageBox;
 
 namespace BlackSmith.Presentation.Services;
 
-public class MessageService : IMessageService
+public class ModalService : IModalService
 {
     public void ShowErrorMessage(string message)
     {
@@ -23,19 +23,16 @@ public class MessageService : IMessageService
     public async Task<bool> ShowConfirmDialog(string message)
     {
         var completionSource = new TaskCompletionSource<bool>();
-        var msg = new MessageBox
-        {
-            Content = message,
-            ButtonLeftName = "OK",
-            ButtonRightName = "Cancel"
-        };
+        var msg = new MessageBox { Content = message, ButtonLeftName = "OK", ButtonRightName = "Cancel" };
         msg.Show();
-        msg.ButtonLeftClick += (_, _) =>
+        msg.ButtonLeftClick += (_,
+            _) =>
         {
             completionSource.SetResult(true);
             msg.Close();
         };
-        msg.ButtonRightClick += (_, _) =>
+        msg.ButtonRightClick += (_,
+            _) =>
         {
             completionSource.SetResult(false);
             msg.Close();

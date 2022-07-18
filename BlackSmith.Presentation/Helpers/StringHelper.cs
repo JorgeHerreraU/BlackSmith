@@ -11,7 +11,7 @@ public static class StringHelper
     public static bool IsAnyStringNullOrEmpty(object obj)
     {
         foreach (var propertyInfo in obj.GetType().GetProperties())
-            if (propertyInfo.PropertyType == typeof(string))
+            if (propertyInfo.PropertyType == typeof(string) && propertyInfo.CanWrite)
             {
                 if (string.IsNullOrEmpty((string)propertyInfo.GetValue(obj)!))
                     return true;

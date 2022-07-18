@@ -16,15 +16,15 @@ public static class SeedData
             Number = 100,
             City = "Adelaide",
             State = "Northwind",
-            Country = "Unites States",
+            Country = "United States",
             ZipCode = 392982
         };
 
         var workingDays = new List<WorkingDay>
         {
-            new() { StartTime = new TimeOnly(10, 30), EndTime = new TimeOnly(18, 00), Day = DayOfWeek.Monday },
-            new() { StartTime = new TimeOnly(10, 30), EndTime = new TimeOnly(18, 00), Day = DayOfWeek.Tuesday },
-            new() { StartTime = new TimeOnly(10, 30), EndTime = new TimeOnly(18, 00), Day = DayOfWeek.Wednesday }
+            new() { StartTime = new TimeOnly(10, 00), EndTime = new TimeOnly(18, 00), Day = DayOfWeek.Monday },
+            new() { StartTime = new TimeOnly(10, 00), EndTime = new TimeOnly(18, 00), Day = DayOfWeek.Tuesday },
+            new() { StartTime = new TimeOnly(10, 00), EndTime = new TimeOnly(18, 00), Day = DayOfWeek.Wednesday }
         };
 
         var doctor = new Doctor
@@ -33,7 +33,7 @@ public static class SeedData
             LastName = "Howard",
             Age = 42,
             Email = "ronhoward@email.com",
-            Phone = "(1)-808-87484329",
+            Phone = "1-808-874-8432",
             Speciality = Speciality.Cardiology,
             WorkingDays = workingDays,
             Address = address
@@ -48,7 +48,7 @@ public static class SeedData
             LastName = "San Toro",
             Email = "lucassantoro@email.com",
             Identification = "F38492282",
-            Phone = "(1)-807-84832991",
+            Phone = "1-808-874-8432",
             Age = 32,
             Address = address
         };

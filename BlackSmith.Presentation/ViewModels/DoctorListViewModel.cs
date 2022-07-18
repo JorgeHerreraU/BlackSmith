@@ -1,36 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using AutoMapper;
 using BlackSmith.Presentation.Commands;
-using BlackSmith.Presentation.Enums;
+using BlackSmith.Presentation.Events;
 using BlackSmith.Presentation.Interfaces;
 using BlackSmith.Presentation.Models;
 using BlackSmith.Presentation.Services;
+using BlackSmith.Presentation.Views.Pages;
+using BlackSmith.Service.DTOs;
 using BlackSmith.Service.Interfaces;
 using JetBrains.Annotations;
+using Prism.Events;
+using Wpf.Ui.Mvvm;
 
 namespace BlackSmith.Presentation.ViewModels;
 
-public class DoctorListViewModel : BindableBase
+public class DoctorListViewModel : ViewModelBase
 {
     private readonly IDoctorService _doctorService;
+    private readonly IEventAggregator _eventAggregator;
     private readonly IMapper _mapper;
-    private readonly IMessageService _messageService;
+    private readonly IModalService _modalService;
     private readonly INavService _navService;
     private IEnumerable<Doctor> _allDoctors = new List<Doctor>();
     private ObservableCollection<Doctor> _doctors = null!;
     private string _searchInput = "";
 
 
-    public DoctorListViewModel(IMapper mapper, IMessageService messageService, INavService navService,
-        IDoctorService doctorService)
+    public DoctorListViewModel(IMapper mapper,
+        IModalService modalService,
+        INavService navService,
+        IDoctorService doctorService,
+        IEventAggregator eventAggregator)
     {
         _mapper = mapper;
-        _messageService = messageService;
+        _modalService = modalService;
         _navService = navService;
         _doctorService = doctorService;
+        _eventAggregator = eventAggregator;
 
         LoadData();
 
@@ -47,7 +55,7 @@ public class DoctorListViewModel : BindableBase
         private set
         {
             _doctors = value;
-            NotifyPropertyChanged();
+            SetValue(value);
         }
     }
 
@@ -57,7 +65,7 @@ public class DoctorListViewModel : BindableBase
         set
         {
             _searchInput = value;
-            NotifyPropertyChanged();
+            SetValue(value);
             FilterData(_searchInput);
         }
     }
@@ -70,7 +78,8 @@ public class DoctorListViewModel : BindableBase
 
     private void OnDetails(Doctor doctor)
     {
-        _navService.Navigate(new NavigationTriggeredEventArgs { Page = Pages.DoctorDetails, Model = doctor });
+        _eventAggregator.GetEvent<DetailsDoctorEvent>().Publish(doctor);
+        _navService.Navigate(new NavigationTriggeredEventArgs { Page = typeof(DoctorDetail) });
     }
 
     private void FilterData(string searchInput)
@@ -82,19 +91,24 @@ public class DoctorListViewModel : BindableBase
         Doctors = isSearchInputNull ? doctors : filteredResults;
     }
 
-    private void OnDelete(Doctor obj)
+    private async void OnDelete(Doctor doctor)
     {
-        throw new NotImplementedException();
+        var confirmDeletion = await _modalService.ShowConfirmDialog("Are you sure you want to delete this doctor?");
+        if (!confirmDeletion) return;
+        await _doctorService.DeleteDoctor(_mapper.Map<DoctorDTO>(doctor));
+        LoadData();
     }
 
-    private void OnEdit(Doctor obj)
+    private void OnEdit(Doctor doctor)
     {
-        throw new NotImplementedException();
+        _eventAggregator.GetEvent<EditDoctorEvent>().Publish(doctor);
+        _navService.Navigate(new NavigationTriggeredEventArgs { Page = typeof(DoctorEdit) });
     }
 
     private void OnCreate()
     {
-        _navService.Navigate(new NavigationTriggeredEventArgs { Page = Pages.DoctorCreate });
+        _eventAggregator.GetEvent<CreateDoctorEvent>().Publish();
+        _navService.Navigate(new NavigationTriggeredEventArgs { Page = typeof(DoctorCreate) });
     }
 
     private void OnClearSearch()

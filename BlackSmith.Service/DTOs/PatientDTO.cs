@@ -1,15 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace BlackSmith.Service.DTOs;
+﻿namespace BlackSmith.Service.DTOs;
 
 public class PatientDTO
 {
-    [Required] public int Id { get; set; }
-    [Required] public string Identification { get; set; } = "";
-    [Required] public string FirstName { get; set; } = "";
-    [Required] public string LastName { get; set; } = "";
-    [Required] public string Email { get; set; } = "";
-    [Required] public string Phone { get; set; } = "";
-    [Required] public int Age { get; set; }
-    [Required] public AddressDTO Address { get; set; } = new();
+    public int Id { get; set; }
+    public string Identification { get; set; } = "";
+    public string FirstName { get; set; } = "";
+    public string LastName { get; set; } = "";
+    public string Email { get; set; } = "";
+    public string Phone { get; set; } = "";
+    public int Age { get; set; }
+    public AddressDTO Address { get; set; } = new();
 }

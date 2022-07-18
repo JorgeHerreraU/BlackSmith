@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Windows;
 using AutoMapper;
-using BlackSmith.Core.IoC;
 using BlackSmith.Data;
 using BlackSmith.Presentation.Interfaces;
 using BlackSmith.Presentation.Models;
 using BlackSmith.Presentation.Services;
 using BlackSmith.Presentation.ViewModels;
 using BlackSmith.Presentation.Views.Pages;
+using BlackSmith.Service;
 using BlackSmith.Service.DTOs;
 using Microsoft.Extensions.DependencyInjection;
+using Prism.Events;
+using Wpf.Ui.Mvvm.Contracts;
+using Wpf.Ui.Mvvm.Services;
 
 namespace BlackSmith.Presentation;
 
@@ -26,8 +29,8 @@ public partial class App
 
         var servicesCollection = new ServiceCollection();
         var mapperConfig = new MapperConfigurationExpression();
-        DependencyInjection.RegisterSharedDependencies(ref servicesCollection);
-        DependencyInjection.RegisterSharedAutoMapperConfiguration(ref mapperConfig);
+        ServiceDependencies.RegisterDependencies(ref servicesCollection);
+        ServiceDependencies.RegisterAutoMapperConfiguration(ref mapperConfig);
         RegisterLocalDependencies(ref servicesCollection);
         RegisterLocalAutoMapperConfiguration(ref mapperConfig);
         var config = new MapperConfiguration(mapperConfig);
@@ -48,25 +51,40 @@ public partial class App
 
     private static void RegisterLocalDependencies(ref ServiceCollection services)
     {
-        services.AddScoped<MainWindowViewModel>();
         services.AddSingleton<INavService, NavService>();
-        services.AddSingleton<IMessageService, MessageService>();
-        services.AddSingleton<MainWindow>();
-        services.AddSingleton<Dashboard>();
+        services.AddSingleton<IModalService, ModalService>();
         services.AddSingleton<Settings>();
+        services.AddSingleton<IPageService, PageService>();
+        services.AddSingleton<IThemeService, ThemeService>();
+        services.AddSingleton<IEventAggregator, EventAggregator>();
+
+        services.AddSingleton<MainWindow>();
+        services.AddScoped<MainWindowViewModel>();
+
+        services.AddSingleton<Home>();
+        services.AddSingleton<HomeViewModel>();
+
+        // Patient Pages
         services.AddSingleton<PatientCreate>();
         services.AddSingleton<PatientCreateViewModel>();
         services.AddSingleton<PatientList>();
         services.AddSingleton<PatientListViewModel>();
         services.AddSingleton<PatientEdit>();
         services.AddSingleton<PatientEditViewModel>();
-        services.AddSingleton<ScheduleList>();
+
+        // Doctor Pages
         services.AddSingleton<DoctorList>();
         services.AddSingleton<DoctorListViewModel>();
         services.AddSingleton<DoctorDetail>();
         services.AddSingleton<DoctorDetailViewModel>();
         services.AddSingleton<DoctorCreate>();
         services.AddSingleton<DoctorCreateViewModel>();
+        services.AddSingleton<DoctorEdit>();
+        services.AddSingleton<DoctorEditViewModel>();
+
+        // Schedule Pages
+        services.AddSingleton<ScheduleList>();
+        services.AddSingleton<ScheduleListViewModel>();
     }
 
     private static void RegisterLocalAutoMapperConfiguration(ref MapperConfigurationExpression mapperConfig)

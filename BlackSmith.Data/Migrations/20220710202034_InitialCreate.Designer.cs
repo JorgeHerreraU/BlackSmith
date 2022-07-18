@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlackSmith.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220621002542_InitialCreate")]
+    [Migration("20220710202034_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -234,7 +234,8 @@ namespace BlackSmith.Data.Migrations
                 {
                     b.HasOne("BlackSmith.Domain.Models.Doctor", null)
                         .WithMany("WorkingDays")
-                        .HasForeignKey("DoctorId");
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("BlackSmith.Domain.Models.Doctor", b =>

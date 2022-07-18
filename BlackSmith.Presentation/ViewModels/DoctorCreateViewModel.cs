@@ -1,41 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using AutoMapper;
 using BlackSmith.Presentation.Commands;
-using BlackSmith.Presentation.Enums;
 using BlackSmith.Presentation.Helpers;
 using BlackSmith.Presentation.Interfaces;
 using BlackSmith.Presentation.Models;
 using BlackSmith.Presentation.Services;
+using BlackSmith.Presentation.Views.Pages;
 using BlackSmith.Service.DTOs;
 using BlackSmith.Service.Interfaces;
 using FluentValidation;
+using Wpf.Ui.Mvvm;
 
 namespace BlackSmith.Presentation.ViewModels;
 
-public class DoctorCreateViewModel : BindableBase
+public class DoctorCreateViewModel : ViewModelBase
 {
     private readonly IDoctorService _doctorService;
     private readonly IMapper _mapper;
-    private readonly IMessageService _messageService;
+    private readonly IModalService _modalService;
     private readonly INavService _navService;
+    private ObservableCollection<WorkingDay> _availableWorkingDays = new();
     private Doctor _doctor = null!;
     private bool _isTouched;
 
-    public DoctorCreateViewModel(INavService navService, IDoctorService doctorService, IMapper mapper,
-        IMessageService messageService)
+    public DoctorCreateViewModel(INavService navService,
+        IDoctorService doctorService,
+        IMapper mapper,
+        IModalService modalService)
     {
         _navService = navService;
         _doctorService = doctorService;
         _mapper = mapper;
-        _messageService = messageService;
+        _modalService = modalService;
 
         SaveCommand = new RelayCommand(OnSave, CanSave);
         GoBack = new RelayCommand(OnGoBack);
-
-        SetNewDoctor();
+        ClearCommand = new RelayCommand(OnClear);
     }
 
     public List<TimeOnly> AvailableHours { get; } = new()
@@ -52,47 +56,19 @@ public class DoctorCreateViewModel : BindableBase
         new TimeOnly(18, 0, 0)
     };
 
-    public List<WorkingDay> AvailableWorkingDays { get; } = new()
+    public ObservableCollection<WorkingDay> AvailableWorkingDays
     {
-        new WorkingDay
+        get => _availableWorkingDays;
+        set
         {
-            Day = DayOfWeek.Monday,
-            StartTime = TimeOnly.MinValue,
-            EndTime = TimeOnly.MaxValue,
-            IsChecked = false
-        },
-        new WorkingDay
-        {
-            Day = DayOfWeek.Tuesday,
-            StartTime = TimeOnly.MinValue,
-            EndTime = TimeOnly.MaxValue,
-            IsChecked = false
-        },
-        new WorkingDay
-        {
-            Day = DayOfWeek.Wednesday,
-            StartTime = TimeOnly.MinValue,
-            EndTime = TimeOnly.MaxValue,
-            IsChecked = false
-        },
-        new WorkingDay
-        {
-            Day = DayOfWeek.Thursday,
-            StartTime = TimeOnly.MinValue,
-            EndTime = TimeOnly.MaxValue,
-            IsChecked = false
-        },
-        new WorkingDay
-        {
-            Day = DayOfWeek.Friday,
-            StartTime = TimeOnly.MinValue,
-            EndTime = TimeOnly.MaxValue,
-            IsChecked = false
+            _availableWorkingDays = value;
+            SetValue(value);
         }
-    };
+    }
 
     public RelayCommand GoBack { get; }
     public RelayCommand SaveCommand { get; }
+    public RelayCommand ClearCommand { get; }
 
     public Doctor Doctor
     {
@@ -100,7 +76,7 @@ public class DoctorCreateViewModel : BindableBase
         private set
         {
             _doctor = value;
-            NotifyPropertyChanged();
+            SetValue(value);
         }
     }
 
@@ -110,13 +86,56 @@ public class DoctorCreateViewModel : BindableBase
         set
         {
             _isTouched = value;
-            NotifyPropertyChanged();
+            SetValue(value);
         }
     }
 
-    private void SetNewDoctor()
+    private void OnClear()
+    {
+        SetNewDoctor();
+    }
+
+    public void SetNewDoctor()
     {
         Doctor = new Doctor();
+        AvailableWorkingDays = new ObservableCollection<WorkingDay>
+        {
+            new()
+            {
+                Day = DayOfWeek.Monday,
+                StartTime = TimeOnly.MinValue,
+                EndTime = TimeOnly.MaxValue,
+                IsChecked = false
+            },
+            new()
+            {
+                Day = DayOfWeek.Tuesday,
+                StartTime = TimeOnly.MinValue,
+                EndTime = TimeOnly.MaxValue,
+                IsChecked = false
+            },
+            new()
+            {
+                Day = DayOfWeek.Wednesday,
+                StartTime = TimeOnly.MinValue,
+                EndTime = TimeOnly.MaxValue,
+                IsChecked = false
+            },
+            new()
+            {
+                Day = DayOfWeek.Thursday,
+                StartTime = TimeOnly.MinValue,
+                EndTime = TimeOnly.MaxValue,
+                IsChecked = false
+            },
+            new()
+            {
+                Day = DayOfWeek.Friday,
+                StartTime = TimeOnly.MinValue,
+                EndTime = TimeOnly.MaxValue,
+                IsChecked = false
+            }
+        };
         Doctor.PropertyChanged += OnDoctorPropertyChanged;
         Doctor.Address.PropertyChanged += OnDoctorPropertyChanged;
         Doctor.ErrorsChanged += RaiseCanChange;
@@ -124,12 +143,14 @@ public class DoctorCreateViewModel : BindableBase
         IsTouched = false;
     }
 
-    private void RaiseCanChange(object? sender, DataErrorsChangedEventArgs e)
+    private void RaiseCanChange(object? sender,
+        DataErrorsChangedEventArgs e)
     {
         SaveCommand.RaiseCanExecuteChanged();
     }
 
-    private void OnDoctorPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    private void OnDoctorPropertyChanged(object? sender,
+        PropertyChangedEventArgs e)
     {
         if (sender != null)
             IsTouched = StringHelper.IsAnyStringNullOrEmpty(sender) is false;
@@ -140,18 +161,12 @@ public class DoctorCreateViewModel : BindableBase
         return !Doctor.HasErrors && !Doctor.Address.HasErrors;
     }
 
-    private void OnClear()
-    {
-        SetNewDoctor();
-    }
-
     private async void OnSave()
     {
         try
         {
             Doctor.WorkingDays = AvailableWorkingDays.Where(w => w.IsChecked is true).ToList();
             await _doctorService.CreateDoctor(_mapper.Map<DoctorDTO>(Doctor));
-            OnClear();
             OnGoBack();
         }
         catch (Exception ex)
@@ -165,16 +180,16 @@ public class DoctorCreateViewModel : BindableBase
         switch (ex)
         {
             case ValidationException:
-                _messageService.ShowErrorMessage(StringHelper.SanitizeFluentErrorMessage(ex.Message));
+                _modalService.ShowErrorMessage(StringHelper.SanitizeFluentErrorMessage(ex.Message));
                 break;
             case ArgumentException:
-                _messageService.ShowErrorMessage(ex.Message);
+                _modalService.ShowErrorMessage(ex.Message);
                 break;
         }
     }
 
     private void OnGoBack()
     {
-        _navService.Navigate(new NavigationTriggeredEventArgs { Page = Pages.DoctorList });
+        _navService.Navigate(new NavigationTriggeredEventArgs { Page = typeof(DoctorList) });
     }
 }

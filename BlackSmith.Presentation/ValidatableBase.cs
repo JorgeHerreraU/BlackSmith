@@ -5,10 +5,11 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Wpf.Ui.Mvvm;
 
 namespace BlackSmith.Presentation;
 
-public class ValidatableBase : BindableBase, INotifyDataErrorInfo
+public class ValidatableBase : ViewModelBase, INotifyDataErrorInfo
 {
     private readonly Dictionary<string, List<string?>> _errors = new();
 
@@ -22,9 +23,9 @@ public class ValidatableBase : BindableBase, INotifyDataErrorInfo
         return _errors.TryGetValue(propertyName, out var list) ? list! : Enumerable.Empty<string>();
     }
 
-    protected new void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+    protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
     {
-        base.NotifyPropertyChanged();
+        base.OnPropertyChanged(propertyName);
         Validate(propertyName);
     }
 
@@ -57,11 +58,8 @@ public class ValidatableBase : BindableBase, INotifyDataErrorInfo
 
     private void RemoveExistingErrors(IReadOnlyCollection<ValidationResult> validationResults)
     {
-        foreach (var kv in _errors
-                     .ToList()
-                     .Where(kv =>
-                         validationResults.All(r =>
-                             r.MemberNames.All(m => m != kv.Key))))
+        foreach (var kv in _errors.ToList()
+                     .Where(kv => validationResults.All(r => r.MemberNames.All(m => m != kv.Key))))
         {
             _errors.Remove(kv.Key);
             OnErrorsChanged(kv.Key);

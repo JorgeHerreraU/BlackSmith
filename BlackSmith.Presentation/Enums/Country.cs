@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
 
 namespace BlackSmith.Presentation.Enums;
 
 public enum Country
 {
-    [Display(Name = "United States")] UnitedStates
+    [Description("United States")]
+    UnitedStates
 }

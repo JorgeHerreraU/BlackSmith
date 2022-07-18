@@ -1,5 +1,5 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Markup;
@@ -18,6 +18,6 @@ public class EnumBindingSourceExtension : MarkupExtension
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
         return EnumType.GetFields().Where(x => x.IsStatic)
-            .Select(x => x.GetCustomAttribute<DisplayAttribute>()?.Name ?? x.Name);
+            .Select(x => x.GetCustomAttribute<DescriptionAttribute>()?.Description ?? x.Name);
     }
 }

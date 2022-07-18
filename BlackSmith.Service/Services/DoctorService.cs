@@ -11,7 +11,8 @@ public class DoctorService : IDoctorService
     private readonly DoctorsBL _doctorsBL;
     private readonly IMapper _mapper;
 
-    public DoctorService(IMapper mapper, DoctorsBL doctorsBL)
+    public DoctorService(IMapper mapper,
+        DoctorsBL doctorsBL)
     {
         _mapper = mapper;
         _doctorsBL = doctorsBL;
@@ -22,18 +23,18 @@ public class DoctorService : IDoctorService
         return _mapper.Map<IEnumerable<DoctorDTO>>(await _doctorsBL.GetDoctors());
     }
 
-    public async Task<PatientDTO> CreateDoctor(DoctorDTO doctor)
+    public async Task<DoctorDTO> CreateDoctor(DoctorDTO doctor)
     {
-        return _mapper.Map<PatientDTO>(await _doctorsBL.CreateDoctor(_mapper.Map<Doctor>(doctor)));
+        return _mapper.Map<DoctorDTO>(await _doctorsBL.CreateDoctor(_mapper.Map<Doctor>(doctor)));
     }
 
     public async Task<DoctorDTO> UpdateDoctor(DoctorDTO doctor)
     {
-        throw new NotImplementedException();
+        return _mapper.Map<DoctorDTO>(await _doctorsBL.UpdateDoctor(_mapper.Map<Doctor>(doctor)));
     }
 
     public async Task<bool> DeleteDoctor(DoctorDTO doctor)
     {
-        throw new NotImplementedException();
+        return await _doctorsBL.DeleteDoctor(_mapper.Map<Doctor>(doctor));
     }
 }

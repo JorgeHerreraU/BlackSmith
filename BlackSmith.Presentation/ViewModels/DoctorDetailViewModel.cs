@@ -1,12 +1,13 @@
 ﻿using BlackSmith.Presentation.Commands;
-using BlackSmith.Presentation.Enums;
 using BlackSmith.Presentation.Interfaces;
 using BlackSmith.Presentation.Models;
 using BlackSmith.Presentation.Services;
+using BlackSmith.Presentation.Views.Pages;
+using Wpf.Ui.Mvvm;
 
 namespace BlackSmith.Presentation.ViewModels;
 
-public class DoctorDetailViewModel : BindableBase
+public class DoctorDetailViewModel : ViewModelBase
 {
     private readonly INavService _navService;
     private Doctor _doctor = null!;
@@ -23,7 +24,7 @@ public class DoctorDetailViewModel : BindableBase
         set
         {
             _doctor = value;
-            NotifyPropertyChanged();
+            SetValue(value);
         }
     }
 
@@ -31,6 +32,6 @@ public class DoctorDetailViewModel : BindableBase
 
     private void OnGoBack()
     {
-        _navService.Navigate(new NavigationTriggeredEventArgs { Page = Pages.DoctorList });
+        _navService.Navigate(new NavigationTriggeredEventArgs { Page = typeof(DoctorList) });
     }
 }

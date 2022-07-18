@@ -1,15 +1,9 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using BlackSmith.Presentation.Enums;
+﻿using System.Windows;
 using BlackSmith.Presentation.Interfaces;
-using BlackSmith.Presentation.Models;
 using BlackSmith.Presentation.Services;
-using BlackSmith.Presentation.ViewModels;
 using BlackSmith.Presentation.Views.Pages;
 using Wpf.Ui.Appearance;
-using Wpf.Ui.Common;
-using Wpf.Ui.Controls.Interfaces;
+using Wpf.Ui.Mvvm.Contracts;
 
 namespace BlackSmith.Presentation;
 
@@ -18,129 +12,31 @@ namespace BlackSmith.Presentation;
 /// </summary>
 public partial class MainWindow
 {
-    private readonly Dashboard _dashboardPage;
-    private readonly DoctorCreate _doctorCreate;
-    private readonly DoctorCreateViewModel _doctorCreateViewModel;
-    private readonly DoctorDetail _doctorDetail;
-    private readonly DoctorDetailViewModel _doctorDetailViewModel;
-    private readonly DoctorList _doctorListPage;
-    private readonly DoctorListViewModel _doctorListViewModel;
-    private readonly PatientCreate _patientCreatePage;
-    private readonly PatientCreateViewModel _patientCreateViewModel;
-    private readonly PatientEdit _patientEditPage;
-    private readonly PatientEditViewModel _patientEditViewModel;
-    private readonly PatientList _patientListPage;
-    private readonly PatientListViewModel _patientListViewModel;
-    private readonly ScheduleList _scheduleListPage;
-    private readonly Settings _settingsPage;
+    private readonly IPageService _pageService;
+    private readonly IThemeService _themeService;
 
     public MainWindow(INavService navService,
-        Dashboard dashboardPage,
-        PatientListViewModel patientListViewModel,
-        PatientList patientListPage,
-        PatientCreateViewModel patientCreateViewModel,
-        PatientCreate patientCreatePage,
-        PatientEdit patientEditPage,
-        PatientEditViewModel patientEditViewModel,
-        DoctorList doctorListPage,
-        DoctorListViewModel doctorListViewModel,
-        DoctorDetail doctorDetail,
-        DoctorDetailViewModel doctorDetailViewModel,
-        ScheduleList scheduleListPage,
-        Settings settingsPage,
-        DoctorCreate doctorCreate,
-        DoctorCreateViewModel doctorCreateViewModel)
+        IPageService pageService,
+        IThemeService themeService)
     {
-        _dashboardPage = dashboardPage;
-        _patientListPage = patientListPage;
-        _patientListViewModel = patientListViewModel;
-        _patientCreatePage = patientCreatePage;
-        _patientEditPage = patientEditPage;
-        _patientEditViewModel = patientEditViewModel;
-        _doctorListPage = doctorListPage;
-        _doctorListViewModel = doctorListViewModel;
-        _scheduleListPage = scheduleListPage;
-        _settingsPage = settingsPage;
-        _doctorCreate = doctorCreate;
-        _doctorCreateViewModel = doctorCreateViewModel;
-        _doctorDetail = doctorDetail;
-        _doctorDetailViewModel = doctorDetailViewModel;
-        _patientCreateViewModel = patientCreateViewModel;
-
+        _pageService = pageService;
+        _themeService = themeService;
         navService.NavigationTriggered += OnNavigationTriggered;
         InitializeComponent();
+        RootNavigation.PageService = pageService;
+        navService.Navigate(new NavigationTriggeredEventArgs { Page = typeof(Home) });
     }
 
     private void OnNavigationTriggered(object? sender,
         NavigationTriggeredEventArgs e)
     {
-        GoToPage(e.Page, e.Model);
-    }
-
-    private void GoToPage(Pages page,
-        object? model = null)
-    {
-        Page pageToGo;
-        switch (page)
-        {
-            case Pages.PatientCreate:
-                _patientCreatePage.DataContext = _patientCreateViewModel;
-                pageToGo = _patientCreatePage;
-                break;
-            case Pages.PatientList:
-                _patientListPage.DataContext = _patientListViewModel;
-                pageToGo = _patientListPage;
-                break;
-            case Pages.PatientEdit:
-                _patientEditPage.DataContext = _patientEditViewModel;
-                if (model is not null) _patientEditViewModel.Patient = (Patient)model;
-                pageToGo = _patientEditPage;
-                break;
-            case Pages.Home:
-                pageToGo = _dashboardPage;
-                break;
-            case Pages.DoctorCreate:
-                _doctorCreate.DataContext = _doctorCreateViewModel;
-                pageToGo = _doctorCreate;
-                break;
-            case Pages.DoctorList:
-                _doctorListPage.DataContext = _doctorListViewModel;
-                pageToGo = _doctorListPage;
-                break;
-            case Pages.DoctorDetails:
-                _doctorDetail.DataContext = _doctorDetailViewModel;
-                if (model is not null) _doctorDetailViewModel.Doctor = (Doctor)model;
-                pageToGo = _doctorDetail;
-                break;
-            case Pages.ScheduleList:
-                pageToGo = _scheduleListPage;
-                break;
-            case Pages.Settings:
-                pageToGo = _settingsPage;
-                break;
-            default:
-                pageToGo = null;
-                break;
-        }
-
-        RootFrame.NavigationService.Navigate(pageToGo);
+        var page = _pageService.GetPage(e.Page);
+        RootFrame.NavigationService.Navigate(page);
     }
 
     private void NavigationButtonTheme_OnClick(object sender,
         RoutedEventArgs e)
     {
-        // We check what theme is currently
-        // active and choose its opposite.
-        var newTheme = Theme.GetAppTheme() == ThemeType.Dark ? ThemeType.Light : ThemeType.Dark;
-
-        // We apply the theme to the entire application.
-        Theme.Apply(newTheme);
-    }
-
-    private void OnNavigated(INavigation sender,
-        RoutedNavigationEventArgs e)
-    {
-        Enum.TryParse<Pages>(sender.Current.PageType.Name, out var pageEnum);
-        GoToPage(pageEnum);
+        _themeService.SetTheme(_themeService.GetTheme() == ThemeType.Dark ? ThemeType.Light : ThemeType.Dark);
     }
 }

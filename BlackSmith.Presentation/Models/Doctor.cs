@@ -14,9 +14,12 @@ public class Doctor : ValidatableBase
     private int _id;
     private string _lastName = "";
     private string _phone = "";
+    private Speciality _speciality = Speciality.GeneralPractice;
     private ICollection<WorkingDay> _workingDays = new List<WorkingDay>();
 
     [Required(AllowEmptyStrings = false)]
+    [MinLength(3)]
+    [MaxLength(200)]
     public string FirstName
     {
         get => _firstName;
@@ -28,6 +31,8 @@ public class Doctor : ValidatableBase
     }
 
     [Required(AllowEmptyStrings = false)]
+    [MinLength(3)]
+    [MaxLength(200)]
     public string LastName
     {
         get => _lastName;
@@ -38,6 +43,8 @@ public class Doctor : ValidatableBase
         }
     }
 
+    [Required]
+    [Range(18, 99)]
     public int Age
     {
         get => _age;
@@ -49,6 +56,7 @@ public class Doctor : ValidatableBase
     }
 
     [Required(AllowEmptyStrings = false)]
+    [EmailAddress]
     public string Email
     {
         get => _email;
@@ -81,8 +89,6 @@ public class Doctor : ValidatableBase
         }
     }
 
-    public Speciality Speciality { get; set; } = Speciality.GeneralPractice;
-
     [Required]
     public Address Address
 
@@ -102,6 +108,17 @@ public class Doctor : ValidatableBase
         set
         {
             _workingDays = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    [Required]
+    public Speciality Speciality
+    {
+        get => _speciality;
+        set
+        {
+            _speciality = value;
             NotifyPropertyChanged();
         }
     }

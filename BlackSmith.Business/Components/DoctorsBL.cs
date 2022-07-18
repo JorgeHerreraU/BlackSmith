@@ -9,7 +9,8 @@ public class DoctorsBL
     private readonly IRepository<Doctor> _repository;
     private readonly IValidator<Doctor> _validator;
 
-    public DoctorsBL(IRepository<Doctor> repository, IValidator<Doctor> validator)
+    public DoctorsBL(IRepository<Doctor> repository,
+        IValidator<Doctor> validator)
     {
         _repository = repository;
         _validator = validator;
@@ -27,6 +28,18 @@ public class DoctorsBL
             throw new ArgumentException("Doctor e-mail address is already registered");
         await _repository.Add(doctor);
         return doctor;
+    }
+
+    public async Task<Doctor> UpdateDoctor(Doctor doctor)
+    {
+        await _validator.ValidateAndThrowAsync(doctor);
+        await _repository.Update(doctor, x => x.WorkingDays, x => x.Address);
+        return doctor;
+    }
+
+    public async Task<bool> DeleteDoctor(Doctor doctor)
+    {
+        return await _repository.Delete(doctor);
     }
 
     private async Task<bool> DoctorEmailExists(string email)

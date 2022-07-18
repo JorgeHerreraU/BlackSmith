@@ -35,6 +35,19 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <!--  ReSharper disable once Xaml.StaticResourceNotResolved  -->
+        <Style
+            x:Key="NumerBoxToolTipError"
+            BasedOn="{StaticResource {x:Type ui:NumberBox}}"
+            TargetType="{x:Type ui:NumberBox}">
+            <!--  Some style setters  -->
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)/ErrorContent}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <SolidColorBrush x:Key="TextBox.Foreground" Color="{DynamicResource TextFillColorPrimary}" />
         <SolidColorBrush x:Key="TextBox.Background" Color="{DynamicResource ControlFillColorDefault}" />
     </Page.Resources>
@@ -72,20 +85,14 @@
                 Margin="0,0,0,25"
                 Orientation="Horizontal">
                 <Image VerticalAlignment="Center" Source="../../Assets/patient.png" />
-                <Border
-                    Padding="10"
-                    BorderBrush="{StaticResource TextBox.Foreground}"
-                    BorderThickness="0.1"
-                    CornerRadius="10">
-                    <TextBlock
-                        VerticalAlignment="Center"
-                        FontSize="18"
-                        Text="Edit a patient">
-                        <TextBlock.Foreground>
-                            <SolidColorBrush Color="{DynamicResource TextFillColorSecondary}" />
-                        </TextBlock.Foreground>
-                    </TextBlock>
-                </Border>
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="18"
+                    Text="Edit a patient">
+                    <TextBlock.Foreground>
+                        <SolidColorBrush Color="{DynamicResource TextFillColorSecondary}" />
+                    </TextBlock.Foreground>
+                </TextBlock>
 
             </StackPanel>
 
@@ -120,7 +127,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolTipError}"
-                Text="{Binding FirstName, ValidatesOnNotifyDataErrors=True}"
+                Text="{Binding FirstName, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                 Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
             <Label
                 Grid.Row="3"
@@ -138,7 +145,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolTipError}"
-                Text="{Binding LastName, ValidatesOnNotifyDataErrors=True}"
+                Text="{Binding LastName, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                 Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
             <Label
                 Grid.Row="4"
@@ -159,7 +166,8 @@
                 IntegersOnly="True"
                 Min="0"
                 SpinButtonsEnabled="False"
-                Text="{Binding Age, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                Style="{StaticResource NumerBoxToolTipError}"
+                Text="{Binding Age, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                 Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
 
             <Label
@@ -178,7 +186,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolTipError}"
-                Text="{Binding Email, ValidatesOnNotifyDataErrors=True}"
+                Text="{Binding Email, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                 Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
             <Label
                 Grid.Row="6"
@@ -213,7 +221,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolTipError}"
-                Text="{Binding Identification, ValidatesOnNotifyDataErrors=True}"
+                Text="{Binding Identification, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                 Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
             <StackPanel
                 Grid.Row="8"
@@ -267,7 +275,8 @@
                 IntegersOnly="True"
                 Min="0"
                 SpinButtonsEnabled="False"
-                Text="{Binding Address.Number, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                Style="{StaticResource NumerBoxToolTipError}"
+                Text="{Binding Address.Number, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                 Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
 
             <Label
@@ -286,7 +295,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolTipError}"
-                Text="{Binding Address.Street, ValidatesOnNotifyDataErrors=True}"
+                Text="{Binding Address.Street, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                 Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
             <Label
                 Grid.Row="4"
@@ -322,7 +331,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolTipError}"
-                Text="{Binding Address.State, ValidatesOnNotifyDataErrors=True}"
+                Text="{Binding Address.State, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                 Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
             <Label
                 Grid.Row="6"
@@ -342,6 +351,7 @@
                 IntegersOnly="True"
                 Min="0"
                 SpinButtonsEnabled="False"
+                Style="{StaticResource NumerBoxToolTipError}"
                 Text="{Binding Address.ZipCode, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
                 Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
             <Label
@@ -360,7 +370,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolTipError}"
-                Text="{Binding Address.Country, ValidatesOnNotifyDataErrors=True}"
+                Text="{Binding Address.Country, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                 Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
 
         </Grid>

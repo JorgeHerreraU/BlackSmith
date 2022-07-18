@@ -232,7 +232,8 @@ namespace BlackSmith.Data.Migrations
                 {
                     b.HasOne("BlackSmith.Domain.Models.Doctor", null)
                         .WithMany("WorkingDays")
-                        .HasForeignKey("DoctorId");
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("BlackSmith.Domain.Models.Doctor", b =>

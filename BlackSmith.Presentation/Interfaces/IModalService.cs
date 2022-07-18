@@ -2,7 +2,7 @@
 
 namespace BlackSmith.Presentation.Interfaces;
 
-public interface IMessageService
+public interface IModalService
 {
     void ShowErrorMessage(string message);
     Task<bool> ShowConfirmDialog(string message);

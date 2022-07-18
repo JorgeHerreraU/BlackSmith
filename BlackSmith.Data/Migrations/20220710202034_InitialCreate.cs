@@ -95,7 +95,8 @@ namespace BlackSmith.Data.Migrations
                         name: "FK_WorkTimes_Doctors_DoctorId",
                         column: x => x.DoctorId,
                         principalTable: "Doctors",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

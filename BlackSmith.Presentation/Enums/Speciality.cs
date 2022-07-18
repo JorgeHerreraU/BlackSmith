@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
 
 namespace BlackSmith.Presentation.Enums;
 
@@ -11,11 +11,11 @@ public enum Speciality
     Endocrinology,
     Gastroenterology,
 
-    [Display(Name = "General Practice")]
+    [Description("General Practice")]
     GeneralPractice,
     Hematology,
 
-    [Display(Name = "Infectious Diseases")]
+    [Description("Infectious Diseases")]
     InfectiousDiseases,
     Nephrology,
     Neurology,
@@ -26,7 +26,7 @@ public enum Speciality
     Pathology,
     Pediatrics,
 
-    [Display(Name = "Physical Medicine")]
+    [Description("Physical Medicine")]
     PhysicalMedicine,
     Psychiatry,
     Radiology,

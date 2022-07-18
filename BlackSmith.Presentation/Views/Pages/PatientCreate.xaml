@@ -36,6 +36,19 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <!--  ReSharper disable once Xaml.StaticResourceNotResolved  -->
+        <Style
+            x:Key="NumerBoxToolTipError"
+            BasedOn="{StaticResource {x:Type ui:NumberBox}}"
+            TargetType="{x:Type ui:NumberBox}">
+            <!--  Some style setters  -->
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)/ErrorContent}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <SolidColorBrush x:Key="TextBox.Foreground" Color="{DynamicResource TextFillColorPrimary}" />
         <SolidColorBrush x:Key="TextBox.Background" Color="{DynamicResource ControlFillColorDefault}" />
     </Page.Resources>
@@ -78,20 +91,15 @@
                 Margin="0,0,0,25"
                 Orientation="Horizontal">
                 <Image VerticalAlignment="Center" Source="../../Assets/patient.png" />
-                <Border
-                    Padding="10"
-                    BorderBrush="{StaticResource TextBox.Foreground}"
-                    BorderThickness="0.1"
-                    CornerRadius="10">
-                    <TextBlock
-                        VerticalAlignment="Center"
-                        FontSize="18"
-                        Text="Register a new patient">
-                        <TextBlock.Foreground>
-                            <SolidColorBrush Color="{DynamicResource TextFillColorSecondary}" />
-                        </TextBlock.Foreground>
-                    </TextBlock>
-                </Border>
+
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="18"
+                    Text="Patient Register">
+                    <TextBlock.Foreground>
+                        <SolidColorBrush Color="{DynamicResource TextFillColorSecondary}" />
+                    </TextBlock.Foreground>
+                </TextBlock>
 
             </StackPanel>
 
@@ -177,7 +185,8 @@
                 IntegersOnly="True"
                 Min="0"
                 SpinButtonsEnabled="False"
-                Text="{Binding Age, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                Style="{StaticResource NumerBoxToolTipError}"
+                Text="{Binding Age, ValidatesOnNotifyDataErrors=True}"
                 Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
 
             <Label
@@ -284,7 +293,8 @@
                 IntegersOnly="True"
                 Min="0"
                 SpinButtonsEnabled="False"
-                Text="{Binding Address.Number, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                Style="{StaticResource NumerBoxToolTipError}"
+                Text="{Binding Address.Number, ValidatesOnNotifyDataErrors=True}"
                 Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
 
             <Label

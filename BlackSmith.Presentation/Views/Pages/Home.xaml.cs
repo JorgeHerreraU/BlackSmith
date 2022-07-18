@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using BlackSmith.Presentation.ViewModels;
 
 namespace BlackSmith.Presentation.Views.Pages;
 
@@ -7,8 +8,9 @@ namespace BlackSmith.Presentation.Views.Pages;
 /// </summary>
 public partial class Home : Page
 {
-    public Home()
+    public Home(HomeViewModel viewModel)
     {
+        DataContext = viewModel;
         InitializeComponent();
     }
 }

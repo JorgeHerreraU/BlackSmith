@@ -1,13 +1,11 @@
 ﻿using System;
-using BlackSmith.Presentation.Enums;
 using BlackSmith.Presentation.Interfaces;
 
 namespace BlackSmith.Presentation.Services;
 
 public class NavigationTriggeredEventArgs : EventArgs
 {
-    public Pages Page { get; set; }
-    public object? Model { get; set; }
+    public Type Page { get; set; } = null!;
 }
 
 public class NavService : INavService

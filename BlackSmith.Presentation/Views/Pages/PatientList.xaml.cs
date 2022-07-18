@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using BlackSmith.Presentation.ViewModels;
 
 namespace BlackSmith.Presentation.Views.Pages;
 
@@ -7,8 +8,9 @@ namespace BlackSmith.Presentation.Views.Pages;
 /// </summary>
 public partial class PatientList : Page
 {
-    public PatientList()
+    public PatientList(PatientListViewModel viewModel)
     {
+        DataContext = viewModel;
         InitializeComponent();
     }
 }

@@ -2,38 +2,37 @@
 using System.ComponentModel;
 using AutoMapper;
 using BlackSmith.Presentation.Commands;
-using BlackSmith.Presentation.Enums;
 using BlackSmith.Presentation.Helpers;
 using BlackSmith.Presentation.Interfaces;
 using BlackSmith.Presentation.Models;
 using BlackSmith.Presentation.Services;
+using BlackSmith.Presentation.Views.Pages;
 using BlackSmith.Service.DTOs;
 using BlackSmith.Service.Interfaces;
 using FluentValidation;
 using JetBrains.Annotations;
+using Wpf.Ui.Mvvm;
 
 namespace BlackSmith.Presentation.ViewModels;
 
-public class PatientCreateViewModel : BindableBase
+public class PatientCreateViewModel : ViewModelBase
 {
     private readonly IMapper _mapper;
-    private readonly IMessageService _messageService;
+    private readonly IModalService _modalService;
     private readonly INavService _navService;
     private readonly IPatientService _patientService;
     private bool _isTouched;
     private Patient _patient = null!;
 
-    public PatientCreateViewModel(
-        INavService navService,
+    public PatientCreateViewModel(INavService navService,
         IMapper mapper,
         IPatientService patientService,
-        IMessageService messageService
-    )
+        IModalService modalService)
     {
         _navService = navService;
         _mapper = mapper;
         _patientService = patientService;
-        _messageService = messageService;
+        _modalService = modalService;
 
         SaveCommand = new RelayCommand(OnSave, CanSave);
         GoBack = new RelayCommand(OnGoBack);
@@ -48,7 +47,7 @@ public class PatientCreateViewModel : BindableBase
         private set
         {
             _patient = value;
-            NotifyPropertyChanged();
+            SetValue(value);
         }
     }
 
@@ -58,7 +57,7 @@ public class PatientCreateViewModel : BindableBase
         set
         {
             _isTouched = value;
-            NotifyPropertyChanged();
+            SetValue(value);
         }
     }
 
@@ -84,7 +83,8 @@ public class PatientCreateViewModel : BindableBase
         IsTouched = false;
     }
 
-    private void OnPatientPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    private void OnPatientPropertyChanged(object? sender,
+        PropertyChangedEventArgs e)
     {
         if (sender != null)
             IsTouched = StringHelper.IsAnyStringNullOrEmpty(sender) is false;
@@ -92,7 +92,8 @@ public class PatientCreateViewModel : BindableBase
 
 
     [PublicAPI]
-    public void RaiseCanChange(object? sender, EventArgs e)
+    public void RaiseCanChange(object? sender,
+        EventArgs e)
     {
         SaveCommand.RaiseCanExecuteChanged();
     }
@@ -121,16 +122,16 @@ public class PatientCreateViewModel : BindableBase
         switch (ex)
         {
             case ValidationException:
-                _messageService.ShowErrorMessage(StringHelper.SanitizeFluentErrorMessage(ex.Message));
+                _modalService.ShowErrorMessage(StringHelper.SanitizeFluentErrorMessage(ex.Message));
                 break;
             case ArgumentException:
-                _messageService.ShowErrorMessage(ex.Message);
+                _modalService.ShowErrorMessage(ex.Message);
                 break;
         }
     }
 
     private void OnGoBack()
     {
-        _navService.Navigate(new NavigationTriggeredEventArgs { Page = Pages.PatientList });
+        _navService.Navigate(new NavigationTriggeredEventArgs { Page = typeof(PatientList) });
     }
 }
