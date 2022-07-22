@@ -10,11 +10,11 @@ using BlackSmith.Presentation.Views.Pages;
 using BlackSmith.Service.DTOs;
 using BlackSmith.Service.Interfaces;
 using FluentValidation;
-using Wpf.Ui.Mvvm;
+using Prism.Mvvm;
 
 namespace BlackSmith.Presentation.ViewModels;
 
-public class PatientEditViewModel : ViewModelBase
+public class PatientEditViewModel : BindableBase
 {
     private readonly IMapper _mapper;
     private readonly IModalService _modalService;
@@ -44,7 +44,7 @@ public class PatientEditViewModel : ViewModelBase
         {
             _patient = value;
             SetPatient();
-            SetValue(value);
+            RaisePropertyChanged();
         }
     }
 
@@ -54,7 +54,7 @@ public class PatientEditViewModel : ViewModelBase
         set
         {
             _isTouched = value;
-            SetValue(value);
+            RaisePropertyChanged();
         }
     }
 

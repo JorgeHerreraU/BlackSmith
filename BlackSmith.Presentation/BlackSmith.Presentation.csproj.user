@@ -23,7 +23,7 @@
     <Compile Update="Views\Pages\PatientList.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Pages\ScheduleCreate\ScheduleCreateUserIdentification.xaml.cs">
+    <Compile Update="Views\Pages\ScheduleCreate.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Pages\ScheduleList.xaml.cs">
@@ -52,7 +52,7 @@
     <Page Update="Views\Pages\PatientList.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Pages\ScheduleCreate\ScheduleCreateUserIdentification.xaml">
+    <Page Update="Views\Pages\ScheduleCreate.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Pages\ScheduleList.xaml">

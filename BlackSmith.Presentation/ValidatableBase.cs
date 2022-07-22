@@ -5,11 +5,11 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Wpf.Ui.Mvvm;
+using Prism.Mvvm;
 
 namespace BlackSmith.Presentation;
 
-public class ValidatableBase : ViewModelBase, INotifyDataErrorInfo
+public class ValidatableBase : BindableBase, INotifyDataErrorInfo
 {
     private readonly Dictionary<string, List<string?>> _errors = new();
 
@@ -25,7 +25,7 @@ public class ValidatableBase : ViewModelBase, INotifyDataErrorInfo
 
     protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
     {
-        base.OnPropertyChanged(propertyName);
+        RaisePropertyChanged(propertyName);
         Validate(propertyName);
     }
 

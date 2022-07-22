@@ -11,11 +11,11 @@ using BlackSmith.Service.DTOs;
 using BlackSmith.Service.Interfaces;
 using FluentValidation;
 using JetBrains.Annotations;
-using Wpf.Ui.Mvvm;
+using Prism.Mvvm;
 
 namespace BlackSmith.Presentation.ViewModels;
 
-public class PatientCreateViewModel : ViewModelBase
+public class PatientCreateViewModel : BindableBase
 {
     private readonly IMapper _mapper;
     private readonly IModalService _modalService;
@@ -47,7 +47,7 @@ public class PatientCreateViewModel : ViewModelBase
         private set
         {
             _patient = value;
-            SetValue(value);
+            RaisePropertyChanged();
         }
     }
 
@@ -57,7 +57,7 @@ public class PatientCreateViewModel : ViewModelBase
         set
         {
             _isTouched = value;
-            SetValue(value);
+            RaisePropertyChanged();
         }
     }
 

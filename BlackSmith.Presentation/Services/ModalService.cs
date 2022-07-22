@@ -23,19 +23,22 @@ public class ModalService : IModalService
     public async Task<bool> ShowConfirmDialog(string message)
     {
         var completionSource = new TaskCompletionSource<bool>();
-        var msg = new MessageBox { Content = message, ButtonLeftName = "OK", ButtonRightName = "Cancel" };
-        msg.Show();
-        msg.ButtonLeftClick += (_,
+        var messageBox = new MessageBox { Content = message, ButtonLeftName = "OK", ButtonRightName = "Cancel" };
+
+        messageBox.Show();
+
+        messageBox.ButtonLeftClick += (_,
             _) =>
         {
             completionSource.SetResult(true);
-            msg.Close();
+            messageBox.Close();
         };
-        msg.ButtonRightClick += (_,
+
+        messageBox.ButtonRightClick += (_,
             _) =>
         {
             completionSource.SetResult(false);
-            msg.Close();
+            messageBox.Close();
         };
 
         return await completionSource.Task;

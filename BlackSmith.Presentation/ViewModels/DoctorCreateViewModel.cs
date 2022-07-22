@@ -13,11 +13,11 @@ using BlackSmith.Presentation.Views.Pages;
 using BlackSmith.Service.DTOs;
 using BlackSmith.Service.Interfaces;
 using FluentValidation;
-using Wpf.Ui.Mvvm;
+using Prism.Mvvm;
 
 namespace BlackSmith.Presentation.ViewModels;
 
-public class DoctorCreateViewModel : ViewModelBase
+public class DoctorCreateViewModel : BindableBase
 {
     private readonly IDoctorService _doctorService;
     private readonly IMapper _mapper;
@@ -62,7 +62,7 @@ public class DoctorCreateViewModel : ViewModelBase
         set
         {
             _availableWorkingDays = value;
-            SetValue(value);
+            RaisePropertyChanged();
         }
     }
 
@@ -76,7 +76,7 @@ public class DoctorCreateViewModel : ViewModelBase
         private set
         {
             _doctor = value;
-            SetValue(value);
+            RaisePropertyChanged();
         }
     }
 
@@ -86,7 +86,7 @@ public class DoctorCreateViewModel : ViewModelBase
         set
         {
             _isTouched = value;
-            SetValue(value);
+            RaisePropertyChanged();
         }
     }
 

@@ -3,11 +3,11 @@ using BlackSmith.Presentation.Interfaces;
 using BlackSmith.Presentation.Models;
 using BlackSmith.Presentation.Services;
 using BlackSmith.Presentation.Views.Pages;
-using Wpf.Ui.Mvvm;
+using Prism.Mvvm;
 
 namespace BlackSmith.Presentation.ViewModels;
 
-public class DoctorDetailViewModel : ViewModelBase
+public class DoctorDetailViewModel : BindableBase
 {
     private readonly INavService _navService;
     private Doctor _doctor = null!;
@@ -24,7 +24,7 @@ public class DoctorDetailViewModel : ViewModelBase
         set
         {
             _doctor = value;
-            SetValue(value);
+            RaisePropertyChanged();
         }
     }
 

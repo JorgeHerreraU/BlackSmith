@@ -1,11 +1,11 @@
 ﻿using BlackSmith.Presentation.Events;
 using BlackSmith.Presentation.Models;
 using Prism.Events;
-using Wpf.Ui.Mvvm;
+using Prism.Mvvm;
 
 namespace BlackSmith.Presentation.ViewModels;
 
-public class MainWindowViewModel : ViewModelBase
+public class MainWindowViewModel : BindableBase
 {
     private readonly DoctorCreateViewModel _doctorCreateViewModel;
     private readonly DoctorDetailViewModel _doctorDetailViewModel;

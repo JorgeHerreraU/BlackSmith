@@ -52,6 +52,7 @@ public partial class App
     private static void RegisterLocalDependencies(ref ServiceCollection services)
     {
         services.AddSingleton<INavService, NavService>();
+        services.AddSingleton<INavigationService, NavigationService>();
         services.AddSingleton<IModalService, ModalService>();
         services.AddSingleton<Settings>();
         services.AddSingleton<IPageService, PageService>();
@@ -93,5 +94,6 @@ public partial class App
         mapperConfig.CreateMap<Address, AddressDTO>().ReverseMap();
         mapperConfig.CreateMap<Doctor, DoctorDTO>().ReverseMap();
         mapperConfig.CreateMap<WorkingDay, WorkingDayDTO>().ReverseMap();
+        mapperConfig.CreateMap<Appointment, AppointmentDTO>().ReverseMap();
     }
 }

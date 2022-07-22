@@ -12,11 +12,11 @@ using BlackSmith.Service.DTOs;
 using BlackSmith.Service.Interfaces;
 using JetBrains.Annotations;
 using Prism.Events;
-using Wpf.Ui.Mvvm;
+using Prism.Mvvm;
 
 namespace BlackSmith.Presentation.ViewModels;
 
-public class PatientListViewModel : ViewModelBase
+public class PatientListViewModel : BindableBase
 {
     private readonly IEventAggregator _eventAggregator;
     private readonly IMapper _mapper;
@@ -53,7 +53,7 @@ public class PatientListViewModel : ViewModelBase
         set
         {
             _searchInput = value;
-            SetValue(value);
+            RaisePropertyChanged();
             FilterPatients(_searchInput);
         }
     }
@@ -64,7 +64,7 @@ public class PatientListViewModel : ViewModelBase
         set
         {
             _patients = value;
-            SetValue(value);
+            RaisePropertyChanged();
         }
     }
 

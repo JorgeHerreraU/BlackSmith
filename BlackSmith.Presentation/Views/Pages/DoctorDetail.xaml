@@ -14,6 +14,7 @@
     mc:Ignorable="d">
     <Page.Resources>
         <converters:TimeOnlyStringConverter x:Key="TimeOnlyStringConverter" />
+        <converters:EnumStringConverter x:Key="EnumStringConverter" />
         <SolidColorBrush x:Key="TextBox.Foreground" Color="{DynamicResource TextFillColorPrimary}" />
         <SolidColorBrush x:Key="TextBox.Background" Color="{DynamicResource ControlFillColorDefault}" />
     </Page.Resources>
@@ -60,7 +61,7 @@
                 <TextBlock
                     VerticalAlignment="Center"
                     FontSize="18"
-                    Text="Doctor details">
+                    Text="Doctor Details">
                     <TextBlock.Foreground>
                         <SolidColorBrush Color="{DynamicResource TextFillColorSecondary}" />
                     </TextBlock.Foreground>
@@ -185,7 +186,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 IsReadOnly="True"
-                Text="{Binding Speciality}" />
+                Text="{Binding Speciality, Converter={StaticResource EnumStringConverter}}" />
             <!--  Go Back Button  -->
             <ui:Button
                 Grid.Row="8"

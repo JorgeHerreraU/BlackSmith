@@ -58,12 +58,7 @@ public static class SeedData
 
         var appointment = new Appointment
         {
-            Title = "General Medicine Request",
-            Description = "Patient feels bad",
-            Patient = patient,
-            Doctor = doctor,
-            Start = DateTime.Now,
-            End = DateTime.Now
+            Patient = patient, Doctor = doctor, Start = DateTime.Now, End = DateTime.Now
         };
 
         context.Appointments.Add(appointment);
