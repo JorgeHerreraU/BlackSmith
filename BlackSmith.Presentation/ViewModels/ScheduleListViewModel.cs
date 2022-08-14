@@ -2,32 +2,36 @@
 using System.Collections.ObjectModel;
 using AutoMapper;
 using BlackSmith.Presentation.Commands;
-using BlackSmith.Presentation.Interfaces;
+using BlackSmith.Presentation.Events;
 using BlackSmith.Presentation.Models;
-using BlackSmith.Presentation.Services;
 using BlackSmith.Presentation.Views.Pages;
 using BlackSmith.Service.Interfaces;
 using JetBrains.Annotations;
+using Prism.Events;
 using Prism.Mvvm;
+using Wpf.Ui.Mvvm.Contracts;
 
 namespace BlackSmith.Presentation.ViewModels;
 
 public class ScheduleListViewModel : BindableBase
 {
     private readonly IAppointmentService _appointmentService;
+    private readonly IEventAggregator _eventAggregator;
     private readonly IMapper _mapper;
-    private readonly INavService _navService;
+    private readonly INavigationService _navigationService;
     private IEnumerable<Appointment> _allAppointments = new List<Appointment>();
     private ObservableCollection<Appointment> _appointments = null!;
     private string _searchInput = "";
 
-    public ScheduleListViewModel(INavService navService,
-        IAppointmentService appointmentService,
-        IMapper mapper)
+    public ScheduleListViewModel(IAppointmentService appointmentService,
+        IMapper mapper,
+        INavigationService navigationService,
+        IEventAggregator eventAggregator)
     {
-        _navService = navService;
         _appointmentService = appointmentService;
         _mapper = mapper;
+        _navigationService = navigationService;
+        _eventAggregator = eventAggregator;
 
         GoToCreate = new RelayCommand(OnCreate);
         ClearSearchCommand = new RelayCommand(OnClearSearch);
@@ -59,7 +63,8 @@ public class ScheduleListViewModel : BindableBase
     private void OnCreate()
     {
         OnClearSearch();
-        _navService.Navigate(new NavigationTriggeredEventArgs { Page = typeof(ScheduleCreate) });
+        _eventAggregator.GetEvent<CreateScheduleEvent>().Publish();
+        _navigationService.Navigate(typeof(ScheduleCreate));
     }
 
     [PublicAPI]

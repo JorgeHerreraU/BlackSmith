@@ -5,13 +5,13 @@ using BlackSmith.Presentation.Commands;
 using BlackSmith.Presentation.Helpers;
 using BlackSmith.Presentation.Interfaces;
 using BlackSmith.Presentation.Models;
-using BlackSmith.Presentation.Services;
 using BlackSmith.Presentation.Views.Pages;
 using BlackSmith.Service.DTOs;
 using BlackSmith.Service.Interfaces;
 using FluentValidation;
 using JetBrains.Annotations;
 using Prism.Mvvm;
+using Wpf.Ui.Mvvm.Contracts;
 
 namespace BlackSmith.Presentation.ViewModels;
 
@@ -19,20 +19,20 @@ public class PatientCreateViewModel : BindableBase
 {
     private readonly IMapper _mapper;
     private readonly IModalService _modalService;
-    private readonly INavService _navService;
+    private readonly INavigationService _navigationService;
     private readonly IPatientService _patientService;
     private bool _isTouched;
     private Patient _patient = null!;
 
-    public PatientCreateViewModel(INavService navService,
-        IMapper mapper,
+    public PatientCreateViewModel(IMapper mapper,
         IPatientService patientService,
-        IModalService modalService)
+        IModalService modalService,
+        INavigationService navigationService)
     {
-        _navService = navService;
         _mapper = mapper;
         _patientService = patientService;
         _modalService = modalService;
+        _navigationService = navigationService;
 
         SaveCommand = new RelayCommand(OnSave, CanSave);
         GoBack = new RelayCommand(OnGoBack);
@@ -132,6 +132,6 @@ public class PatientCreateViewModel : BindableBase
 
     private void OnGoBack()
     {
-        _navService.Navigate(new NavigationTriggeredEventArgs { Page = typeof(PatientList) });
+        _navigationService.Navigate(typeof(PatientList));
     }
 }

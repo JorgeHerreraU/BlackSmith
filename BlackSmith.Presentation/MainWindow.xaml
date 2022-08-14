@@ -21,9 +21,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid
-            Grid.Row="1"
-            Margin="0">
+        <Grid Grid.Row="1" Margin="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -34,6 +32,7 @@
                 Grid.Column="0"
                 Margin="6,0,6,0"
                 Frame="{Binding ElementName=RootFrame}"
+                Navigated="RootNavigation_OnNavigated"
                 SelectedPageIndex="0">
                 <ui:NavigationStore.Items>
                     <ui:NavigationItem
@@ -45,13 +44,43 @@
                         Icon="PersonPill24"
                         PageType="{x:Type pages:PatientList}" />
                     <ui:NavigationItem
+                        Content="Patients"
+                        Icon="PersonPill24"
+                        PageType="{x:Type pages:PatientCreate}"
+                        Visibility="Collapsed" />
+                    <ui:NavigationItem
+                        Content="Patients"
+                        Icon="PersonPill24"
+                        PageType="{x:Type pages:PatientEdit}"
+                        Visibility="Collapsed" />
+                    <ui:NavigationItem
                         Content="Doctors"
                         Icon="Doctor24"
                         PageType="{x:Type pages:DoctorList}" />
                     <ui:NavigationItem
-                        Content="Schedule"
+                        Content="Doctors"
+                        Icon="Doctor24"
+                        PageType="{x:Type pages:DoctorCreate}"
+                        Visibility="Collapsed" />
+                    <ui:NavigationItem
+                        Content="Doctors"
+                        Icon="Doctor24"
+                        PageType="{x:Type pages:DoctorEdit}"
+                        Visibility="Collapsed" />
+                    <ui:NavigationItem
+                        Content="Doctors"
+                        Icon="Doctor24"
+                        PageType="{x:Type pages:DoctorDetail}"
+                        Visibility="Collapsed" />
+                    <ui:NavigationItem
+                        Content="Schedules"
                         Icon="CalendarClock24"
                         PageType="{x:Type pages:ScheduleList}" />
+                    <ui:NavigationItem
+                        Content="Schedules"
+                        Icon="CalendarClock24"
+                        PageType="{x:Type pages:ScheduleCreate}"
+                        Visibility="Collapsed" />
                 </ui:NavigationStore.Items>
                 <ui:NavigationStore.Footer>
                     <ui:NavigationItem

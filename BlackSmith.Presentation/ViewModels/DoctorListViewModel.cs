@@ -6,13 +6,13 @@ using BlackSmith.Presentation.Commands;
 using BlackSmith.Presentation.Events;
 using BlackSmith.Presentation.Interfaces;
 using BlackSmith.Presentation.Models;
-using BlackSmith.Presentation.Services;
 using BlackSmith.Presentation.Views.Pages;
 using BlackSmith.Service.DTOs;
 using BlackSmith.Service.Interfaces;
 using JetBrains.Annotations;
 using Prism.Events;
 using Prism.Mvvm;
+using Wpf.Ui.Mvvm.Contracts;
 
 namespace BlackSmith.Presentation.ViewModels;
 
@@ -22,7 +22,7 @@ public class DoctorListViewModel : BindableBase
     private readonly IEventAggregator _eventAggregator;
     private readonly IMapper _mapper;
     private readonly IModalService _modalService;
-    private readonly INavService _navService;
+    private readonly INavigationService _navigationService;
     private IEnumerable<Doctor> _allDoctors = new List<Doctor>();
     private ObservableCollection<Doctor> _doctors = null!;
     private string _searchInput = "";
@@ -30,15 +30,15 @@ public class DoctorListViewModel : BindableBase
 
     public DoctorListViewModel(IMapper mapper,
         IModalService modalService,
-        INavService navService,
         IDoctorService doctorService,
-        IEventAggregator eventAggregator)
+        IEventAggregator eventAggregator,
+        INavigationService navigationService)
     {
         _mapper = mapper;
         _modalService = modalService;
-        _navService = navService;
         _doctorService = doctorService;
         _eventAggregator = eventAggregator;
+        _navigationService = navigationService;
 
         LoadData();
 
@@ -79,7 +79,7 @@ public class DoctorListViewModel : BindableBase
     private void OnDetails(Doctor doctor)
     {
         _eventAggregator.GetEvent<DetailsDoctorEvent>().Publish(doctor);
-        _navService.Navigate(new NavigationTriggeredEventArgs { Page = typeof(DoctorDetail) });
+        _navigationService.Navigate(typeof(DoctorDetail));
     }
 
     private void FilterData(string searchInput)
@@ -102,13 +102,13 @@ public class DoctorListViewModel : BindableBase
     private void OnEdit(Doctor doctor)
     {
         _eventAggregator.GetEvent<EditDoctorEvent>().Publish(doctor);
-        _navService.Navigate(new NavigationTriggeredEventArgs { Page = typeof(DoctorEdit) });
+        _navigationService.Navigate(typeof(DoctorEdit));
     }
 
     private void OnCreate()
     {
         _eventAggregator.GetEvent<CreateDoctorEvent>().Publish();
-        _navService.Navigate(new NavigationTriggeredEventArgs { Page = typeof(DoctorCreate) });
+        _navigationService.Navigate(typeof(DoctorCreate));
     }
 
     private void OnClearSearch()

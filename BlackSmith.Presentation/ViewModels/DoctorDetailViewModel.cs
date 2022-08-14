@@ -1,20 +1,19 @@
 ﻿using BlackSmith.Presentation.Commands;
-using BlackSmith.Presentation.Interfaces;
 using BlackSmith.Presentation.Models;
-using BlackSmith.Presentation.Services;
 using BlackSmith.Presentation.Views.Pages;
 using Prism.Mvvm;
+using Wpf.Ui.Mvvm.Contracts;
 
 namespace BlackSmith.Presentation.ViewModels;
 
 public class DoctorDetailViewModel : BindableBase
 {
-    private readonly INavService _navService;
+    private readonly INavigationService _navigationService;
     private Doctor _doctor = null!;
 
-    public DoctorDetailViewModel(INavService navService)
+    public DoctorDetailViewModel(INavigationService navigationService)
     {
-        _navService = navService;
+        _navigationService = navigationService;
         GoBack = new RelayCommand(OnGoBack);
     }
 
@@ -32,6 +31,6 @@ public class DoctorDetailViewModel : BindableBase
 
     private void OnGoBack()
     {
-        _navService.Navigate(new NavigationTriggeredEventArgs { Page = typeof(DoctorList) });
+        _navigationService.Navigate(typeof(DoctorList));
     }
 }

@@ -6,13 +6,13 @@ using BlackSmith.Presentation.Commands;
 using BlackSmith.Presentation.Events;
 using BlackSmith.Presentation.Interfaces;
 using BlackSmith.Presentation.Models;
-using BlackSmith.Presentation.Services;
 using BlackSmith.Presentation.Views.Pages;
 using BlackSmith.Service.DTOs;
 using BlackSmith.Service.Interfaces;
 using JetBrains.Annotations;
 using Prism.Events;
 using Prism.Mvvm;
+using Wpf.Ui.Mvvm.Contracts;
 
 namespace BlackSmith.Presentation.ViewModels;
 
@@ -21,23 +21,23 @@ public class PatientListViewModel : BindableBase
     private readonly IEventAggregator _eventAggregator;
     private readonly IMapper _mapper;
     private readonly IModalService _modalService;
-    private readonly INavService _navService;
+    private readonly INavigationService _navigationService;
     private readonly IPatientService _patientService;
     private IEnumerable<Patient> _allPatients = new List<Patient>();
     private ObservableCollection<Patient> _patients = null!;
     private string _searchInput = "";
 
-    public PatientListViewModel(INavService navService,
-        IModalService modalService,
+    public PatientListViewModel(IModalService modalService,
         IPatientService patientService,
         IMapper mapper,
-        IEventAggregator eventAggregator)
+        IEventAggregator eventAggregator,
+        INavigationService navigationService)
     {
-        _navService = navService;
         _modalService = modalService;
         _patientService = patientService;
         _mapper = mapper;
         _eventAggregator = eventAggregator;
+        _navigationService = navigationService;
 
         LoadPatients();
 
@@ -84,13 +84,13 @@ public class PatientListViewModel : BindableBase
     private void OnEdit(Patient patient)
     {
         _eventAggregator.GetEvent<EditPatientEvent>().Publish(patient);
-        _navService.Navigate(new NavigationTriggeredEventArgs { Page = typeof(PatientEdit) });
+        _navigationService.Navigate(typeof(PatientEdit));
     }
 
     private void OnCreate()
     {
         OnClearSearch();
-        _navService.Navigate(new NavigationTriggeredEventArgs { Page = typeof(PatientCreate) });
+        _navigationService.Navigate(typeof(PatientCreate));
     }
 
     [PublicAPI]

@@ -1,8 +1,9 @@
-﻿using System.Windows;
-using BlackSmith.Presentation.Interfaces;
-using BlackSmith.Presentation.Services;
+﻿using System.Threading.Tasks;
+using System.Windows;
 using BlackSmith.Presentation.Views.Pages;
 using Wpf.Ui.Appearance;
+using Wpf.Ui.Common;
+using Wpf.Ui.Controls.Interfaces;
 using Wpf.Ui.Mvvm.Contracts;
 
 namespace BlackSmith.Presentation;
@@ -12,31 +13,37 @@ namespace BlackSmith.Presentation;
 /// </summary>
 public partial class MainWindow
 {
-    private readonly IPageService _pageService;
     private readonly IThemeService _themeService;
 
-    public MainWindow(INavService navService,
+    public MainWindow(INavigationService navigationService,
         IPageService pageService,
         IThemeService themeService)
     {
-        _pageService = pageService;
         _themeService = themeService;
-        navService.NavigationTriggered += OnNavigationTriggered;
+
         InitializeComponent();
+
+        navigationService.SetNavigationControl(RootNavigation);
         RootNavigation.PageService = pageService;
-        navService.Navigate(new NavigationTriggeredEventArgs { Page = typeof(Home) });
+
+        Task.Run(async () =>
+        {
+            await Task.Delay(400);
+            await Dispatcher.InvokeAsync(() => { RootNavigation.Navigate(typeof(Home)); });
+            return true;
+        });
     }
 
-    private void OnNavigationTriggered(object? sender,
-        NavigationTriggeredEventArgs e)
-    {
-        var page = _pageService.GetPage(e.Page);
-        RootFrame.NavigationService.Navigate(page);
-    }
 
     private void NavigationButtonTheme_OnClick(object sender,
         RoutedEventArgs e)
     {
         _themeService.SetTheme(_themeService.GetTheme() == ThemeType.Dark ? ThemeType.Light : ThemeType.Dark);
+    }
+
+    private void RootNavigation_OnNavigated(INavigation sender,
+        RoutedNavigationEventArgs e)
+    {
+        sender.Current.IsActive = true;
     }
 }

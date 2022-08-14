@@ -11,22 +11,33 @@ public class MainWindowViewModel : BindableBase
     private readonly DoctorDetailViewModel _doctorDetailViewModel;
     private readonly DoctorEditViewModel _doctorEditViewModel;
     private readonly PatientEditViewModel _patientEditViewModel;
+    private readonly ScheduleCreateViewModel _scheduleCreateViewModel;
 
     public MainWindowViewModel(IEventAggregator eventAggregator,
         DoctorEditViewModel doctorEditViewModel,
         PatientEditViewModel patientEditViewModel,
         DoctorDetailViewModel doctorDetailViewModel,
-        DoctorCreateViewModel doctorCreateViewModel)
+        DoctorCreateViewModel doctorCreateViewModel,
+        ScheduleCreateViewModel scheduleCreateViewModel)
     {
         _doctorEditViewModel = doctorEditViewModel;
         _patientEditViewModel = patientEditViewModel;
         _doctorDetailViewModel = doctorDetailViewModel;
         _doctorCreateViewModel = doctorCreateViewModel;
+        _scheduleCreateViewModel = scheduleCreateViewModel;
 
         eventAggregator.GetEvent<CreateDoctorEvent>().Subscribe(OnCreateDoctorEvent);
         eventAggregator.GetEvent<EditDoctorEvent>().Subscribe(OnDoctorEditEvent);
+
         eventAggregator.GetEvent<EditPatientEvent>().Subscribe(OnPatientEditEvent);
         eventAggregator.GetEvent<DetailsDoctorEvent>().Subscribe(OnDoctorDetailsEvent);
+
+        eventAggregator.GetEvent<CreateScheduleEvent>().Subscribe(OnCreateScheduleEvent);
+    }
+
+    private void OnCreateScheduleEvent()
+    {
+        _scheduleCreateViewModel.SetNewSchedule();
     }
 
     private void OnCreateDoctorEvent()

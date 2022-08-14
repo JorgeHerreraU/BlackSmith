@@ -4,8 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:BlackSmith.Presentation.ViewModels"
     xmlns:wpfui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="Home"
+    d:DataContext="{d:DesignInstance viewModels:HomeViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -77,6 +79,7 @@
             <wpfui:CardAction
                 Grid.Column="0"
                 Margin="0,0,4,0"
+                Command="{Binding GoToPatients}"
                 Icon="PersonPill24"
                 Tag="input">
                 <StackPanel>
@@ -112,6 +115,7 @@
             <wpfui:CardAction
                 Grid.Column="2"
                 Margin="4,0,4,0"
+                Command="{Binding GoToSchedules}"
                 Icon="CalendarClock24"
                 Tag="colors">
                 <StackPanel>
@@ -138,7 +142,7 @@
                 Margin="0,0,0,4"
                 Content="Source code on GitHub"
                 Icon="Link48"
-                NavigateUri="https://github.com/lepoco/wpfui" />
+                NavigateUri="https://github.com/JorgeHerreraU" />
         </Grid>
 
     </Grid>

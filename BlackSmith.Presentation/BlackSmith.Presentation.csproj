@@ -15,9 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Assets\calendar.png" />
     <None Remove="Assets\doctor.png" />
     <None Remove="Assets\error.png" />
-    <None Remove="Assets\fluent-ui-microsoft.png" />
     <None Remove="Assets\headquarter.jpg" />
     <None Remove="Assets\patient.png" />
   </ItemGroup>
@@ -36,13 +36,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Assets\calendar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\doctor.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\error.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\fluent-ui-microsoft.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\headquarter.jpg">
@@ -51,6 +51,14 @@
     <Content Include="Assets\patient.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EditorConfigFiles Remove="E:\Projects\DotNet\BlackSmith\BlackSmith.Presentation\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="E:\Projects\DotNet\BlackSmith\BlackSmith.Presentation\.editorconfig" />
   </ItemGroup>
 
 </Project>

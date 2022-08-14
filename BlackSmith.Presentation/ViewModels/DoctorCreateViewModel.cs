@@ -8,12 +8,12 @@ using BlackSmith.Presentation.Commands;
 using BlackSmith.Presentation.Helpers;
 using BlackSmith.Presentation.Interfaces;
 using BlackSmith.Presentation.Models;
-using BlackSmith.Presentation.Services;
 using BlackSmith.Presentation.Views.Pages;
 using BlackSmith.Service.DTOs;
 using BlackSmith.Service.Interfaces;
 using FluentValidation;
 using Prism.Mvvm;
+using Wpf.Ui.Mvvm.Contracts;
 
 namespace BlackSmith.Presentation.ViewModels;
 
@@ -22,20 +22,20 @@ public class DoctorCreateViewModel : BindableBase
     private readonly IDoctorService _doctorService;
     private readonly IMapper _mapper;
     private readonly IModalService _modalService;
-    private readonly INavService _navService;
+    private readonly INavigationService _navigationService;
     private ObservableCollection<WorkingDay> _availableWorkingDays = new();
     private Doctor _doctor = null!;
     private bool _isTouched;
 
-    public DoctorCreateViewModel(INavService navService,
-        IDoctorService doctorService,
+    public DoctorCreateViewModel(IDoctorService doctorService,
         IMapper mapper,
-        IModalService modalService)
+        IModalService modalService,
+        INavigationService navigationService)
     {
-        _navService = navService;
         _doctorService = doctorService;
         _mapper = mapper;
         _modalService = modalService;
+        _navigationService = navigationService;
 
         SaveCommand = new RelayCommand(OnSave, CanSave);
         GoBack = new RelayCommand(OnGoBack);
@@ -190,6 +190,6 @@ public class DoctorCreateViewModel : BindableBase
 
     private void OnGoBack()
     {
-        _navService.Navigate(new NavigationTriggeredEventArgs { Page = typeof(DoctorList) });
+        _navigationService.Navigate(typeof(DoctorList));
     }
 }

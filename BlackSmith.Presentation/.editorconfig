@@ -1,0 +1,7 @@
+[*.cs]
+csharp_style_unused_value_expression_statement_preference = leave_unused:warning
+csharp_style_unused_value_expression_task_statement_preference = discard_variable:warning
+csharp_style_unused_value_expression_getter_statement_preference = discard_variable:warning
+csharp_style_unused_value_assignment_preference = remove_lhs_and_operator:warning
+csharp_preserve_single_line_statements = true
+csharp_preserve_single_line_blocks = true

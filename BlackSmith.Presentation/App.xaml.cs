@@ -51,7 +51,6 @@ public partial class App
 
     private static void RegisterLocalDependencies(ref ServiceCollection services)
     {
-        services.AddSingleton<INavService, NavService>();
         services.AddSingleton<INavigationService, NavigationService>();
         services.AddSingleton<IModalService, ModalService>();
         services.AddSingleton<Settings>();
@@ -86,6 +85,8 @@ public partial class App
         // Schedule Pages
         services.AddSingleton<ScheduleList>();
         services.AddSingleton<ScheduleListViewModel>();
+        services.AddSingleton<ScheduleCreate>();
+        services.AddSingleton<ScheduleCreateViewModel>();
     }
 
     private static void RegisterLocalAutoMapperConfiguration(ref MapperConfigurationExpression mapperConfig)

@@ -1,18 +1,16 @@
-﻿using BlackSmith.Presentation.ViewModels;
-using Wpf.Ui.Common.Interfaces;
+﻿using System.Windows.Controls;
+using BlackSmith.Presentation.ViewModels;
 
 namespace BlackSmith.Presentation.Views.Pages;
 
 /// <summary>
 ///     Interaction logic for DoctorCreate.xaml
 /// </summary>
-public partial class DoctorCreate : INavigableView<DoctorCreateViewModel>
+public partial class DoctorCreate : Page
 {
     public DoctorCreate(DoctorCreateViewModel viewModel)
     {
         DataContext = viewModel;
         InitializeComponent();
     }
-
-    public DoctorCreateViewModel ViewModel { get; }
 }

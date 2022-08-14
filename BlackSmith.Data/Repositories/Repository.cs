@@ -1,8 +1,8 @@
-﻿using System.Linq.Expressions;
-using BlackSmith.Domain.Interfaces;
+﻿using BlackSmith.Domain.Interfaces;
 using BlackSmith.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.Linq.Expressions;
 
 namespace BlackSmith.Data.Repositories;
 
@@ -43,6 +43,15 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
         query = includes.Aggregate(query, (current,
             include) => current.Include(include));
         return await query.ToListAsync();
+    }
+
+    public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+    {
+        await using var context = _context.CreateDbContext();
+        IQueryable<T> query = context.Set<T>();
+        query = includes.Aggregate(query, (current,
+            include) => current.Include(include));
+        return await query.Where(predicate).ToListAsync();
     }
 
     public async Task<T?> Get(Expression<Func<T, bool>> predicate)
@@ -149,4 +158,11 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
                typeof(ICollection<>).IsAssignableFrom(property.GetPropertyAccess().PropertyType
                    .GetGenericTypeDefinition());
     }
+
+    public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>> predicate)
+    {
+        await using var context = _context.CreateDbContext();
+        return await context.Set<T>().Where(predicate).ToListAsync();
+    }
+
 }
