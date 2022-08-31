@@ -34,6 +34,9 @@
     <Page Update="Controls\Modal.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="TemplatesResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\Pages\DoctorCreate.xaml">
       <SubType>Designer</SubType>
     </Page>

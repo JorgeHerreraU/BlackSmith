@@ -17,7 +17,7 @@ public class PatientsBL
 
     public async Task<IEnumerable<Patient>> GetPatients()
     {
-        return await _repository.GetAll(x => x.Address);
+        return await _repository.GetAll(patient => patient.Address);
     }
 
     public async Task<Patient> CreatePatient(Patient patient)
@@ -31,7 +31,7 @@ public class PatientsBL
 
     private async Task<bool> PatientEmailExists(string email)
     {
-        return await _repository.Get(x => x.Email.ToLower() == email.ToLower()) is not null;
+        return await _repository.Get(patient => patient.Email.ToLower() == email.ToLower()) is not null;
     }
 
     public async Task<Patient> UpdatePatient(Patient patient)

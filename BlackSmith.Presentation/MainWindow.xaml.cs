@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using BlackSmith.Presentation.Views.Pages;
+using System.Threading.Tasks;
 using System.Windows;
-using BlackSmith.Presentation.Views.Pages;
 using Wpf.Ui.Appearance;
 using Wpf.Ui.Common;
 using Wpf.Ui.Controls.Interfaces;

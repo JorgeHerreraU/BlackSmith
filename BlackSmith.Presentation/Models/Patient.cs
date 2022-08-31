@@ -74,7 +74,7 @@ public class Patient : ValidatableBase
     }
 
     [Required]
-    [Range(21, 99)]
+    [Range(1, 99)]
     public int Age
     {
         get => _age;

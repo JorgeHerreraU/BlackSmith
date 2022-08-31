@@ -1,5 +1,5 @@
-﻿using BlackSmith.Presentation.Commands;
-using BlackSmith.Presentation.Views.Pages;
+﻿using BlackSmith.Presentation.Views.Pages;
+using Prism.Commands;
 using Prism.Mvvm;
 using Wpf.Ui.Mvvm.Contracts;
 
@@ -13,14 +13,14 @@ public class HomeViewModel : BindableBase
     {
         _navigationService = navigationService;
 
-        GoToDoctors = new RelayCommand(OnGoToDoctors);
-        GoToPatients = new RelayCommand(OnGoToPatients);
-        GoToSchedules = new RelayCommand(OnGoToSchedules);
+        GoToDoctors = new DelegateCommand(OnGoToDoctors);
+        GoToPatients = new DelegateCommand(OnGoToPatients);
+        GoToSchedules = new DelegateCommand(OnGoToSchedules);
     }
 
-    public RelayCommand GoToDoctors { get; }
-    public RelayCommand GoToPatients { get; }
-    public RelayCommand GoToSchedules { get; }
+    public DelegateCommand GoToDoctors { get; }
+    public DelegateCommand GoToPatients { get; }
+    public DelegateCommand GoToSchedules { get; }
 
     private void OnGoToSchedules()
     {

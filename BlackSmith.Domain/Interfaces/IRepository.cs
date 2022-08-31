@@ -1,5 +1,5 @@
-﻿using System.Linq.Expressions;
-using BlackSmith.Domain.Models;
+﻿using BlackSmith.Domain.Models;
+using System.Linq.Expressions;
 
 namespace BlackSmith.Domain.Interfaces;
 

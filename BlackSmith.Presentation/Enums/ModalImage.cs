@@ -1,6 +1,6 @@
 ﻿namespace BlackSmith.Presentation.Enums;
 
-public enum ModalImage
+public enum ImageType
 {
     Error,
     Warning

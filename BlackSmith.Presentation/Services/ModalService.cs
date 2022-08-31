@@ -1,8 +1,9 @@
-﻿using System.Threading.Tasks;
-using System.Windows;
-using BlackSmith.Presentation.Controls;
+﻿using BlackSmith.Presentation.Controls;
 using BlackSmith.Presentation.Enums;
 using BlackSmith.Presentation.Interfaces;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Windows;
 using MessageBox = Wpf.Ui.Controls.MessageBox;
 
 namespace BlackSmith.Presentation.Services;
@@ -14,9 +15,22 @@ public class ModalService : IModalService
         new MessageBox
         {
             Title = "Error",
-            Content = new Modal(message, ModalImage.Error),
+            Content = new Modal(message, ImageType.Error),
             SizeToContent = SizeToContent.WidthAndHeight,
-            ShowFooter = false
+            ShowFooter = false,
+            MicaEnabled = true,
+        }.Show();
+    }
+
+    public void ShowErrorMessage(IEnumerable<string> messages)
+    {
+        new MessageBox
+        {
+            Title = "Error",
+            Content = new Modal(messages, ImageType.Error),
+            SizeToContent = SizeToContent.WidthAndHeight,
+            ShowFooter = false,
+            MicaEnabled = true,
         }.Show();
     }
 
@@ -27,15 +41,13 @@ public class ModalService : IModalService
 
         messageBox.Show();
 
-        messageBox.ButtonLeftClick += (_,
-            _) =>
+        messageBox.ButtonLeftClick += (_, _) =>
         {
             completionSource.SetResult(true);
             messageBox.Close();
         };
 
-        messageBox.ButtonRightClick += (_,
-            _) =>
+        messageBox.ButtonRightClick += (_, _) =>
         {
             completionSource.SetResult(false);
             messageBox.Close();
@@ -43,4 +55,6 @@ public class ModalService : IModalService
 
         return await completionSource.Task;
     }
+
+
 }

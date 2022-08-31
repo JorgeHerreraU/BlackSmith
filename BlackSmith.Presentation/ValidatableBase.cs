@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Prism.Mvvm;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Prism.Mvvm;
 
 namespace BlackSmith.Presentation;
 
@@ -13,14 +13,15 @@ public class ValidatableBase : BindableBase, INotifyDataErrorInfo
 {
     private readonly Dictionary<string, List<string?>> _errors = new();
 
-    public bool HasErrors => _errors.Any();
+    public bool HasErrors => _errors.Count > 0;
 
     public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
 
     public IEnumerable GetErrors(string? propertyName)
     {
-        if (propertyName is null) return Enumerable.Empty<string>();
-        return _errors.TryGetValue(propertyName, out var list) ? list! : Enumerable.Empty<string>();
+        return propertyName is null
+            ? Enumerable.Empty<string>()
+            : (IEnumerable)(_errors.TryGetValue(propertyName, out var list) ? list! : Enumerable.Empty<string>());
     }
 
     protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
@@ -46,7 +47,8 @@ public class ValidatableBase : BindableBase, INotifyDataErrorInfo
 
             RemoveExistingErrors(validationResults);
 
-            if (result is null) return;
+            if (result is null)
+                return;
 
             var key = result.MemberNames.First();
 
@@ -58,11 +60,13 @@ public class ValidatableBase : BindableBase, INotifyDataErrorInfo
 
     private void RemoveExistingErrors(IReadOnlyCollection<ValidationResult> validationResults)
     {
-        foreach (var kv in _errors.ToList()
-                     .Where(kv => validationResults.All(r => r.MemberNames.All(m => m != kv.Key))))
+        foreach (var keyValue in _errors.ToList()
+                     .Where(kv => validationResults.All(
+                         validationResult => validationResult.MemberNames.All(
+                             member => member != kv.Key))))
         {
-            _errors.Remove(kv.Key);
-            OnErrorsChanged(kv.Key);
+            _errors.Remove(keyValue.Key);
+            OnErrorsChanged(keyValue.Key);
         }
     }
 }

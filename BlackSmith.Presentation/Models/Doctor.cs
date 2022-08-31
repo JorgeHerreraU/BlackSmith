@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using BlackSmith.Presentation.Enums;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using BlackSmith.Presentation.Enums;
 
 namespace BlackSmith.Presentation.Models;
 

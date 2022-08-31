@@ -45,7 +45,9 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
         return await query.ToListAsync();
     }
 
-    public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+    public async Task<IEnumerable<T>> GetAll(
+        Expression<Func<T, bool>> predicate,
+        params Expression<Func<T, object>>[] includes)
     {
         await using var context = _context.CreateDbContext();
         IQueryable<T> query = context.Set<T>();
@@ -97,6 +99,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
         dbEntry.CurrentValues.SetValues(entity);
 
         foreach (var property in includes)
+        {
             if (IsPropertyTypeCollection(property))
             {
                 var propertyName = property.GetPropertyAccess().Name;
@@ -125,7 +128,8 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
                     }
                     else
                     {
-                        if (oldItem is null) continue;
+                        if (oldItem is null)
+                            continue;
                         context.Entry(oldItem).CurrentValues.SetValues(item);
                         dbItemsMap.Remove(item.Id);
                     }
@@ -146,6 +150,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
 
                 context.Entry(dbChildEntity).CurrentValues.SetValues(item);
             }
+        }
 
         await context.SaveChangesAsync();
 

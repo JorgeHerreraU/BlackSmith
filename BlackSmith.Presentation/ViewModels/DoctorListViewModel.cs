@@ -1,17 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using AutoMapper;
-using BlackSmith.Presentation.Commands;
+﻿using AutoMapper;
 using BlackSmith.Presentation.Events;
 using BlackSmith.Presentation.Interfaces;
 using BlackSmith.Presentation.Models;
 using BlackSmith.Presentation.Views.Pages;
 using BlackSmith.Service.DTOs;
 using BlackSmith.Service.Interfaces;
-using JetBrains.Annotations;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Wpf.Ui.Mvvm.Contracts;
 
 namespace BlackSmith.Presentation.ViewModels;
@@ -23,8 +22,10 @@ public class DoctorListViewModel : BindableBase
     private readonly IMapper _mapper;
     private readonly IModalService _modalService;
     private readonly INavigationService _navigationService;
+
     private IEnumerable<Doctor> _allDoctors = new List<Doctor>();
     private ObservableCollection<Doctor> _doctors = null!;
+
     private string _searchInput = "";
 
 
@@ -42,11 +43,11 @@ public class DoctorListViewModel : BindableBase
 
         LoadData();
 
-        ClearSearchCommand = new RelayCommand(OnClearSearch);
-        GoToCreate = new RelayCommand(OnCreate);
-        EditCommand = new RelayCommand<Doctor>(OnEdit);
-        DeleteCommand = new RelayCommand<Doctor>(OnDelete);
-        DetailsCommand = new RelayCommand<Doctor>(OnDetails);
+        ClearSearchCommand = new DelegateCommand(OnClearSearch);
+        GoToCreate = new DelegateCommand(OnCreate);
+        EditCommand = new DelegateCommand<Doctor>(OnEdit);
+        DeleteCommand = new DelegateCommand<Doctor>(OnDelete);
+        DetailsCommand = new DelegateCommand<Doctor>(OnDetails);
     }
 
     public ObservableCollection<Doctor> Doctors
@@ -70,11 +71,11 @@ public class DoctorListViewModel : BindableBase
         }
     }
 
-    public RelayCommand GoToCreate { get; }
-    public RelayCommand ClearSearchCommand { get; }
-    public RelayCommand<Doctor> EditCommand { get; }
-    public RelayCommand<Doctor> DeleteCommand { get; }
-    public RelayCommand<Doctor> DetailsCommand { get; }
+    public DelegateCommand GoToCreate { get; }
+    public DelegateCommand ClearSearchCommand { get; }
+    public DelegateCommand<Doctor> EditCommand { get; }
+    public DelegateCommand<Doctor> DeleteCommand { get; }
+    public DelegateCommand<Doctor> DetailsCommand { get; }
 
     private void OnDetails(Doctor doctor)
     {
@@ -94,7 +95,8 @@ public class DoctorListViewModel : BindableBase
     private async void OnDelete(Doctor doctor)
     {
         var confirmDeletion = await _modalService.ShowConfirmDialog("Are you sure you want to delete this doctor?");
-        if (!confirmDeletion) return;
+        if (!confirmDeletion)
+            return;
         await _doctorService.DeleteDoctor(_mapper.Map<DoctorDTO>(doctor));
         LoadData();
     }
@@ -116,7 +118,6 @@ public class DoctorListViewModel : BindableBase
         SearchInput = "";
     }
 
-    [PublicAPI]
     public async void LoadData()
     {
         var doctors = await _doctorService.GetDoctors();

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlackSmith.Presentation.Extensions;
+using System;
 using System.Windows.Markup;
 
 namespace BlackSmith.Presentation.Enums;

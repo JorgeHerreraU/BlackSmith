@@ -1,6 +1,6 @@
-﻿using BlackSmith.Presentation.Commands;
-using BlackSmith.Presentation.Models;
+﻿using BlackSmith.Presentation.Models;
 using BlackSmith.Presentation.Views.Pages;
+using Prism.Commands;
 using Prism.Mvvm;
 using Wpf.Ui.Mvvm.Contracts;
 
@@ -14,7 +14,7 @@ public class DoctorDetailViewModel : BindableBase
     public DoctorDetailViewModel(INavigationService navigationService)
     {
         _navigationService = navigationService;
-        GoBack = new RelayCommand(OnGoBack);
+        GoBack = new DelegateCommand(OnGoBack);
     }
 
     public Doctor Doctor
@@ -27,7 +27,7 @@ public class DoctorDetailViewModel : BindableBase
         }
     }
 
-    public RelayCommand GoBack { get; }
+    public DelegateCommand GoBack { get; }
 
     private void OnGoBack()
     {

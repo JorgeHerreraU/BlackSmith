@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows;
-using AutoMapper;
+﻿using AutoMapper;
 using BlackSmith.Data;
 using BlackSmith.Presentation.Interfaces;
 using BlackSmith.Presentation.Models;
@@ -11,6 +9,8 @@ using BlackSmith.Service;
 using BlackSmith.Service.DTOs;
 using Microsoft.Extensions.DependencyInjection;
 using Prism.Events;
+using System;
+using System.Windows;
 using Wpf.Ui.Mvvm.Contracts;
 using Wpf.Ui.Mvvm.Services;
 

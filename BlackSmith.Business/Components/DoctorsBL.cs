@@ -18,7 +18,15 @@ public class DoctorsBL
 
     public async Task<IEnumerable<Doctor>> GetDoctors()
     {
-        return await _repository.GetAll(x => x.Address, x => x.WorkingDays);
+        return await _repository.GetAll(doctor => doctor.Address, doctor => doctor.WorkingDays);
+    }
+
+    public async Task<IEnumerable<Doctor>> GetDoctorsBySpeciality(Speciality speciality)
+    {
+        return await _repository.GetAll(
+            doctor => doctor.Speciality == speciality,
+            doctor => doctor.Address,
+            x => x.WorkingDays);
     }
 
     public async Task<Doctor> CreateDoctor(Doctor doctor)
@@ -33,7 +41,7 @@ public class DoctorsBL
     public async Task<Doctor> UpdateDoctor(Doctor doctor)
     {
         await _validator.ValidateAndThrowAsync(doctor);
-        await _repository.Update(doctor, x => x.WorkingDays, x => x.Address);
+        await _repository.Update(doctor, doctor => doctor.WorkingDays, x => x.Address);
         return doctor;
     }
 
@@ -42,8 +50,16 @@ public class DoctorsBL
         return await _repository.Delete(doctor);
     }
 
+    public bool GetSpecialityIsAvailable(IEnumerable<Doctor> doctors, DateTime day)
+    {
+        return doctors.SelectMany(doctor => doctor.WorkingDays)
+            .Select(workingDay => workingDay.Day)
+            .Distinct()
+            .Contains(day.DayOfWeek);
+    }
+
     private async Task<bool> DoctorEmailExists(string email)
     {
-        return await _repository.Get(x => x.Email.ToLower() == email.ToLower()) is not null;
+        return await _repository.Get(doctor => doctor.Email.ToLower() == email.ToLower()) is not null;
     }
 }

@@ -1,45 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using AutoMapper;
-using BlackSmith.Presentation.Commands;
-using BlackSmith.Presentation.Helpers;
+﻿using AutoMapper;
 using BlackSmith.Presentation.Interfaces;
 using BlackSmith.Presentation.Models;
 using BlackSmith.Presentation.Views.Pages;
 using BlackSmith.Service.DTOs;
 using BlackSmith.Service.Interfaces;
 using FluentValidation;
-using Prism.Mvvm;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Wpf.Ui.Mvvm.Contracts;
 
 namespace BlackSmith.Presentation.ViewModels;
 
-public class DoctorCreateViewModel : BindableBase
+public class DoctorCreateViewModel : EditableViewModelBase
 {
     private readonly IDoctorService _doctorService;
     private readonly IMapper _mapper;
-    private readonly IModalService _modalService;
+
     private readonly INavigationService _navigationService;
     private ObservableCollection<WorkingDay> _availableWorkingDays = new();
+
     private Doctor _doctor = null!;
-    private bool _isTouched;
 
     public DoctorCreateViewModel(IDoctorService doctorService,
         IMapper mapper,
         IModalService modalService,
-        INavigationService navigationService)
+        INavigationService navigationService) : base(modalService)
     {
         _doctorService = doctorService;
         _mapper = mapper;
-        _modalService = modalService;
         _navigationService = navigationService;
-
-        SaveCommand = new RelayCommand(OnSave, CanSave);
-        GoBack = new RelayCommand(OnGoBack);
-        ClearCommand = new RelayCommand(OnClear);
     }
 
     public List<TimeOnly> AvailableHours { get; } = new()
@@ -66,10 +57,6 @@ public class DoctorCreateViewModel : BindableBase
         }
     }
 
-    public RelayCommand GoBack { get; }
-    public RelayCommand SaveCommand { get; }
-    public RelayCommand ClearCommand { get; }
-
     public Doctor Doctor
     {
         get => _doctor;
@@ -80,22 +67,7 @@ public class DoctorCreateViewModel : BindableBase
         }
     }
 
-    public bool IsTouched
-    {
-        get => _isTouched;
-        set
-        {
-            _isTouched = value;
-            RaisePropertyChanged();
-        }
-    }
-
-    private void OnClear()
-    {
-        SetNewDoctor();
-    }
-
-    public void SetNewDoctor()
+    public override void Set()
     {
         Doctor = new Doctor();
         AvailableWorkingDays = new ObservableCollection<WorkingDay>
@@ -136,32 +108,16 @@ public class DoctorCreateViewModel : BindableBase
                 IsChecked = false
             }
         };
-        Doctor.PropertyChanged += OnDoctorPropertyChanged;
-        Doctor.Address.PropertyChanged += OnDoctorPropertyChanged;
-        Doctor.ErrorsChanged += RaiseCanChange;
-        Doctor.Address.ErrorsChanged += RaiseCanChange;
+        SubscribeChanges();
         IsTouched = false;
     }
 
-    private void RaiseCanChange(object? sender,
-        DataErrorsChangedEventArgs e)
-    {
-        SaveCommand.RaiseCanExecuteChanged();
-    }
-
-    private void OnDoctorPropertyChanged(object? sender,
-        PropertyChangedEventArgs e)
-    {
-        if (sender != null)
-            IsTouched = StringHelper.IsAnyStringNullOrEmpty(sender) is false;
-    }
-
-    private bool CanSave()
+    protected override bool CanSave()
     {
         return !Doctor.HasErrors && !Doctor.Address.HasErrors;
     }
 
-    private async void OnSave()
+    protected override async void OnSave()
     {
         try
         {
@@ -174,22 +130,16 @@ public class DoctorCreateViewModel : BindableBase
             OnSaveErrorHandler(ex);
         }
     }
-
-    private void OnSaveErrorHandler(Exception ex)
-    {
-        switch (ex)
-        {
-            case ValidationException:
-                _modalService.ShowErrorMessage(StringHelper.SanitizeFluentErrorMessage(ex.Message));
-                break;
-            case ArgumentException:
-                _modalService.ShowErrorMessage(ex.Message);
-                break;
-        }
-    }
-
-    private void OnGoBack()
+    protected override void OnGoBack()
     {
         _navigationService.Navigate(typeof(DoctorList));
+    }
+
+    public override void SubscribeChanges()
+    {
+        Doctor.PropertyChanged += OnPropertyChanged;
+        Doctor.Address.PropertyChanged += OnPropertyChanged;
+        Doctor.ErrorsChanged += RaiseCanChange;
+        Doctor.Address.ErrorsChanged += RaiseCanChange;
     }
 }

@@ -1,7 +1,8 @@
-﻿using System;
+﻿using BlackSmith.Presentation.Enums;
+using System;
+using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using BlackSmith.Presentation.Enums;
 
 namespace BlackSmith.Presentation.Controls;
 
@@ -10,25 +11,56 @@ namespace BlackSmith.Presentation.Controls;
 /// </summary>
 public partial class Modal : UserControl
 {
-    public Modal(string message, ModalImage modalImage)
+    public Modal(string message, ImageType image)
     {
         InitializeComponent();
-        SetText(message);
-        SetImage(modalImage);
+        OnInitialize(message, image);
+    }
+    public Modal(IEnumerable<string> messages, ImageType image)
+    {
+        InitializeComponent();
+        OnInitialize(messages, image);
     }
 
-    private void SetText(string message)
+    public BitmapImage DisplayImage { get; set; } = new();
+
+    private void OnInitialize(string message, ImageType image)
     {
-        MainContent.Text = message;
+        MessageList.ItemsSource = new List<ModalMessage> {
+            new ModalMessage { Title = message, Image = GetDisplayImage(image) } };
     }
 
-    private void SetImage(ModalImage modalImage)
+    private void OnInitialize(IEnumerable<string> messages, ImageType image)
     {
-        MainImage.Source = modalImage switch
+        var modalMessages = new List<ModalMessage>();
+        var displayImage = GetDisplayImage(image);
+
+        foreach (var message in messages)
         {
-            ModalImage.Error => new BitmapImage(new Uri(@"/Assets/error.png", UriKind.Relative)),
-            ModalImage.Warning => new BitmapImage(new Uri(@"/Assets/warning.png", UriKind.Relative)),
-            _ => MainImage.Source
+            modalMessages.Add(new ModalMessage { Title = message, Image = displayImage });
+        }
+
+        MessageList.ItemsSource = modalMessages;
+    }
+
+    private static BitmapImage GetDisplayImage(ImageType image)
+    {
+        return image switch
+        {
+            ImageType.Error => new BitmapImage(new Uri(@"/Assets/error.png", UriKind.Relative)),
+            ImageType.Warning => new BitmapImage(new Uri(@"/Assets/warning.png", UriKind.Relative)),
+            _ => throw new NotImplementedException(),
         };
     }
+
+    internal class ModalMessage
+    {
+        public string? Title { get; set; } = "";
+        public BitmapImage? Image
+        {
+            get; set;
+        }
+    }
+
+
 }

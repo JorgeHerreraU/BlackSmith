@@ -7,7 +7,7 @@
     xmlns:pages="clr-namespace:BlackSmith.Presentation.Views.Pages"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="MainWindow"
-    Width="1366"
+    Width="1096"
     Height="768"
     Background="{ui:ThemeResource ApplicationBackgroundBrush}"
     ExtendsContentIntoTitleBar="True"
@@ -108,6 +108,7 @@
                         Margin="18"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
+                        FontFamily="{StaticResource BebasNeue}"
                         FontSize="24"
                         Navigation="{Binding ElementName=RootNavigation}" />
                     <!--  We display our pages inside this element.  -->

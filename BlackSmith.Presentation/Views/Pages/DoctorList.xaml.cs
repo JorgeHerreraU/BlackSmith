@@ -1,5 +1,5 @@
-﻿using System.Windows.Controls;
-using BlackSmith.Presentation.ViewModels;
+﻿using BlackSmith.Presentation.ViewModels;
+using System.Windows.Controls;
 
 namespace BlackSmith.Presentation.Views.Pages;
 

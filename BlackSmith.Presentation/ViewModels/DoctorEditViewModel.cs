@@ -1,26 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using AutoMapper;
-using BlackSmith.Presentation.Commands;
-using BlackSmith.Presentation.Helpers;
+﻿using AutoMapper;
+using BlackSmith.Presentation.Extensions;
 using BlackSmith.Presentation.Interfaces;
 using BlackSmith.Presentation.Models;
 using BlackSmith.Presentation.Views.Pages;
 using BlackSmith.Service.DTOs;
 using BlackSmith.Service.Interfaces;
 using FluentValidation;
-using Prism.Mvvm;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using Wpf.Ui.Mvvm.Contracts;
 
 namespace BlackSmith.Presentation.ViewModels;
 
-public class DoctorEditViewModel : BindableBase
+public class DoctorEditViewModel : EditableViewModelBase
 {
     private readonly IDoctorService _doctorService;
     private readonly IMapper _mapper;
-    private readonly IModalService _modalService;
     private readonly INavigationService _navigationService;
 
     private BindingList<WorkingDay> _availableWorkingDays = new()
@@ -63,24 +60,16 @@ public class DoctorEditViewModel : BindableBase
     };
 
     private Doctor _doctor = null!;
-    private bool _isTouched;
 
     public DoctorEditViewModel(IMapper mapper,
         IDoctorService doctorService,
         IModalService modalService,
-        INavigationService navigationService)
+        INavigationService navigationService) : base(modalService)
     {
         _mapper = mapper;
         _doctorService = doctorService;
-        _modalService = modalService;
         _navigationService = navigationService;
-
-        SaveCommand = new RelayCommand(OnSave, CanSave);
-        GoBack = new RelayCommand(OnGoBack);
     }
-
-    public RelayCommand SaveCommand { get; }
-    public RelayCommand GoBack { get; }
 
     public List<TimeOnly> AvailableHours { get; } = new()
     {
@@ -112,32 +101,22 @@ public class DoctorEditViewModel : BindableBase
         set
         {
             _doctor = value;
-            SetDoctor(value);
+            Set();
             RaisePropertyChanged();
         }
     }
 
-    public bool IsTouched
-    {
-        get => _isTouched;
-        set
-        {
-            _isTouched = value;
-            RaisePropertyChanged();
-        }
-    }
-
-    private void OnGoBack()
+    protected override void OnGoBack()
     {
         _navigationService.Navigate(typeof(DoctorList));
     }
 
-    private bool CanSave()
+    protected override bool CanSave()
     {
         return !Doctor.HasErrors && !Doctor.Address.HasErrors;
     }
 
-    private async void OnSave()
+    protected override async void OnSave()
     {
         try
         {
@@ -152,57 +131,33 @@ public class DoctorEditViewModel : BindableBase
         }
     }
 
-    private void SetDoctor(Doctor doctor)
+    private void RaiseCanChange(object? sender, ListChangedEventArgs e)
+    {
+        if (sender is null)
+            return;
+        IsTouched = Doctor.IsAnyStringNullOrEmpty();
+        SaveCommand.RaiseCanExecuteChanged();
+    }
+    public override void Set()
     {
         var workingDays = AvailableWorkingDays.ToList();
         workingDays.ForEach(day =>
         {
-            day.IsChecked = doctor.WorkingDays.Any(d => d.Day == day.Day);
-            day.StartTime = doctor.WorkingDays.FirstOrDefault(d => d.Day == day.Day)?.StartTime ?? TimeOnly.MinValue;
-            day.EndTime = doctor.WorkingDays.FirstOrDefault(d => d.Day == day.Day)?.EndTime ?? TimeOnly.MaxValue;
+            day.IsChecked = Doctor.WorkingDays.Any(d => d.Day == day.Day);
+            day.StartTime = Doctor.WorkingDays.FirstOrDefault(d => d.Day == day.Day)?.StartTime ?? TimeOnly.MinValue;
+            day.EndTime = Doctor.WorkingDays.FirstOrDefault(d => d.Day == day.Day)?.EndTime ?? TimeOnly.MaxValue;
         });
         AvailableWorkingDays = new BindingList<WorkingDay>(workingDays);
-        Doctor.PropertyChanged += OnDoctorPropertyChanged;
-        Doctor.Address.PropertyChanged += OnDoctorPropertyChanged;
-        Doctor.ErrorsChanged += RaiseCanChange;
-        Doctor.Address.ErrorsChanged += RaiseCanChange;
-        AvailableWorkingDays.ListChanged += RaiseCanChange;
+        SubscribeChanges();
         IsTouched = false;
     }
 
-    private void RaiseCanChange(object? sender,
-        ListChangedEventArgs e)
+    public override void SubscribeChanges()
     {
-        if (sender is null) return;
-        IsTouched = StringHelper.IsAnyStringNullOrEmpty(Doctor) is false;
-        SaveCommand.RaiseCanExecuteChanged();
-    }
-
-
-    private void RaiseCanChange(object? sender,
-        DataErrorsChangedEventArgs e)
-    {
-        SaveCommand.RaiseCanExecuteChanged();
-    }
-
-    private void OnDoctorPropertyChanged(object? sender,
-        PropertyChangedEventArgs e)
-    {
-        if (sender != null)
-            IsTouched = StringHelper.IsAnyStringNullOrEmpty(sender) is false;
-        SaveCommand.RaiseCanExecuteChanged();
-    }
-
-    private void OnSaveErrorHandler(Exception ex)
-    {
-        switch (ex)
-        {
-            case ValidationException:
-                _modalService.ShowErrorMessage(StringHelper.SanitizeFluentErrorMessage(ex.Message));
-                break;
-            case ArgumentException:
-                _modalService.ShowErrorMessage(ex.Message);
-                break;
-        }
+        Doctor.PropertyChanged += OnPropertyChanged;
+        Doctor.Address.PropertyChanged += OnPropertyChanged;
+        Doctor.ErrorsChanged += RaiseCanChange;
+        Doctor.Address.ErrorsChanged += RaiseCanChange;
+        AvailableWorkingDays.ListChanged += RaiseCanChange;
     }
 }

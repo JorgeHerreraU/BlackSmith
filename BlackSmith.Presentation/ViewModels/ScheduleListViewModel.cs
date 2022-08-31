@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using AutoMapper;
-using BlackSmith.Presentation.Commands;
+﻿using AutoMapper;
 using BlackSmith.Presentation.Events;
 using BlackSmith.Presentation.Models;
 using BlackSmith.Presentation.Views.Pages;
 using BlackSmith.Service.Interfaces;
-using JetBrains.Annotations;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Wpf.Ui.Mvvm.Contracts;
 
 namespace BlackSmith.Presentation.ViewModels;
@@ -19,8 +18,10 @@ public class ScheduleListViewModel : BindableBase
     private readonly IEventAggregator _eventAggregator;
     private readonly IMapper _mapper;
     private readonly INavigationService _navigationService;
+
     private IEnumerable<Appointment> _allAppointments = new List<Appointment>();
     private ObservableCollection<Appointment> _appointments = null!;
+
     private string _searchInput = "";
 
     public ScheduleListViewModel(IAppointmentService appointmentService,
@@ -33,8 +34,8 @@ public class ScheduleListViewModel : BindableBase
         _navigationService = navigationService;
         _eventAggregator = eventAggregator;
 
-        GoToCreate = new RelayCommand(OnCreate);
-        ClearSearchCommand = new RelayCommand(OnClearSearch);
+        GoToCreate = new DelegateCommand(OnCreate);
+        ClearSearchCommand = new DelegateCommand(OnClearSearch);
     }
 
     public string SearchInput
@@ -47,8 +48,8 @@ public class ScheduleListViewModel : BindableBase
         }
     }
 
-    public RelayCommand GoToCreate { get; }
-    public RelayCommand ClearSearchCommand { get; }
+    public DelegateCommand GoToCreate { get; }
+    public DelegateCommand ClearSearchCommand { get; }
 
     public ObservableCollection<Appointment> Appointments
     {
@@ -66,8 +67,6 @@ public class ScheduleListViewModel : BindableBase
         _eventAggregator.GetEvent<CreateScheduleEvent>().Publish();
         _navigationService.Navigate(typeof(ScheduleCreate));
     }
-
-    [PublicAPI]
     public async void LoadAppointments()
     {
         var appointments = await _appointmentService.GetAppointments();

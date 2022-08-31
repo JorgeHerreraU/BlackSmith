@@ -10,18 +10,21 @@ public class MainWindowViewModel : BindableBase
     private readonly DoctorCreateViewModel _doctorCreateViewModel;
     private readonly DoctorDetailViewModel _doctorDetailViewModel;
     private readonly DoctorEditViewModel _doctorEditViewModel;
+    private readonly PatientCreateViewModel _patientCreateViewModel;
     private readonly PatientEditViewModel _patientEditViewModel;
     private readonly ScheduleCreateViewModel _scheduleCreateViewModel;
 
     public MainWindowViewModel(IEventAggregator eventAggregator,
-        DoctorEditViewModel doctorEditViewModel,
+        PatientCreateViewModel patientCreateViewModel,
         PatientEditViewModel patientEditViewModel,
+        DoctorEditViewModel doctorEditViewModel,
         DoctorDetailViewModel doctorDetailViewModel,
         DoctorCreateViewModel doctorCreateViewModel,
         ScheduleCreateViewModel scheduleCreateViewModel)
     {
-        _doctorEditViewModel = doctorEditViewModel;
+        _patientCreateViewModel = patientCreateViewModel;
         _patientEditViewModel = patientEditViewModel;
+        _doctorEditViewModel = doctorEditViewModel;
         _doctorDetailViewModel = doctorDetailViewModel;
         _doctorCreateViewModel = doctorCreateViewModel;
         _scheduleCreateViewModel = scheduleCreateViewModel;
@@ -29,20 +32,26 @@ public class MainWindowViewModel : BindableBase
         eventAggregator.GetEvent<CreateDoctorEvent>().Subscribe(OnCreateDoctorEvent);
         eventAggregator.GetEvent<EditDoctorEvent>().Subscribe(OnDoctorEditEvent);
 
+        eventAggregator.GetEvent<CreatePatientEvent>().Subscribe(OnPatientCreate);
         eventAggregator.GetEvent<EditPatientEvent>().Subscribe(OnPatientEditEvent);
         eventAggregator.GetEvent<DetailsDoctorEvent>().Subscribe(OnDoctorDetailsEvent);
 
-        eventAggregator.GetEvent<CreateScheduleEvent>().Subscribe(OnCreateScheduleEvent);
+        eventAggregator.GetEvent<CreateScheduleEvent>().Subscribe(OnScheduleCreate);
     }
 
-    private void OnCreateScheduleEvent()
+    private void OnPatientCreate()
     {
-        _scheduleCreateViewModel.SetNewSchedule();
+        _patientCreateViewModel.Set();
+    }
+
+    private void OnScheduleCreate()
+    {
+        _scheduleCreateViewModel.Set();
     }
 
     private void OnCreateDoctorEvent()
     {
-        _doctorCreateViewModel.SetNewDoctor();
+        _doctorCreateViewModel.Set();
     }
 
     private void OnDoctorDetailsEvent(Doctor doctor)

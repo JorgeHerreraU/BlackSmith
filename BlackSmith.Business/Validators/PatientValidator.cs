@@ -7,8 +7,8 @@ public class PatientValidator : AbstractValidator<Patient>
 {
     public PatientValidator()
     {
-        RuleFor(x => x.FirstName).NotNull().NotEmpty();
-        RuleFor(x => x.LastName).NotNull().NotEmpty().NotEqual(x => x.FirstName);
+        RuleFor(x => x.FirstName).NotNull().NotEmpty().BeAValidName();
+        RuleFor(x => x.LastName).NotNull().NotEmpty().BeAValidName().NotEqual(x => x.FirstName);
         RuleFor(x => x.Phone).NotNull().NotEmpty();
         RuleFor(x => x.Email).NotNull().NotEmpty().EmailAddress();
         RuleFor(x => x.Age).NotNull().NotEmpty().GreaterThan(18);

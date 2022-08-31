@@ -15,6 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Assets\BebasNeue-Regular.ttf" />
+    <None Remove="Assets\BungeeShade-Regular.ttf" />
     <None Remove="Assets\calendar.png" />
     <None Remove="Assets\doctor.png" />
     <None Remove="Assets\error.png" />
@@ -24,7 +26,6 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.1" />
-    <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="Prism.Core" Version="8.1.97" />
     <PackageReference Include="WPF-UI" Version="2.0.2" />
@@ -54,11 +55,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EditorConfigFiles Remove="E:\Projects\DotNet\BlackSmith\BlackSmith.Presentation\.editorconfig" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="E:\Projects\DotNet\BlackSmith\BlackSmith.Presentation\.editorconfig" />
+    <Resource Include="Assets\BebasNeue-Regular.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\BungeeShade-Regular.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>
