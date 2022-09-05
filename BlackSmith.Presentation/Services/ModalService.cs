@@ -1,4 +1,4 @@
-﻿using BlackSmith.Presentation.Controls;
+﻿using BlackSmith.Presentation.Controls.UserControls;
 using BlackSmith.Presentation.Enums;
 using BlackSmith.Presentation.Interfaces;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ public class ModalService : IModalService
             Content = new Modal(message, ImageType.Error),
             SizeToContent = SizeToContent.WidthAndHeight,
             ShowFooter = false,
-            MicaEnabled = true,
+            MicaEnabled = true
         }.Show();
     }
 
@@ -32,7 +32,7 @@ public class ModalService : IModalService
             Content = new Modal(messages, ImageType.Error),
             SizeToContent = SizeToContent.WidthAndHeight,
             ShowFooter = false,
-            MicaEnabled = true,
+            MicaEnabled = true
         }.Show();
     }
 

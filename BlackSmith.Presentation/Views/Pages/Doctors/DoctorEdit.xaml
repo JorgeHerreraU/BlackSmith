@@ -40,8 +40,6 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <SolidColorBrush x:Key="TextBox.Foreground" Color="{DynamicResource TextFillColorPrimary}" />
-        <SolidColorBrush x:Key="TextBox.Background" Color="{DynamicResource ControlFillColorDefault}" />
     </Page.Resources>
     <Border>
         <AdornerDecorator>
@@ -87,7 +85,7 @@
                             VerticalAlignment="Center"
                             FontFamily="{StaticResource BebasNeue}"
                             FontSize="22"
-                            Foreground="{StaticResource TextBox.Foreground}"
+                            Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                             Text="EDIT DOCTOR" />
                     </StackPanel>
                     <!--  Personal details caption  -->

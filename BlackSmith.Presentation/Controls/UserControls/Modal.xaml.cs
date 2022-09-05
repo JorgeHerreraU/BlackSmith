@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
-namespace BlackSmith.Presentation.Controls;
+namespace BlackSmith.Presentation.Controls.UserControls;
 
 /// <summary>
 ///     Interaction logic for Modal.xaml

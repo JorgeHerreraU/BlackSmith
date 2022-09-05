@@ -260,8 +260,7 @@ public class ScheduleEditViewModel : EditableViewModelBase, INavigationAware
     private void ResetAvailableHours()
     {
         AvailableHours = new ObservableCollection<TimeOnly>(
-            TimeHelper.GetTimeRange(new TimeOnly(9, 0, 0), new TimeOnly(18, 0, 0))
-        );
+            TimeHelper.GetTimeRange(Appointment.StartingHour, Appointment.EndingHour).ToList());
     }
 
     private IEnumerable<Doctor> GetAllDoctorsBySpeciality()
@@ -286,6 +285,8 @@ public class ScheduleEditViewModel : EditableViewModelBase, INavigationAware
         if (SelectedDate is null || SelectedDoctor is null || SelectedDoctor?.Id == 0)
             return;
         var workingDay = GetSelectedDoctorWorkingDay();
+        if (workingDay == null)
+            return;
         AvailableHours = new ObservableCollection<TimeOnly>(
             TimeHelper.GetTimeRange(workingDay.StartTime, workingDay.EndTime)
         );
@@ -293,11 +294,11 @@ public class ScheduleEditViewModel : EditableViewModelBase, INavigationAware
             SelectedStartTime = TimeOnly.FromDateTime(Appointment.Start.Value);
     }
 
-    private WorkingDay GetSelectedDoctorWorkingDay()
+    private WorkingDay? GetSelectedDoctorWorkingDay()
     {
-        return Doctors
-            .First(x => x.Id == SelectedDoctor?.Id)
-            .WorkingDays.First(x => x.Day == SelectedDate!.Value.DayOfWeek);
+        return _allDoctors
+            .First(x => x.Id == SelectedDoctor?.Id).WorkingDays
+            .FirstOrDefault(w => w.Day == SelectedDate!.Value.DayOfWeek);
     }
 
     public override void Dispose()

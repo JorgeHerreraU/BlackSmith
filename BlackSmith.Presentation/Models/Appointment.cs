@@ -6,6 +6,8 @@ namespace BlackSmith.Presentation.Models;
 public class Appointment : ValidatableBase
 {
     public const double Duration = 60;
+    public const int StartingHour = 9;
+    public const int EndingHour = 18;
     private Doctor? _doctor;
     private int _doctorId;
     private DateTime _end;

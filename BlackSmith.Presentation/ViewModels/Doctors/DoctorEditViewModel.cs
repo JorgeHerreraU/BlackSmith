@@ -38,7 +38,7 @@ public class DoctorEditViewModel : EditableViewModelBase, INavigationAware
     }
 
     public List<TimeOnly> AvailableHours { get; } =
-        TimeHelper.GetTimeRange(new TimeOnly(9, 0, 0), new TimeOnly(18, 0, 0)).ToList();
+        TimeHelper.GetTimeRange(Appointment.StartingHour, Appointment.EndingHour).ToList();
     public BindingList<WorkingDay> AvailableWorkingDays
     {
         get => _availableWorkingDays;

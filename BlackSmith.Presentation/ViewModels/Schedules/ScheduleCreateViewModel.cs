@@ -224,9 +224,9 @@ public class ScheduleCreateViewModel : EditableViewModelBase, INavigationAware
 
     private void ResetAvailableHours()
     {
-        AvailableHours = new ObservableCollection<TimeOnly>(
-            TimeHelper.GetTimeRange(new TimeOnly(9, 0, 0), new TimeOnly(18, 0, 0))
-        );
+        AvailableHours =
+            new ObservableCollection<TimeOnly>(TimeHelper
+                .GetTimeRange(Appointment.StartingHour, Appointment.EndingHour).ToList());
     }
 
     private void FilterDoctors()

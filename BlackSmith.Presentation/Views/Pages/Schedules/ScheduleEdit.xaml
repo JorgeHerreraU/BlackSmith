@@ -6,10 +6,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:enums="clr-namespace:BlackSmith.Presentation.Enums"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:props="clr-namespace:BlackSmith.Presentation.Controls"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:vm="clr-namespace:BlackSmith.Presentation.ViewModels.Schedules"
+    xmlns:controlsAttachedProperties="clr-namespace:BlackSmith.Presentation.Controls.ControlsAttachedProperties"
     Title="ScheduleEdit"
     d:DataContext="{d:DesignInstance vm:ScheduleEditViewModel}"
     d:DesignHeight="450"
@@ -54,7 +54,7 @@
                             VerticalAlignment="Center"
                             FontFamily="{StaticResource BebasNeue}"
                             FontSize="22"
-                            Foreground="{StaticResource TextBox.Foreground}"
+                            Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                             Text="RESCHEDULE APPOINTMENT" />
 
                     </StackPanel>
@@ -146,7 +146,7 @@
                         Margin="3"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        props:CalendarAttachedProperties.RegisterBlackoutDates="{Binding BlackoutDates}"
+                        controlsAttachedProperties:CalendarAttachedProperties.RegisterBlackoutDates="{Binding BlackoutDates}"
                         DisplayDateEnd="{Binding EndingDate}"
                         DisplayDateStart="{x:Static sys:DateTime.Today}"
                         SelectedDate="{Binding SelectedDate, ValidatesOnDataErrors=True, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"

@@ -77,7 +77,7 @@
                             VerticalAlignment="Center"
                             FontFamily="{StaticResource BebasNeue}"
                             FontSize="22"
-                            Foreground="{StaticResource TextBox.Foreground}"
+                            Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                             Text="EDIT PATIENT" />
 
                     </StackPanel>
