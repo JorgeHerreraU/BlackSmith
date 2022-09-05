@@ -40,19 +40,18 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
     {
         await using var context = _context.CreateDbContext();
         IQueryable<T> query = context.Set<T>();
-        query = includes.Aggregate(query, (current,
-            include) => current.Include(include));
+        query = includes.Aggregate(query, (current, include) => current.Include(include));
         return await query.ToListAsync();
     }
 
     public async Task<IEnumerable<T>> GetAll(
         Expression<Func<T, bool>> predicate,
-        params Expression<Func<T, object>>[] includes)
+        params Expression<Func<T, object>>[] includes
+    )
     {
         await using var context = _context.CreateDbContext();
         IQueryable<T> query = context.Set<T>();
-        query = includes.Aggregate(query, (current,
-            include) => current.Include(include));
+        query = includes.Aggregate(query, (current, include) => current.Include(include));
         return await query.Where(predicate).ToListAsync();
     }
 
@@ -68,13 +67,11 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
         return await context.Set<T>().FindAsync(id);
     }
 
-    public async Task<T?> GetById(int id,
-        params Expression<Func<T, object>>[] includes)
+    public async Task<T?> GetById(int id, params Expression<Func<T, object>>[] includes)
     {
         await using var context = _context.CreateDbContext();
         IQueryable<T> query = context.Set<T>();
-        query = includes.Aggregate(query, (current,
-            include) => current.Include(include));
+        query = includes.Aggregate(query, (current, include) => current.Include(include));
         return await query.FirstOrDefaultAsync(x => x.Id == id);
     }
 
@@ -87,34 +84,41 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
         return entity;
     }
 
-    public async Task<T> Update(T entity,
-        params Expression<Func<T, object>>[] includes)
+    public async Task<T> Update(T entity, params Expression<Func<T, object>>[] includes)
     {
         await using var context = _context.CreateDbContext();
-
-        var dbEntity = await context.FindAsync<T>(entity.Id) ??
-                       throw new DbUpdateException("An error ocurred getting the provided entity");
+        var dbEntity =
+            await context.FindAsync<T>(entity.Id)
+            ?? throw new DbUpdateException("An error ocurred getting the provided entity");
         var dbEntry = context.Entry(dbEntity);
-
         dbEntry.CurrentValues.SetValues(entity);
-
         foreach (var property in includes)
         {
-            if (IsPropertyTypeCollection(property))
+            if (IsCollection(property))
             {
                 var propertyName = property.GetPropertyAccess().Name;
                 var dbItemsEntry = dbEntry.Collection(propertyName);
                 var accessor = dbItemsEntry.Metadata.GetCollectionAccessor();
 
                 if (accessor is null)
-                    throw new DbUpdateException("An error ocurred getting the accessor to modify the collection");
+                {
+                    throw new DbUpdateException(
+                        "An error ocurred getting the accessor to modify the collection"
+                    );
+                }
 
                 await dbItemsEntry.LoadAsync();
 
                 if (dbItemsEntry.CurrentValue is null)
-                    throw new DbUpdateException("An error ocurred getting the entity items current value");
+                {
+                    throw new DbUpdateException(
+                        "An error ocurred getting the entity items current value"
+                    );
+                }
 
-                var dbItemsMap = ((IEnumerable<BaseEntity>)dbItemsEntry.CurrentValue).ToDictionary(e => e.Id);
+                var dbItemsMap = ((IEnumerable<BaseEntity>)dbItemsEntry.CurrentValue).ToDictionary(
+                    e => e.Id
+                );
 
                 var items = (IEnumerable<BaseEntity>)accessor.GetOrCreate(entity, true);
 
@@ -145,23 +149,23 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
 
                 await referenceEntry.LoadAsync();
 
-                var item = (BaseEntity)entity.GetType().GetProperty(propertyName)!.GetValue(entity)!;
+                var item = (BaseEntity)
+                    entity.GetType().GetProperty(propertyName)!.GetValue(entity)!;
                 var dbChildEntity = (BaseEntity)referenceEntry.CurrentValue!;
 
                 context.Entry(dbChildEntity).CurrentValues.SetValues(item);
             }
         }
-
         await context.SaveChangesAsync();
-
         return entity;
     }
 
-    private static bool IsPropertyTypeCollection(Expression<Func<T, object>> property)
+    private static bool IsCollection(Expression<Func<T, object>> property)
     {
-        return property.GetPropertyAccess().PropertyType.IsGenericType &&
-               typeof(ICollection<>).IsAssignableFrom(property.GetPropertyAccess().PropertyType
-                   .GetGenericTypeDefinition());
+        return property.GetPropertyAccess().PropertyType.IsGenericType
+            && typeof(ICollection<>).IsAssignableFrom(
+                property.GetPropertyAccess().PropertyType.GetGenericTypeDefinition()
+            );
     }
 
     public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>> predicate)
@@ -169,5 +173,4 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
         await using var context = _context.CreateDbContext();
         return await context.Set<T>().Where(predicate).ToListAsync();
     }
-
 }

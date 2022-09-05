@@ -5,28 +5,31 @@
     <Compile Update="Controls\Modal.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Pages\DoctorCreate.xaml.cs">
+    <Compile Update="Views\Pages\Doctors\DoctorCreate.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Pages\DoctorDetail.xaml.cs">
+    <Compile Update="Views\Pages\Doctors\DoctorDetail.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Pages\DoctorEdit.xaml.cs">
+    <Compile Update="Views\Pages\Doctors\DoctorEdit.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Pages\PatientCreate.xaml.cs">
+    <Compile Update="Views\Pages\Patients\PatientCreate.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Pages\PatientEdit.xaml.cs">
+    <Compile Update="Views\Pages\Patients\PatientEdit.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Pages\PatientList.xaml.cs">
+    <Compile Update="Views\Pages\Patients\PatientList.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Pages\ScheduleCreate.xaml.cs">
+    <Compile Update="Views\Pages\Schedules\ScheduleCreate.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Pages\ScheduleList.xaml.cs">
+    <Compile Update="Views\Pages\Schedules\ScheduleEdit.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Pages\Schedules\ScheduleList.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -37,28 +40,31 @@
     <Page Update="TemplatesResourceDictionary.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Pages\DoctorCreate.xaml">
+    <Page Update="Views\Pages\Doctors\DoctorCreate.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Pages\DoctorDetail.xaml">
+    <Page Update="Views\Pages\Doctors\DoctorDetail.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Pages\DoctorEdit.xaml">
+    <Page Update="Views\Pages\Doctors\DoctorEdit.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Pages\PatientCreate.xaml">
+    <Page Update="Views\Pages\Patients\PatientCreate.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Pages\PatientEdit.xaml">
+    <Page Update="Views\Pages\Patients\PatientEdit.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Pages\PatientList.xaml">
+    <Page Update="Views\Pages\Patients\PatientList.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Pages\ScheduleCreate.xaml">
+    <Page Update="Views\Pages\Schedules\ScheduleCreate.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Pages\ScheduleList.xaml">
+    <Page Update="Views\Pages\Schedules\ScheduleEdit.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Pages\Schedules\ScheduleList.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

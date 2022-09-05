@@ -13,10 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackSmith.Service", "Black
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackSmith.Presentation", "BlackSmith.Presentation\BlackSmith.Presentation.csproj", "{8855B70C-AED4-4D97-80F5-B2050CFA3A78}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{282CA3A9-3722-49B5-B75B-BFDF5137F6D1}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-	EndProjectSection
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9B113B59-B9AA-4F64-A78E-CDBFCC8FDB3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackSmith.Core", "BlackSmith.Core\BlackSmith.Core.csproj", "{0F629821-9BD1-4723-965A-D080922CF4C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +43,10 @@ Global
 		{8855B70C-AED4-4D97-80F5-B2050CFA3A78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8855B70C-AED4-4D97-80F5-B2050CFA3A78}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8855B70C-AED4-4D97-80F5-B2050CFA3A78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F629821-9BD1-4723-965A-D080922CF4C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F629821-9BD1-4723-965A-D080922CF4C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F629821-9BD1-4723-965A-D080922CF4C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F629821-9BD1-4723-965A-D080922CF4C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

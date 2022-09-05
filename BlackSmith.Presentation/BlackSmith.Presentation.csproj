@@ -1,66 +1,58 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <UseWPF>true</UseWPF>
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Profiles\**" />
-    <EmbeddedResource Remove="Profiles\**" />
-    <None Remove="Profiles\**" />
-    <Page Remove="Profiles\**" />
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Remove="Profiles\**" />
+        <EmbeddedResource Remove="Profiles\**" />
+        <None Remove="Profiles\**" />
+        <Page Remove="Profiles\**" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="Assets\BebasNeue-Regular.ttf" />
-    <None Remove="Assets\BungeeShade-Regular.ttf" />
-    <None Remove="Assets\calendar.png" />
-    <None Remove="Assets\doctor.png" />
-    <None Remove="Assets\error.png" />
-    <None Remove="Assets\headquarter.jpg" />
-    <None Remove="Assets\patient.png" />
-  </ItemGroup>
+    <ItemGroup>
+        <None Remove="Assets\BebasNeue-Regular.ttf" />
+        <None Remove="Assets\bg.jpg" />
+        <None Remove="Assets\BungeeShade-Regular.ttf" />
+        <None Remove="Assets\calendar.png" />
+        <None Remove="Assets\doctor.png" />
+        <None Remove="Assets\error.png" />
+        <None Remove="Assets\headquarter.jpg" />
+        <None Remove="Assets\patient.png" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="11.0.1" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
-    <PackageReference Include="Prism.Core" Version="8.1.97" />
-    <PackageReference Include="WPF-UI" Version="2.0.2" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="11.0.1" />
+        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+        <PackageReference Include="Prism.Core" Version="8.1.97" />
+        <PackageReference Include="WPF-UI" Version="2.0.2" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\BlackSmith.Data\BlackSmith.Data.csproj" />
-    <ProjectReference Include="..\BlackSmith.Service\BlackSmith.Service.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\BlackSmith.Data\BlackSmith.Data.csproj" />
+        <ProjectReference Include="..\BlackSmith.Service\BlackSmith.Service.csproj" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <Content Include="Assets\calendar.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\doctor.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\error.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\headquarter.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\patient.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+    <ItemGroup>
+        <Content Include="Assets\error.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="Assets\BebasNeue-Regular.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\BungeeShade-Regular.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
+    <ItemGroup>
+        <Resource Include="Assets\BebasNeue-Regular.ttf">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Resource>
+        <Resource Include="Assets\bg.jpg">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Resource>
+        <Resource Include="Assets\BungeeShade-Regular.ttf">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Resource>
+    </ItemGroup>
 
 </Project>

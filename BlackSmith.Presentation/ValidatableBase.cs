@@ -21,7 +21,9 @@ public class ValidatableBase : BindableBase, INotifyDataErrorInfo
     {
         return propertyName is null
             ? Enumerable.Empty<string>()
-            : (IEnumerable)(_errors.TryGetValue(propertyName, out var list) ? list! : Enumerable.Empty<string>());
+            : (IEnumerable)(
+                _errors.TryGetValue(propertyName, out var list) ? list! : Enumerable.Empty<string>()
+            );
     }
 
     protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
@@ -43,7 +45,9 @@ public class ValidatableBase : BindableBase, INotifyDataErrorInfo
 
             Validator.TryValidateObject(this, validationContext, validationResults, true);
 
-            var result = validationResults.Find(x => x.MemberNames.FirstOrDefault() == propertyName);
+            var result = validationResults.Find(
+                r => r.MemberNames.FirstOrDefault() == propertyName
+            );
 
             RemoveExistingErrors(validationResults);
 
@@ -60,10 +64,17 @@ public class ValidatableBase : BindableBase, INotifyDataErrorInfo
 
     private void RemoveExistingErrors(IReadOnlyCollection<ValidationResult> validationResults)
     {
-        foreach (var keyValue in _errors.ToList()
-                     .Where(kv => validationResults.All(
-                         validationResult => validationResult.MemberNames.All(
-                             member => member != kv.Key))))
+        foreach (
+            var keyValue in _errors
+                .ToList()
+                .Where(
+                    kv =>
+                        validationResults.All(
+                            validationResult =>
+                                validationResult.MemberNames.All(member => member != kv.Key)
+                        )
+                )
+        )
         {
             _errors.Remove(keyValue.Key);
             OnErrorsChanged(keyValue.Key);

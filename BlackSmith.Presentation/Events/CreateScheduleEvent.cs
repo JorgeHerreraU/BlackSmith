@@ -2,6 +2,4 @@
 
 namespace BlackSmith.Presentation.Events;
 
-public class CreateScheduleEvent : PubSubEvent
-{
-}
+public class CreateScheduleEvent : PubSubEvent { }

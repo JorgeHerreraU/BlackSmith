@@ -11,7 +11,7 @@ public class AppointmentService : IAppointmentService
     private readonly AppointmentsBL _appointmentsBl;
     private readonly IMapper _mapper;
 
-    public AppointmentService(IMapper mapper, AppointmentsBL appointmentsBl, DoctorsBL doctorsBL)
+    public AppointmentService(IMapper mapper, AppointmentsBL appointmentsBl)
     {
         _mapper = mapper;
         _appointmentsBl = appointmentsBl;
@@ -25,25 +25,40 @@ public class AppointmentService : IAppointmentService
     public async Task<AppointmentDTO> UpdateAppointment(AppointmentDTO appointmentDTO)
     {
         return _mapper.Map<AppointmentDTO>(
-            await _appointmentsBl.UpdateAppointment(_mapper.Map<Appointment>(appointmentDTO)));
+            await _appointmentsBl.UpdateAppointment(_mapper.Map<Appointment>(appointmentDTO))
+        );
     }
 
-    public async Task<AppointmentDTO> AddAppointment(AppointmentDTO appointmentDTO)
+    public async Task<AppointmentDTO> CreateAppointment(AppointmentDTO appointmentDTO)
     {
         return _mapper.Map<AppointmentDTO>(
-            await _appointmentsBl.Add(_mapper.Map<Appointment>(appointmentDTO)));
+            await _appointmentsBl.CreateAppointment(_mapper.Map<Appointment>(appointmentDTO))
+        );
     }
 
-    public async Task<IEnumerable<DateTime>> GetAvailableDaysByDoctorsSpeciality(SpecialityDTO specialityDTO,
-        DateTime start, DateTime end)
+    public async Task<IEnumerable<DateTime>> GetAvailableDaysByDoctorsSpeciality(
+        SpecialityDTO specialityDTO,
+        DateTime start,
+        DateTime end
+    )
     {
         var speciality = (Speciality)Enum.Parse(typeof(Speciality), specialityDTO.ToString());
 
-        return await _appointmentsBl.GetAvailableDaysByDoctorsSpeciality(speciality, start, end).ToListAsync();
+        return await _appointmentsBl
+            .GetAvailableDaysByDoctorsSpeciality(speciality, start, end)
+            .ToListAsync();
     }
 
     public async Task<bool> GetDoctorFullyBooked(DoctorDTO doctorDTO, DateTime date)
     {
-        return await _appointmentsBl.GetDoctorIsFullyBookedOnSpecificDay(_mapper.Map<Doctor>(doctorDTO), date);
+        return await _appointmentsBl.GetDoctorIsFullyBookedOnSpecificDate(
+            _mapper.Map<Doctor>(doctorDTO),
+            date
+        );
+    }
+
+    public async Task<bool> DeleteAppointment(AppointmentDTO appointmentDTO)
+    {
+        return await _appointmentsBl.DeleteAppointment(_mapper.Map<Appointment>(appointmentDTO));
     }
 }

@@ -3,6 +3,4 @@ using Prism.Events;
 
 namespace BlackSmith.Presentation.Events;
 
-public class EditPatientEvent : PubSubEvent<Patient>
-{
-}
+public class EditPatientEvent : PubSubEvent<Patient> { }

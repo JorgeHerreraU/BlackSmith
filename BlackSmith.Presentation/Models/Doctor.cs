@@ -91,7 +91,6 @@ public class Doctor : ValidatableBase
 
     [Required]
     public Address Address
-
     {
         get => _address;
         set
@@ -123,7 +122,13 @@ public class Doctor : ValidatableBase
         }
     }
 
-    public string FullName => $"{FirstName} {LastName}";
+    public string FullName
+    {
+        get => $"{FirstName} {LastName}";
+    }
 
-    public string DaysWorking => string.Join(", ", WorkingDays.Select(x => x.Day.ToString()).ToList());
+    public string DaysWorking
+    {
+        get => string.Join(", ", WorkingDays.Select(x => x.Day.ToString()).ToList());
+    }
 }

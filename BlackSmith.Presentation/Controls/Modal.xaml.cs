@@ -11,26 +11,33 @@ namespace BlackSmith.Presentation.Controls;
 /// </summary>
 public partial class Modal : UserControl
 {
-    public Modal(string message, ImageType image)
+    public Modal(string message,
+        ImageType image)
     {
         InitializeComponent();
         OnInitialize(message, image);
     }
-    public Modal(IEnumerable<string> messages, ImageType image)
+
+    public Modal(IEnumerable<string> messages,
+        ImageType image)
     {
         InitializeComponent();
         OnInitialize(messages, image);
     }
 
-    public BitmapImage DisplayImage { get; set; } = new();
-
-    private void OnInitialize(string message, ImageType image)
+    private void OnInitialize(string message,
+        ImageType image)
     {
-        MessageList.ItemsSource = new List<ModalMessage> {
-            new ModalMessage { Title = message, Image = GetDisplayImage(image) } };
+        MessageList.ItemsSource =
+            new List<ModalMessage>
+            {
+                new()
+                    { Title = message, Image = GetDisplayImage(image) }
+            };
     }
 
-    private void OnInitialize(IEnumerable<string> messages, ImageType image)
+    private void OnInitialize(IEnumerable<string> messages,
+        ImageType image)
     {
         var modalMessages = new List<ModalMessage>();
         var displayImage = GetDisplayImage(image);
@@ -49,18 +56,13 @@ public partial class Modal : UserControl
         {
             ImageType.Error => new BitmapImage(new Uri(@"/Assets/error.png", UriKind.Relative)),
             ImageType.Warning => new BitmapImage(new Uri(@"/Assets/warning.png", UriKind.Relative)),
-            _ => throw new NotImplementedException(),
+            _ => throw new NotImplementedException()
         };
     }
 
     internal class ModalMessage
     {
         public string? Title { get; set; } = "";
-        public BitmapImage? Image
-        {
-            get; set;
-        }
+        public BitmapImage? Image { get; set; }
     }
-
-
 }

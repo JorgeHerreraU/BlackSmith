@@ -1,4 +1,4 @@
-﻿using BlackSmith.Presentation.Views.Pages;
+﻿using BlackSmith.Presentation.Views.Pages.Home;
 using System.Threading.Tasks;
 using System.Windows;
 using Wpf.Ui.Appearance;
@@ -15,9 +15,11 @@ public partial class MainWindow
 {
     private readonly IThemeService _themeService;
 
-    public MainWindow(INavigationService navigationService,
+    public MainWindow(
+        INavigationService navigationService,
         IPageService pageService,
-        IThemeService themeService)
+        IThemeService themeService
+    )
     {
         _themeService = themeService;
 
@@ -29,20 +31,22 @@ public partial class MainWindow
         Task.Run(async () =>
         {
             await Task.Delay(400);
-            await Dispatcher.InvokeAsync(() => { RootNavigation.Navigate(typeof(Home)); });
+            await Dispatcher.InvokeAsync(() =>
+            {
+                RootNavigation.Navigate(typeof(Home));
+            });
             return true;
         });
     }
 
-
-    private void NavigationButtonTheme_OnClick(object sender,
-        RoutedEventArgs e)
+    private void NavigationButtonTheme_OnClick(object sender, RoutedEventArgs e)
     {
-        _themeService.SetTheme(_themeService.GetTheme() == ThemeType.Dark ? ThemeType.Light : ThemeType.Dark);
+        _themeService.SetTheme(
+            _themeService.GetTheme() == ThemeType.Dark ? ThemeType.Light : ThemeType.Dark
+        );
     }
 
-    private void RootNavigation_OnNavigated(INavigation sender,
-        RoutedNavigationEventArgs e)
+    private void RootNavigation_OnNavigated(INavigation sender, RoutedNavigationEventArgs e)
     {
         sender.Current.IsActive = true;
     }

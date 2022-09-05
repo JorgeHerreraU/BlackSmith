@@ -1,5 +1,8 @@
 ﻿using BlackSmith.Presentation.Events;
 using BlackSmith.Presentation.Models;
+using BlackSmith.Presentation.ViewModels.Doctors;
+using BlackSmith.Presentation.ViewModels.Patients;
+using BlackSmith.Presentation.ViewModels.Schedules;
 using Prism.Events;
 using Prism.Mvvm;
 
@@ -13,14 +16,18 @@ public class MainWindowViewModel : BindableBase
     private readonly PatientCreateViewModel _patientCreateViewModel;
     private readonly PatientEditViewModel _patientEditViewModel;
     private readonly ScheduleCreateViewModel _scheduleCreateViewModel;
+    private readonly ScheduleEditViewModel _scheduleEditViewModel;
 
-    public MainWindowViewModel(IEventAggregator eventAggregator,
+    public MainWindowViewModel(
+        IEventAggregator eventAggregator,
         PatientCreateViewModel patientCreateViewModel,
         PatientEditViewModel patientEditViewModel,
         DoctorEditViewModel doctorEditViewModel,
         DoctorDetailViewModel doctorDetailViewModel,
         DoctorCreateViewModel doctorCreateViewModel,
-        ScheduleCreateViewModel scheduleCreateViewModel)
+        ScheduleCreateViewModel scheduleCreateViewModel,
+        ScheduleEditViewModel scheduleEditViewModel
+    )
     {
         _patientCreateViewModel = patientCreateViewModel;
         _patientEditViewModel = patientEditViewModel;
@@ -28,30 +35,36 @@ public class MainWindowViewModel : BindableBase
         _doctorDetailViewModel = doctorDetailViewModel;
         _doctorCreateViewModel = doctorCreateViewModel;
         _scheduleCreateViewModel = scheduleCreateViewModel;
-
+        _scheduleEditViewModel = scheduleEditViewModel;
         eventAggregator.GetEvent<CreateDoctorEvent>().Subscribe(OnCreateDoctorEvent);
         eventAggregator.GetEvent<EditDoctorEvent>().Subscribe(OnDoctorEditEvent);
+        eventAggregator.GetEvent<DetailsDoctorEvent>().Subscribe(OnDoctorDetailsEvent);
 
         eventAggregator.GetEvent<CreatePatientEvent>().Subscribe(OnPatientCreate);
         eventAggregator.GetEvent<EditPatientEvent>().Subscribe(OnPatientEditEvent);
-        eventAggregator.GetEvent<DetailsDoctorEvent>().Subscribe(OnDoctorDetailsEvent);
 
         eventAggregator.GetEvent<CreateScheduleEvent>().Subscribe(OnScheduleCreate);
+        eventAggregator.GetEvent<EditScheduleEvent>().Subscribe(OnScheduleEdit);
+    }
+
+    private void OnScheduleEdit(Appointment appointment)
+    {
+        _scheduleEditViewModel.Appointment = appointment;
     }
 
     private void OnPatientCreate()
     {
-        _patientCreateViewModel.Set();
+        _patientCreateViewModel.Initialize();
     }
 
     private void OnScheduleCreate()
     {
-        _scheduleCreateViewModel.Set();
+        _scheduleCreateViewModel.Initialize();
     }
 
     private void OnCreateDoctorEvent()
     {
-        _doctorCreateViewModel.Set();
+        _doctorCreateViewModel.Initialize();
     }
 
     private void OnDoctorDetailsEvent(Doctor doctor)

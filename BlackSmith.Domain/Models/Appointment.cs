@@ -8,4 +8,5 @@ public class Appointment : BaseEntity
     public Doctor Doctor { get; set; } = new();
     public DateTime Start { get; set; }
     public DateTime End { get; set; }
+    public bool IsConfirmed { get; set; }
 }

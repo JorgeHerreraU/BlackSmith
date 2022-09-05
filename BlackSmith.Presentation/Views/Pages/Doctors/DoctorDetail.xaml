@@ -1,0 +1,397 @@
+﻿<Page
+    x:Class="BlackSmith.Presentation.Views.Pages.Doctors.DoctorDetail"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:BlackSmith.Presentation.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:vm="clr-namespace:BlackSmith.Presentation.ViewModels.Doctors"
+    Title="DoctorDetail"
+    d:DataContext="{d:DesignInstance vm:DoctorDetailViewModel}"
+    d:DesignHeight="800"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <converters:TimeOnlyStringConverter x:Key="TimeOnlyStringConverter" />
+        <converters:EnumStringConverter x:Key="EnumStringConverter" />
+        <SolidColorBrush x:Key="TextBox.Foreground" Color="{DynamicResource TextFillColorPrimary}" />
+        <SolidColorBrush x:Key="TextBox.Background" Color="{DynamicResource ControlFillColorDefault}" />
+    </Page.Resources>
+    <Border>
+        <AdornerDecorator>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid
+                    Margin="17,15,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    DataContext="{Binding Doctor}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <!--  Icon & Title  -->
+                    <StackPanel
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Margin="0,0,0,25"
+                        Orientation="Horizontal">
+
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontFamily="{StaticResource BebasNeue}"
+                            FontSize="22"
+                            Foreground="{StaticResource TextBox.Foreground}"
+                            Text="DOCTOR DETAILS" />
+                    </StackPanel>
+                    <!--  Personal details caption  -->
+                    <StackPanel
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2">
+                        <TextBlock
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Foreground="{StaticResource TextBox.Foreground}"
+                            Text="Personal Details" />
+                        <Separator
+                            Margin="0,5,0,5"
+                            Background="White"
+                            BorderBrush="{StaticResource TextBox.Background}"
+                            BorderThickness="1" />
+                    </StackPanel>
+                    <!--  Personal details  -->
+                    <Label
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Margin="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="First Name:" />
+                    <TextBox
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        MinWidth="250"
+                        Margin="3"
+                        Padding="7,7,7,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        IsReadOnly="True"
+                        Text="{Binding FirstName}" />
+                    <Label
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Margin="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="Last Name:" />
+                    <TextBox
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        MinWidth="250"
+                        Margin="3"
+                        Padding="7,7,7,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        IsReadOnly="True"
+                        Text="{Binding LastName}" />
+                    <Label
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Margin="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="Age:" />
+                    <TextBox
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        MinWidth="250"
+                        Margin="3"
+                        Padding="7,7,7,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        IsReadOnly="True"
+                        Text="{Binding Age}" />
+                    <Label
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Margin="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="E-mail:" />
+                    <TextBox
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        MinWidth="250"
+                        Margin="3"
+                        Padding="7,7,7,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        IsReadOnly="True"
+                        Text="{Binding Email}" />
+                    <Label
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        Margin="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="Phone:" />
+                    <TextBox
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        MinWidth="250"
+                        MinHeight="23"
+                        Margin="3"
+                        Padding="7,7,7,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        IsReadOnly="True"
+                        Text="{Binding Phone}" />
+                    <Label
+                        Grid.Row="7"
+                        Grid.Column="0"
+                        Margin="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="Speciality:" />
+                    <TextBox
+                        Grid.Row="7"
+                        Grid.Column="1"
+                        MinWidth="250"
+                        Margin="3"
+                        Padding="7,7,7,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        IsReadOnly="True"
+                        Text="{Binding Speciality, Converter={StaticResource EnumStringConverter}}" />
+                    <!--  Go Back Button  -->
+                    <ui:Button
+                        Grid.Row="8"
+                        Grid.Column="1"
+                        Margin="3,12,0,0"
+                        Appearance="Secondary"
+                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.GoBack}"
+                        Content="Go Back"
+                        FontSize="16"
+                        Icon="ArrowLeft48" />
+                    <!--  Address caption  -->
+                    <StackPanel
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        Grid.ColumnSpan="2">
+                        <TextBlock Foreground="{StaticResource TextBox.Foreground}" Text="Address" />
+                        <Separator
+                            Margin="0,5,0,5"
+                            Background="White"
+                            BorderBrush="{StaticResource TextBox.Background}"
+                            BorderThickness="1" />
+                    </StackPanel>
+                    <!--  Address details  -->
+                    <Label
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        Margin="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="Number:" />
+                    <TextBox
+                        Grid.Row="2"
+                        Grid.Column="3"
+                        MinWidth="250"
+                        Margin="3"
+                        Padding="7,7,7,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        IsReadOnly="True"
+                        Text="{Binding Address.Number}" />
+                    <Label
+                        Grid.Row="3"
+                        Grid.Column="2"
+                        Margin="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="Street:" />
+                    <TextBox
+                        Grid.Row="3"
+                        Grid.Column="3"
+                        MinWidth="250"
+                        MinHeight="23"
+                        Margin="3"
+                        Padding="7,7,7,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        IsReadOnly="True"
+                        Text="{Binding Address.Street}" />
+                    <Label
+                        Grid.Row="4"
+                        Grid.Column="2"
+                        Margin="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="City:" />
+                    <TextBox
+                        Grid.Row="4"
+                        Grid.Column="3"
+                        MinWidth="250"
+                        MinHeight="23"
+                        Margin="3"
+                        Padding="7,7,7,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        IsReadOnly="True"
+                        Text="{Binding Address.City}" />
+                    <Label
+                        Grid.Row="5"
+                        Grid.Column="2"
+                        Margin="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="State:" />
+                    <TextBox
+                        Grid.Row="5"
+                        Grid.Column="3"
+                        MinWidth="250"
+                        MinHeight="23"
+                        Margin="3"
+                        Padding="7,7,7,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        IsReadOnly="True"
+                        Text="{Binding Address.State}" />
+                    <Label
+                        Grid.Row="6"
+                        Grid.Column="2"
+                        Margin="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="Zipcode:" />
+                    <TextBox
+                        Grid.Row="6"
+                        Grid.Column="3"
+                        MinWidth="250"
+                        MinHeight="23"
+                        Margin="3"
+                        Padding="7,7,7,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        IsReadOnly="True"
+                        Text="{Binding Address.ZipCode}" />
+                    <Label
+                        Grid.Row="7"
+                        Grid.Column="2"
+                        Margin="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="Country:" />
+                    <TextBox
+                        Grid.Row="7"
+                        Grid.Column="3"
+                        MinWidth="250"
+                        MinHeight="23"
+                        Margin="3"
+                        Padding="7,7,7,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        IsReadOnly="True"
+                        Text="{Binding Address.Country}" />
+                    <!--  Working days caption  -->
+                    <StackPanel
+                        Grid.Row="1"
+                        Grid.Column="4"
+                        Grid.ColumnSpan="2">
+                        <TextBlock Foreground="{StaticResource TextBox.Foreground}" Text="Working Days" />
+                        <Separator
+                            Margin="0,5,0,5"
+                            Background="White"
+                            BorderBrush="{StaticResource TextBox.Background}"
+                            BorderThickness="1" />
+                    </StackPanel>
+                    <ListView
+                        Grid.Row="2"
+                        Grid.RowSpan="6"
+                        Grid.Column="5"
+                        BorderBrush="Transparent"
+                        BorderThickness="0"
+                        Focusable="False"
+                        IsManipulationEnabled="False"
+                        ItemsSource="{Binding WorkingDays}">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Focusable" Value="false" />
+                                <Setter Property="Foreground" Value="{StaticResource TextBox.Foreground}" />
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                            <ContentPresenter />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label
+                                        Margin="3"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Content="Day:" />
+                                    <TextBox
+                                        MinWidth="100"
+                                        MinHeight="23"
+                                        Margin="3"
+                                        Padding="7,7,7,10"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        IsReadOnly="True"
+                                        Text="{Binding Day}" />
+                                    <TextBox
+                                        MinWidth="100"
+                                        MinHeight="23"
+                                        Margin="3"
+                                        Padding="7,7,7,10"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        IsReadOnly="True"
+                                        Text="{Binding StartTime, StringFormat=H:mm, Converter={StaticResource TimeOnlyStringConverter}}" />
+                                    <TextBox
+                                        MinWidth="100"
+                                        MinHeight="23"
+                                        Margin="3"
+                                        Padding="7,7,7,10"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        IsReadOnly="True"
+                                        Text="{Binding EndTime, StringFormat=H:mm, Converter={StaticResource TimeOnlyStringConverter}}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </Grid>
+        </AdornerDecorator>
+    </Border>
+</Page>

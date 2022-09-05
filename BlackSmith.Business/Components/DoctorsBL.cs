@@ -41,7 +41,7 @@ public class DoctorsBL
     public async Task<Doctor> UpdateDoctor(Doctor doctor)
     {
         await _validator.ValidateAndThrowAsync(doctor);
-        await _repository.Update(doctor, doctor => doctor.WorkingDays, x => x.Address);
+        await _repository.Update(doctor, d => d.WorkingDays, x => x.Address);
         return doctor;
     }
 
@@ -60,6 +60,7 @@ public class DoctorsBL
 
     private async Task<bool> DoctorEmailExists(string email)
     {
-        return await _repository.Get(doctor => doctor.Email.ToLower() == email.ToLower()) is not null;
+        return await _repository.Get(doctor =>
+            string.Equals(doctor.Email, email, StringComparison.CurrentCultureIgnoreCase)) is not null;
     }
 }

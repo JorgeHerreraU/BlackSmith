@@ -1,4 +1,4 @@
-﻿using BlackSmith.Presentation.Extensions;
+﻿using BlackSmith.Core.ExtensionMethods;
 using BlackSmith.Presentation.Interfaces;
 using FluentValidation;
 using Prism.Commands;
@@ -6,10 +6,12 @@ using System;
 using System.ComponentModel;
 
 namespace BlackSmith.Presentation.ViewModels;
-public abstract class EditableViewModelBase : ValidatableBase
+
+public abstract class EditableViewModelBase : ValidatableBase, IDisposable
 {
     private readonly IModalService _modalService;
     private bool _isTouched;
+
     protected EditableViewModelBase(IModalService modalService)
     {
         _modalService = modalService;
@@ -17,20 +19,10 @@ public abstract class EditableViewModelBase : ValidatableBase
         GoBack = new DelegateCommand(OnGoBack);
         ClearCommand = new DelegateCommand(OnClear);
     }
+
     public DelegateCommand SaveCommand { get; }
     public DelegateCommand GoBack { get; }
     public DelegateCommand ClearCommand { get; }
-
-    protected abstract void OnGoBack();
-    protected abstract bool CanSave();
-    protected abstract void OnSave();
-    public abstract void Set();
-    public abstract void SubscribeChanges();
-
-    protected void OnClear()
-    {
-        Set();
-    }
 
     public bool IsTouched
     {
@@ -41,9 +33,20 @@ public abstract class EditableViewModelBase : ValidatableBase
             RaisePropertyChanged();
         }
     }
+    public abstract void Dispose();
 
-    protected void OnPropertyChanged
-        (object? sender, PropertyChangedEventArgs e)
+    protected abstract void OnGoBack();
+    protected abstract bool CanSave();
+    protected abstract void OnSave();
+    public abstract void Initialize();
+    public abstract void SubscribeChanges();
+
+    private void OnClear()
+    {
+        Initialize();
+    }
+
+    protected void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (sender != null)
             IsTouched = !sender.IsAnyStringNullOrEmpty();

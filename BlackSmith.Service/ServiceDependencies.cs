@@ -27,9 +27,12 @@ public static class ServiceDependencies
         services.AddSingleton<IDoctorService, DoctorService>();
         services.AddScoped<IValidator<Patient>, PatientValidator>();
         services.AddScoped<IValidator<Doctor>, DoctorValidator>();
+        services.AddScoped<IValidator<Appointment>, AppointmentValidator>();
     }
 
-    public static void RegisterAutoMapperConfiguration(ref MapperConfigurationExpression mapperConfig)
+    public static void RegisterAutoMapperConfiguration(
+        ref MapperConfigurationExpression mapperConfig
+    )
     {
         mapperConfig.AddProfile(new AppointmentsProfile());
         mapperConfig.AddProfile(new DoctorsProfile());

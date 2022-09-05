@@ -20,13 +20,18 @@ public class CalendarAttachedProperties : DependencyObject
 
     #region Dependency Properties
 
-    public static DependencyProperty RegisterBlackoutDatesProperty = DependencyProperty.RegisterAttached(
-        "RegisterBlackoutDates",
-        typeof(ObservableCollection<DateTime>),
-        typeof(CalendarAttachedProperties),
-        new PropertyMetadata(null, OnRegisterCommandBindingChanged));
+    public static DependencyProperty RegisterBlackoutDatesProperty =
+        DependencyProperty.RegisterAttached(
+            "RegisterBlackoutDates",
+            typeof(ObservableCollection<DateTime>),
+            typeof(CalendarAttachedProperties),
+            new PropertyMetadata(null, OnRegisterCommandBindingChanged)
+        );
 
-    public static void SetRegisterBlackoutDates(DependencyObject d, ObservableCollection<DateTime> value)
+    public static void SetRegisterBlackoutDates(
+        DependencyObject d,
+        ObservableCollection<DateTime> value
+    )
     {
         d.SetValue(RegisterBlackoutDatesProperty, value);
     }
@@ -40,7 +45,10 @@ public class CalendarAttachedProperties : DependencyObject
 
     #region Event Handlers
 
-    private static void CalendarBindings_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    private static void CalendarBindings_CollectionChanged(
+        object sender,
+        NotifyCollectionChangedEventArgs e
+    )
     {
         var blackoutDates = sender as ObservableCollection<DateTime>;
 
@@ -48,7 +56,7 @@ public class CalendarAttachedProperties : DependencyObject
 
         if (e.Action == NotifyCollectionChangedAction.Add)
         {
-            foreach (DateTime date in e.NewItems)
+            foreach (DateTime date in e.NewItems!)
             {
                 calendar.BlackoutDates.Add(new CalendarDateRange(date));
             }
@@ -56,7 +64,7 @@ public class CalendarAttachedProperties : DependencyObject
 
         if (e.Action == NotifyCollectionChangedAction.Remove)
         {
-            foreach (DateTime date in e.OldItems)
+            foreach (DateTime date in e.OldItems!)
             {
                 calendar.BlackoutDates.Remove(new CalendarDateRange(date));
             }
@@ -68,7 +76,10 @@ public class CalendarAttachedProperties : DependencyObject
         }
     }
 
-    private static void DatePickerBindings_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    private static void DatePickerBindings_CollectionChanged(
+        object sender,
+        NotifyCollectionChangedEventArgs e
+    )
     {
         var blackoutDates = sender as ObservableCollection<DateTime>;
 
@@ -76,7 +87,7 @@ public class CalendarAttachedProperties : DependencyObject
 
         if (e.Action == NotifyCollectionChangedAction.Add)
         {
-            foreach (DateTime date in e.NewItems)
+            foreach (DateTime date in e.NewItems!)
             {
                 datePicker.BlackoutDates.Add(new CalendarDateRange(date));
             }
@@ -84,7 +95,7 @@ public class CalendarAttachedProperties : DependencyObject
 
         if (e.Action == NotifyCollectionChangedAction.Remove)
         {
-            foreach (DateTime date in e.OldItems)
+            foreach (DateTime date in e.OldItems!)
             {
                 datePicker.BlackoutDates.Remove(new CalendarDateRange(date));
             }
@@ -100,7 +111,10 @@ public class CalendarAttachedProperties : DependencyObject
 
     #region Private Methods
 
-    private static void OnRegisterCommandBindingChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+    private static void OnRegisterCommandBindingChanged(
+        DependencyObject sender,
+        DependencyPropertyChangedEventArgs e
+    )
     {
         if (sender is Calendar calendar)
         {
@@ -117,7 +131,8 @@ public class CalendarAttachedProperties : DependencyObject
                 {
                     calendar.BlackoutDates.Add(new CalendarDateRange(date));
                 }
-                bindings.CollectionChanged += CalendarBindings_CollectionChanged;
+
+                bindings.CollectionChanged += CalendarBindings_CollectionChanged!;
             }
         }
         else
@@ -137,7 +152,8 @@ public class CalendarAttachedProperties : DependencyObject
                     {
                         datePicker.BlackoutDates.Add(new CalendarDateRange(date));
                     }
-                    bindings.CollectionChanged += DatePickerBindings_CollectionChanged;
+
+                    bindings.CollectionChanged += DatePickerBindings_CollectionChanged!;
                 }
             }
         }

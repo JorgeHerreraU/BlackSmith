@@ -12,7 +12,6 @@ public class Address : ValidatableBase
     private string _street = "";
     private int _zipcode;
 
-
     public int Id
     {
         get => _id;
@@ -94,5 +93,8 @@ public class Address : ValidatableBase
         }
     }
 
-    public string FullAddress => $"{Number} {Street}, {City}, {State}";
+    public string FullAddress
+    {
+        get => $"{Number} {Street}, {City}, {State}";
+    }
 }

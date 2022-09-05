@@ -10,11 +10,13 @@ namespace BlackSmith.Presentation.Services;
 
 public class ModalService : IModalService
 {
+    private const string ErrorTitle = "Error";
+    private const string ConfirmTitle = "Confirm";
     public void ShowErrorMessage(string message)
     {
         new MessageBox
         {
-            Title = "Error",
+            Title = ErrorTitle,
             Content = new Modal(message, ImageType.Error),
             SizeToContent = SizeToContent.WidthAndHeight,
             ShowFooter = false,
@@ -26,7 +28,7 @@ public class ModalService : IModalService
     {
         new MessageBox
         {
-            Title = "Error",
+            Title = ErrorTitle,
             Content = new Modal(messages, ImageType.Error),
             SizeToContent = SizeToContent.WidthAndHeight,
             ShowFooter = false,
@@ -37,7 +39,13 @@ public class ModalService : IModalService
     public async Task<bool> ShowConfirmDialog(string message)
     {
         var completionSource = new TaskCompletionSource<bool>();
-        var messageBox = new MessageBox { Content = message, ButtonLeftName = "OK", ButtonRightName = "Cancel" };
+        var messageBox = new MessageBox
+        {
+            Title = ConfirmTitle,
+            Content = message,
+            ButtonLeftName = "OK",
+            ButtonRightName = "Cancel"
+        };
 
         messageBox.Show();
 
@@ -55,6 +63,4 @@ public class ModalService : IModalService
 
         return await completionSource.Task;
     }
-
-
 }

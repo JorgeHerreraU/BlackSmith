@@ -107,5 +107,8 @@ public class Patient : ValidatableBase
         }
     }
 
-    public string FullName => $"{FirstName} {LastName}";
+    public string FullName
+    {
+        get => $"{FirstName} {LastName}";
+    }
 }

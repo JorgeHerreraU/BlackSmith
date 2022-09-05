@@ -4,7 +4,14 @@ using BlackSmith.Presentation.Interfaces;
 using BlackSmith.Presentation.Models;
 using BlackSmith.Presentation.Services;
 using BlackSmith.Presentation.ViewModels;
-using BlackSmith.Presentation.Views.Pages;
+using BlackSmith.Presentation.ViewModels.Doctors;
+using BlackSmith.Presentation.ViewModels.Home;
+using BlackSmith.Presentation.ViewModels.Patients;
+using BlackSmith.Presentation.ViewModels.Schedules;
+using BlackSmith.Presentation.Views.Pages.Doctors;
+using BlackSmith.Presentation.Views.Pages.Home;
+using BlackSmith.Presentation.Views.Pages.Patients;
+using BlackSmith.Presentation.Views.Pages.Schedules;
 using BlackSmith.Service;
 using BlackSmith.Service.DTOs;
 using Microsoft.Extensions.DependencyInjection;
@@ -53,7 +60,6 @@ public partial class App
     {
         services.AddSingleton<INavigationService, NavigationService>();
         services.AddSingleton<IModalService, ModalService>();
-        services.AddSingleton<Settings>();
         services.AddSingleton<IPageService, PageService>();
         services.AddSingleton<IThemeService, ThemeService>();
         services.AddSingleton<IEventAggregator, EventAggregator>();
@@ -87,9 +93,13 @@ public partial class App
         services.AddSingleton<ScheduleListViewModel>();
         services.AddSingleton<ScheduleCreate>();
         services.AddSingleton<ScheduleCreateViewModel>();
+        services.AddSingleton<ScheduleEdit>();
+        services.AddSingleton<ScheduleEditViewModel>();
     }
 
-    private static void RegisterLocalAutoMapperConfiguration(ref MapperConfigurationExpression mapperConfig)
+    private static void RegisterLocalAutoMapperConfiguration(
+        ref MapperConfigurationExpression mapperConfig
+    )
     {
         mapperConfig.CreateMap<Patient, PatientDTO>().ReverseMap();
         mapperConfig.CreateMap<Address, AddressDTO>().ReverseMap();

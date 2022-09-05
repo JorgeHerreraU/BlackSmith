@@ -5,16 +5,48 @@ namespace BlackSmith.Presentation.Models;
 
 public class Appointment : ValidatableBase
 {
-    public double Duration { get; init; } = 60;
-    private DateTime? _start = null!;
-    private Patient _patient = null!;
-    private Doctor _doctor = null!;
+    public const double Duration = 60;
+    private Doctor? _doctor;
+    private int _doctorId;
+    private DateTime _end;
+    private int _id;
+    private Patient? _patient;
+    private int _patientId;
+    private DateTime? _start;
+    public int Id
+    {
+        get => _id;
+        set
+        {
+            _id = value;
+            NotifyPropertyChanged();
+        }
+    }
 
-    public int Id { get; set; }
-    public int PatientId { get; set; }
-    public int DoctorId { get; set; }
     [Required]
-    public Patient Patient
+    public int PatientId
+    {
+        get => _patientId;
+        set
+        {
+            _patientId = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    [Required]
+    public int DoctorId
+    {
+        get => _doctorId;
+        set
+        {
+            _doctorId = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    [Required]
+    public Patient? Patient
     {
         get => _patient;
         set
@@ -23,8 +55,9 @@ public class Appointment : ValidatableBase
             NotifyPropertyChanged();
         }
     }
+
     [Required]
-    public Doctor Doctor
+    public Doctor? Doctor
     {
         get => _doctor;
         set
@@ -33,6 +66,7 @@ public class Appointment : ValidatableBase
             NotifyPropertyChanged();
         }
     }
+
     [Required]
     public DateTime? Start
     {
@@ -43,5 +77,14 @@ public class Appointment : ValidatableBase
             NotifyPropertyChanged();
         }
     }
-    public DateTime End { get; set; }
+
+    public DateTime End
+    {
+        get => _end;
+        set
+        {
+            _end = value;
+            NotifyPropertyChanged();
+        }
+    }
 }

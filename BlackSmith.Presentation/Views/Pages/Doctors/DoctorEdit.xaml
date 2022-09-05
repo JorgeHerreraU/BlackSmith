@@ -1,0 +1,501 @@
+﻿<Page
+    x:Class="BlackSmith.Presentation.Views.Pages.Doctors.DoctorEdit"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:BlackSmith.Presentation.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:enums="clr-namespace:BlackSmith.Presentation.Enums"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:viewModels="clr-namespace:BlackSmith.Presentation.ViewModels.Doctors"
+    Title="DoctorEdit"
+    d:DataContext="{d:DesignInstance viewModels:DoctorEditViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <converters:EnumStringConverter x:Key="EnumStringConverter" />
+        <ControlTemplate x:Key="TextBoxErrorTemplate">
+            <Grid>
+                <ui:SymbolIcon
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Filled="False"
+                    Foreground="Orange"
+                    Symbol="ErrorCircle24" />
+                <AdornedElementPlaceholder />
+            </Grid>
+        </ControlTemplate>
+        <Style
+            x:Key="ToolTipError"
+            BasedOn="{StaticResource {x:Type TextBox}}"
+            TargetType="{x:Type TextBox}">
+            <!--  Some style setters  -->
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)/ErrorContent}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <!--  ReSharper disable once Xaml.StaticResourceNotResolved  -->
+        <Style
+            x:Key="NumerBoxToolTipError"
+            BasedOn="{StaticResource {x:Type ui:NumberBox}}"
+            TargetType="{x:Type ui:NumberBox}">
+            <!--  Some style setters  -->
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)/ErrorContent}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <SolidColorBrush x:Key="TextBox.Foreground" Color="{DynamicResource TextFillColorPrimary}" />
+        <SolidColorBrush x:Key="TextBox.Background" Color="{DynamicResource ControlFillColorDefault}" />
+    </Page.Resources>
+    <Border>
+        <AdornerDecorator>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid
+                    Margin="17,15,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    DataContext="{Binding Doctor}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <!--  Icon & Title  -->
+                    <StackPanel
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Margin="0,0,0,25"
+                        Orientation="Horizontal">
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontFamily="{StaticResource BebasNeue}"
+                            FontSize="22"
+                            Foreground="{StaticResource TextBox.Foreground}"
+                            Text="EDIT DOCTOR" />
+                    </StackPanel>
+                    <!--  Personal details caption  -->
+                    <StackPanel
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2">
+                        <TextBlock
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Foreground="{StaticResource TextBox.Foreground}"
+                            Text="Personal Details" />
+                        <Separator
+                            Margin="0,5,0,5"
+                            Background="White"
+                            BorderBrush="{StaticResource TextBox.Background}"
+                            BorderThickness="1" />
+                    </StackPanel>
+                    <!--  Personal details  -->
+                    <Label
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Margin="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="First Name:" />
+                    <TextBox
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        MinWidth="250"
+                        Margin="3"
+                        Padding="7,7,7,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolTipError}"
+                        Text="{Binding FirstName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
+                    <Label
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Margin="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="Last Name:" />
+                    <TextBox
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        MinWidth="250"
+                        Margin="3"
+                        Padding="7,7,7,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolTipError}"
+                        Text="{Binding LastName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
+                    <Label
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Margin="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="Age:" />
+                    <ui:NumberBox
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        MinWidth="250"
+                        Margin="3"
+                        Padding="7,7,7,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        IntegersOnly="True"
+                        Min="0"
+                        SpinButtonsEnabled="False"
+                        Style="{StaticResource NumerBoxToolTipError}"
+                        Text="{Binding Age, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
+                    <Label
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Margin="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="E-mail:" />
+                    <TextBox
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        MinWidth="250"
+                        Margin="3"
+                        Padding="7,7,7,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolTipError}"
+                        Text="{Binding Email, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
+                    <Label
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        Margin="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="Phone:" />
+                    <TextBox
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        MinWidth="250"
+                        MinHeight="23"
+                        Margin="3"
+                        Padding="7,7,7,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolTipError}"
+                        Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
+                    <Label
+                        Grid.Row="7"
+                        Grid.Column="0"
+                        Margin="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="Speciality:" />
+                    <ComboBox
+                        Grid.Row="7"
+                        Grid.Column="1"
+                        MinWidth="250"
+                        Margin="3"
+                        Padding="7,7,7,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        ItemsSource="{enums:EnumBindingSource enums:Speciality}"
+                        SelectedItem="{Binding Speciality, Converter={StaticResource EnumStringConverter}}"
+                        SelectedValue="{Binding Speciality, Converter={StaticResource EnumStringConverter}}" />
+                    <StackPanel
+                        Grid.Row="8"
+                        Grid.Column="1"
+                        Margin="0,5,0,0"
+                        Orientation="Horizontal">
+                        <ui:Button
+                            Margin="5,5,5,5"
+                            Appearance="Secondary"
+                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.SaveCommand}"
+                            Content="Save"
+                            FontSize="16"
+                            Icon="Save24"
+                            IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.IsTouched, UpdateSourceTrigger=PropertyChanged}" />
+                        <ui:Button
+                            Margin="5,5,5,5"
+                            Appearance="Secondary"
+                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.GoBack}"
+                            Content="Go Back"
+                            FontSize="16"
+                            Icon="ArrowLeft48" />
+                    </StackPanel>
+                    <!--  Go Back Button  -->
+
+                    <!--  Address caption  -->
+                    <StackPanel
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        Grid.ColumnSpan="2">
+                        <TextBlock Foreground="{StaticResource TextBox.Foreground}" Text="Address" />
+                        <Separator
+                            Margin="0,5,0,5"
+                            Background="White"
+                            BorderBrush="{StaticResource TextBox.Background}"
+                            BorderThickness="1" />
+                    </StackPanel>
+                    <!--  Address details  -->
+                    <Label
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        Margin="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="Number:" />
+                    <ui:NumberBox
+                        Grid.Row="2"
+                        Grid.Column="3"
+                        MinWidth="250"
+                        Margin="3"
+                        Padding="7,7,7,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        IntegersOnly="True"
+                        Min="0"
+                        SpinButtonsEnabled="False"
+                        Style="{StaticResource NumerBoxToolTipError}"
+                        Text="{Binding Address.Number, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
+                    <Label
+                        Grid.Row="3"
+                        Grid.Column="2"
+                        Margin="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="Street:" />
+                    <TextBox
+                        Grid.Row="3"
+                        Grid.Column="3"
+                        MinWidth="250"
+                        MinHeight="23"
+                        Margin="3"
+                        Padding="7,7,7,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolTipError}"
+                        Text="{Binding Address.Street, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
+                    <Label
+                        Grid.Row="4"
+                        Grid.Column="2"
+                        Margin="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="City:" />
+                    <TextBox
+                        Grid.Row="4"
+                        Grid.Column="3"
+                        MinWidth="250"
+                        MinHeight="23"
+                        Margin="3"
+                        Padding="7,7,7,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolTipError}"
+                        Text="{Binding Address.City, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
+                    <Label
+                        Grid.Row="5"
+                        Grid.Column="2"
+                        Margin="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="State:" />
+                    <TextBox
+                        Grid.Row="5"
+                        Grid.Column="3"
+                        MinWidth="250"
+                        MinHeight="23"
+                        Margin="3"
+                        Padding="7,7,7,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolTipError}"
+                        Text="{Binding Address.State, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
+                    <Label
+                        Grid.Row="6"
+                        Grid.Column="2"
+                        Margin="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="Zipcode:" />
+                    <ui:NumberBox
+                        Grid.Row="6"
+                        Grid.Column="3"
+                        MinWidth="250"
+                        MinHeight="23"
+                        Margin="3"
+                        Padding="7,7,7,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        IntegersOnly="True"
+                        Min="0"
+                        SpinButtonsEnabled="False"
+                        Style="{StaticResource NumerBoxToolTipError}"
+                        Text="{Binding Address.ZipCode, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
+                    <Label
+                        Grid.Row="7"
+                        Grid.Column="2"
+                        Margin="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="Country:" />
+                    <ComboBox
+                        Grid.Row="7"
+                        Grid.Column="3"
+                        MinWidth="250"
+                        MinHeight="23"
+                        Margin="3"
+                        Padding="7,7,7,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        ItemsSource="{Binding Source={enums:EnumBindingSource {x:Type enums:Country}}}"
+                        SelectedItem="{Binding Address.Country, UpdateSourceTrigger=PropertyChanged}" />
+                    <!--  Working days caption  -->
+                    <StackPanel
+                        Grid.Row="1"
+                        Grid.Column="4"
+                        Grid.ColumnSpan="2">
+                        <TextBlock Foreground="{StaticResource TextBox.Foreground}" Text="Working Days" />
+                        <Separator
+                            Margin="0,5,0,5"
+                            Background="White"
+                            BorderBrush="{StaticResource TextBox.Background}"
+                            BorderThickness="1" />
+                    </StackPanel>
+                    <ListBox
+                        Grid.Row="2"
+                        Grid.RowSpan="6"
+                        Grid.Column="4"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.AvailableWorkingDays}"
+                        SelectionMode="Extended">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="SnapsToDevicePixels" Value="True" />
+                                <Setter Property="Padding" Value="4,1" />
+                                <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+                                <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="BorderBrush" Value="Transparent" />
+                                <Setter Property="BorderThickness" Value="1" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                            <Border
+                                                x:Name="Bd"
+                                                Padding="{TemplateBinding Padding}"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                SnapsToDevicePixels="true">
+                                                <ContentPresenter
+                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <MultiTrigger>
+                                                    <MultiTrigger.Conditions>
+                                                        <Condition Property="IsMouseOver" Value="True" />
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter TargetName="Bd" Property="Background" Value="Transparent" />
+                                                    <Setter TargetName="Bd" Property="BorderBrush" Value="Transparent" />
+                                                </MultiTrigger>
+                                                <MultiTrigger>
+                                                    <MultiTrigger.Conditions>
+                                                        <Condition Property="Selector.IsSelectionActive" Value="False" />
+                                                        <Condition Property="IsSelected" Value="True" />
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter TargetName="Bd" Property="Background" Value="transparent" />
+                                                    <Setter TargetName="Bd" Property="BorderBrush" Value="transparent" />
+                                                </MultiTrigger>
+                                                <MultiTrigger>
+                                                    <MultiTrigger.Conditions>
+                                                        <Condition Property="Selector.IsSelectionActive" Value="True" />
+                                                        <Condition Property="IsSelected" Value="True" />
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter TargetName="Bd" Property="Background" Value="Transparent" />
+                                                    <Setter TargetName="Bd" Property="BorderBrush" Value="Transparent" />
+                                                </MultiTrigger>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter TargetName="Bd" Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox
+                                        MinWidth="5"
+                                        Margin="0"
+                                        IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" />
+                                    <Label
+                                        MinWidth="65"
+                                        Margin="3"
+                                        VerticalAlignment="Center"
+                                        Content="{Binding Day, UpdateSourceTrigger=PropertyChanged}"
+                                        ContentStringFormat="{}{0}:" />
+                                    <ComboBox
+                                        MinWidth="110"
+                                        MaxHeight="32"
+                                        Margin="0,0,3,0"
+                                        VerticalAlignment="Top"
+                                        FontSize="12"
+                                        ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.AvailableHours}"
+                                        SelectedItem="{Binding StartTime, UpdateSourceTrigger=PropertyChanged}" />
+                                    <ComboBox
+                                        MinWidth="110"
+                                        MaxHeight="32"
+                                        Margin="3,0,0,0"
+                                        VerticalAlignment="Top"
+                                        FontSize="12"
+                                        ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.AvailableHours}"
+                                        SelectedItem="{Binding EndTime, UpdateSourceTrigger=PropertyChanged}" />
+
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                </Grid>
+            </Grid>
+        </AdornerDecorator>
+    </Border>
+</Page>
