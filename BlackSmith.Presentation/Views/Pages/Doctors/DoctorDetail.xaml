@@ -15,8 +15,6 @@
     <Page.Resources>
         <converters:TimeOnlyStringConverter x:Key="TimeOnlyStringConverter" />
         <converters:EnumStringConverter x:Key="EnumStringConverter" />
-        <SolidColorBrush x:Key="TextBox.Foreground" Color="{DynamicResource TextFillColorPrimary}" />
-        <SolidColorBrush x:Key="TextBox.Background" Color="{DynamicResource ControlFillColorDefault}" />
     </Page.Resources>
     <Border>
         <AdornerDecorator>

@@ -15,11 +15,11 @@ public static class SeedData
         {
             new()
             {
-                FirstName="Constantin",
-                LastName="Horder",
-                Email="chorder0@google.es",
-                Phone="1-(836)810-5892",
-                Age=39,
+                FirstName = "Constantin",
+                LastName = "Horder",
+                Email = "chorder0@google.es",
+                Phone = "1-(836)810-5892",
+                Age = 39,
                 Address = new Address
                 {
                     Street = "Boulevard",
@@ -53,11 +53,11 @@ public static class SeedData
             },
             new()
             {
-                FirstName="Vincenty",
-                LastName="Baily",
-                Email="vbaily1@phoca.cz",
-                Phone="1-(911)171-5164",
-                Age=53,
+                FirstName = "Vincenty",
+                LastName = "Baily",
+                Email = "vbaily1@phoca.cz",
+                Phone = "1-(911)171-5164",
+                Age = 53,
                 Address = new Address
                 {
                     Street = "Rohan",
@@ -91,11 +91,11 @@ public static class SeedData
             },
             new()
             {
-                FirstName="Abramo",
-                LastName="Mathie",
-                Email="amathie2@1und1.de",
-                Phone="1-(464)760-8596",
-                Age=32,
+                FirstName = "Abramo",
+                LastName = "Mathie",
+                Email = "amathie2@1und1.de",
+                Phone = "1-(464)760-8596",
+                Age = 32,
                 Address = new Address
                 {
                     Street = "Clemont Rd",
@@ -119,7 +119,8 @@ public static class SeedData
                         EndTime = new TimeOnly(18, 00),
                         Day = DayOfWeek.Tuesday
                     },
-                    new() {
+                    new()
+                    {
                         StartTime = new TimeOnly(10, 00),
                         EndTime = new TimeOnly(18, 00),
                         Day = DayOfWeek.Wednesday
@@ -395,7 +396,7 @@ public static class SeedData
                         Day = DayOfWeek.Wednesday
                     }
                 }
-            },
+            }
         };
 
         context.Doctors.AddRange(doctors);
@@ -403,7 +404,7 @@ public static class SeedData
 
         var patients = new List<Patient>
         {
-            new Patient
+            new()
             {
                 FirstName = "Lucas",
                 LastName = "San Toro",
@@ -419,9 +420,9 @@ public static class SeedData
                     State = "Florida",
                     Country = "United States",
                     ZipCode = 392982
-                },
+                }
             },
-            new Patient
+            new()
             {
                 FirstName = "Rodrick",
                 LastName = "Ventura",
@@ -437,9 +438,9 @@ public static class SeedData
                     State = "New York",
                     Country = "United States",
                     ZipCode = 564234
-                },
+                }
             },
-            new Patient
+            new()
             {
                 FirstName = "John",
                 LastName = "Doe",
@@ -455,9 +456,9 @@ public static class SeedData
                     State = "Florida",
                     Country = "United States",
                     ZipCode = 544233
-                },
+                }
             },
-            new Patient
+            new()
             {
                 FirstName = "Jane",
                 LastName = "McGill",
@@ -473,16 +474,16 @@ public static class SeedData
                     State = "Saskatchewan",
                     Country = "United States",
                     ZipCode = 392982
-                },
+                }
             },
-            new Patient
+            new()
             {
-                FirstName="Dannie",
-                LastName="Backler",
-                Email="dbackler0@ebay.co.uk",
-                Identification="62-9003349",
-                Phone="1-301-441-6512",
-                Age=55,
+                FirstName = "Dannie",
+                LastName = "Backler",
+                Email = "dbackler0@ebay.co.uk",
+                Identification = "62-9003349",
+                Phone = "1-301-441-6512",
+                Age = 55,
                 Address = new Address
                 {
                     Street = "Ahum Dr",
@@ -491,16 +492,16 @@ public static class SeedData
                     State = "Montana",
                     Country = "United States",
                     ZipCode = 534221
-                },
+                }
             },
-            new Patient
+            new()
             {
-                FirstName="Leslie",
-                LastName="Petrelluzzi",
-                Email="lpetrelluzzi1@com.com",
-                Identification="26-0468929",
-                Phone="1-341-451-5431",
-                Age=50,
+                FirstName = "Leslie",
+                LastName = "Petrelluzzi",
+                Email = "lpetrelluzzi1@com.com",
+                Identification = "26-0468929",
+                Phone = "1-341-451-5431",
+                Age = 50,
                 Address = new Address
                 {
                     Street = "Osborn St",
@@ -509,7 +510,7 @@ public static class SeedData
                     State = "Johnston",
                     Country = "United States",
                     ZipCode = 988421
-                },
+                }
             }
         };
 
@@ -520,76 +521,76 @@ public static class SeedData
 
         var appointments = new List<Appointment>
         {
-            new Appointment
+            new()
             {
                 Patient = patients[0],
                 Doctor = doctors[0],
                 Start = new DateTime(now.Year, now.Month, now.Day, 9, 0, 0),
-                End = new DateTime(now.Year, now.Month, now.Day, 10,0,0)
+                End = new DateTime(now.Year, now.Month, now.Day, 10, 0, 0)
             },
-            new Appointment
+            new()
             {
                 Patient = patients[1],
                 Doctor = doctors[1],
                 Start = new DateTime(now.Year, now.Month, now.Day, 10, 0, 0),
-                End = new DateTime(now.Year, now.Month, now.Day, 11,0,0)
+                End = new DateTime(now.Year, now.Month, now.Day, 11, 0, 0)
             },
-            new Appointment
+            new()
             {
                 Patient = patients[2],
                 Doctor = doctors[2],
                 Start = new DateTime(now.Year, now.Month, now.Day, 11, 0, 0),
-                End = new DateTime(now.Year, now.Month, now.Day, 12,0,0)
+                End = new DateTime(now.Year, now.Month, now.Day, 12, 0, 0)
             },
-            new Appointment
+            new()
             {
                 Patient = patients[3],
                 Doctor = doctors[3],
                 Start = new DateTime(now.Year, now.Month, now.Day, 12, 0, 0),
-                End = new DateTime(now.Year, now.Month, now.Day, 13,0,0)
+                End = new DateTime(now.Year, now.Month, now.Day, 13, 0, 0)
             },
-            new Appointment
+            new()
             {
                 Patient = patients[4],
                 Doctor = doctors[4],
                 Start = new DateTime(now.Year, now.Month, now.Day, 13, 0, 0),
-                End = new DateTime(now.Year, now.Month, now.Day, 14,0,0)
+                End = new DateTime(now.Year, now.Month, now.Day, 14, 0, 0)
             },
-            new Appointment
+            new()
             {
                 Patient = patients[5],
                 Doctor = doctors[5],
                 Start = new DateTime(now.Year, now.Month, now.Day, 14, 0, 0),
-                End = new DateTime(now.Year, now.Month, now.Day, 15,0,0)
+                End = new DateTime(now.Year, now.Month, now.Day, 15, 0, 0)
             },
-            new Appointment
+            new()
             {
                 Patient = patients[0],
                 Doctor = doctors[6],
                 Start = new DateTime(now.Year, now.Month, now.Day, 15, 0, 0),
-                End = new DateTime(now.Year, now.Month, now.Day, 16,0,0)
+                End = new DateTime(now.Year, now.Month, now.Day, 16, 0, 0)
             },
-            new Appointment
+            new()
             {
                 Patient = patients[1],
                 Doctor = doctors[7],
                 Start = new DateTime(now.Year, now.Month, now.Day, 16, 0, 0),
-                End = new DateTime(now.Year, now.Month, now.Day, 17,0,0)
+                End = new DateTime(now.Year, now.Month, now.Day, 17, 0, 0)
             },
-            new Appointment
+            new()
             {
                 Patient = patients[2],
                 Doctor = doctors[8],
                 Start = new DateTime(now.Year, now.Month, now.Day, 17, 0, 0),
-                End = new DateTime(now.Year, now.Month, now.Day, 18,0,0)
+                End = new DateTime(now.Year, now.Month, now.Day, 18, 0, 0)
             },
-            new Appointment
+            new()
             {
                 Patient = patients[3],
                 Doctor = doctors[9],
                 Start = new DateTime(now.Year, now.Month, now.Day, 18, 0, 0),
-                End = new DateTime(now.Year, now.Month, now.Day, 19,0,0)
-            },
+                End = new DateTime(now.Year, now.Month, now.Day, 19, 0, 0)
+            }
         };
 
         context.Appointments.AddRange(appointments);

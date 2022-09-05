@@ -13,7 +13,10 @@ public class ValidatableBase : BindableBase, INotifyDataErrorInfo
 {
     private readonly Dictionary<string, List<string?>> _errors = new();
 
-    public bool HasErrors => _errors.Count > 0;
+    public bool HasErrors
+    {
+        get => _errors.Count > 0;
+    }
 
     public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
 

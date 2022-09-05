@@ -89,7 +89,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
         await using var context = _context.CreateDbContext();
         var dbEntity =
             await context.FindAsync<T>(entity.Id)
-            ?? throw new DbUpdateException("An error ocurred getting the provided entity");
+            ?? throw new DbUpdateException("An error occurred while getting the provided entity");
         var dbEntry = context.Entry(dbEntity);
         dbEntry.CurrentValues.SetValues(entity);
         foreach (var property in includes)
@@ -103,7 +103,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
                 if (accessor is null)
                 {
                     throw new DbUpdateException(
-                        "An error ocurred getting the accessor to modify the collection"
+                        "An error occurred while getting the accessor to modify the collection"
                     );
                 }
 
@@ -112,7 +112,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
                 if (dbItemsEntry.CurrentValue is null)
                 {
                     throw new DbUpdateException(
-                        "An error ocurred getting the entity items current value"
+                        "An error occurred while getting the entity items current value"
                     );
                 }
 

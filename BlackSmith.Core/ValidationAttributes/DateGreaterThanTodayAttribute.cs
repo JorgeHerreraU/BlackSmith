@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlackSmith.Core.VaildationAttributes;
+namespace BlackSmith.Core.ValidationAttributes;
 
 public class DateGreaterThanTodayAttribute : ValidationAttribute
 {

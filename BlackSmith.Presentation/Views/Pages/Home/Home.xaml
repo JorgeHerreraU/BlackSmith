@@ -57,13 +57,6 @@
                             Foreground="#B7FFFFFF"
                             Text="Built using WPF UI." />
                     </StackPanel>
-                    <TextBlock
-                        Margin="12"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Bottom"
-                        FontSize="10"
-                        Foreground="#57FFFFFF"
-                        Text="Created by lepo.co" />
                 </Grid>
             </Border>
         </Border>

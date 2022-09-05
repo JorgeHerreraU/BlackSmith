@@ -19,12 +19,11 @@
             <!--  Some style setters  -->
             <Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="true">
-                    <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)/ErrorContent}" />
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)/ErrorContent}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <SolidColorBrush x:Key="TextBox.Foreground" Color="{DynamicResource TextFillColorPrimary}" />
-        <SolidColorBrush x:Key="TextBox.Background" Color="{DynamicResource ControlFillColorDefault}" />
     </Page.Resources>
     <Border>
         <AdornerDecorator>

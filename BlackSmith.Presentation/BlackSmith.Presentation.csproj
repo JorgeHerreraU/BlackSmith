@@ -12,6 +12,12 @@
         <EmbeddedResource Remove="Profiles\**" />
         <None Remove="Profiles\**" />
         <Page Remove="Profiles\**" />
+        <Page Update="Controls\UserControls\Modal.xaml">
+          <SubType>Designer</SubType>
+        </Page>
+        <Compile Update="Controls\UserControls\Modal.xaml.cs">
+          <SubType>Code</SubType>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>

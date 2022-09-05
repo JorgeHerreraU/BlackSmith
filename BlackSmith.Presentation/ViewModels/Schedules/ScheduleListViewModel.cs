@@ -12,7 +12,6 @@ using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using Wpf.Ui.Mvvm.Contracts;
 
@@ -67,7 +66,7 @@ public class ScheduleListViewModel : BindableBase
     public ObservableCollection<Appointment> Appointments
     {
         get => _appointments;
-        set
+        private set
         {
             _appointments = value;
             RaisePropertyChanged();
@@ -109,11 +108,6 @@ public class ScheduleListViewModel : BindableBase
         var appointments = await _appointmentService.GetAppointments();
         _allAppointments = _mapper.Map<IEnumerable<Appointment>>(appointments).ToList();
         Appointments = new ObservableCollection<Appointment>(_allAppointments);
-    }
-
-    private void item_PropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-        EditCommand.RaiseCanExecuteChanged();
     }
 
     private void OnClearSearch()

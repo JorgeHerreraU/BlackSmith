@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BlackSmith.Core.Helpers;
-using BlackSmith.Core.VaildationAttributes;
+using BlackSmith.Core.ValidationAttributes;
 using BlackSmith.Presentation.Enums;
 using BlackSmith.Presentation.Extensions;
 using BlackSmith.Presentation.Interfaces;
@@ -258,7 +258,7 @@ public class ScheduleCreateViewModel : EditableViewModelBase, INavigationAware
     {
         try
         {
-            await _appointmentService.UpdateAppointment(_mapper.Map<AppointmentDTO>(Appointment));
+            await _appointmentService.CreateAppointment(_mapper.Map<AppointmentDTO>(Appointment));
             OnGoBack();
         }
         catch (Exception ex)

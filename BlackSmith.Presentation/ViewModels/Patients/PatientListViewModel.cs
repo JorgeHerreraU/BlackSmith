@@ -61,7 +61,7 @@ public class PatientListViewModel : BindableBase
     public ObservableCollection<Patient> Patients
     {
         get => _patients;
-        set
+        private set
         {
             _patients = value;
             RaisePropertyChanged();

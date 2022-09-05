@@ -41,7 +41,7 @@ public class DoctorCreateViewModel : EditableViewModelBase, INavigationAware
     public ObservableCollection<WorkingDay> AvailableWorkingDays
     {
         get => _availableWorkingDays;
-        set
+        private set
         {
             _availableWorkingDays = value;
             RaisePropertyChanged();
