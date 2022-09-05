@@ -5,6 +5,7 @@
         <TargetFramework>net6.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
+        <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
@@ -13,10 +14,10 @@
         <None Remove="Profiles\**" />
         <Page Remove="Profiles\**" />
         <Page Update="Controls\UserControls\Modal.xaml">
-          <SubType>Designer</SubType>
+            <SubType>Designer</SubType>
         </Page>
         <Compile Update="Controls\UserControls\Modal.xaml.cs">
-          <SubType>Code</SubType>
+            <SubType>Code</SubType>
         </Compile>
     </ItemGroup>
 
@@ -54,6 +55,10 @@
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Resource>
         <Resource Include="Assets\bg.jpg">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Resource>
+        <None Remove="Assets\icon.ico" />
+        <Resource Include="Assets\icon.ico">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Resource>
     </ItemGroup>
