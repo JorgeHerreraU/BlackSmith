@@ -105,12 +105,9 @@ public class AppointmentsBL
         DateTime date
     )
     {
-        return await _appointmentsRepository.GetAll(
-            appointment =>
-                appointment.Doctor == doctor && appointment.Start.DayOfWeek == date.DayOfWeek,
-            appointment => appointment.Doctor,
-            appointment => appointment.Patient
-        );
+        return await _appointmentsRepository.GetAll(a => a.Doctor == doctor && a.Start.DayOfWeek == date.DayOfWeek,
+            a => a.Doctor,
+            a => a.Patient);
     }
 
     private static bool GetDoctorsAreFullyBookedOnSpecificDay(
@@ -119,7 +116,7 @@ public class AppointmentsBL
         DateTime date
     )
     {
-        var workingDays = doctors.SelectMany(doctor => doctor.WorkingDays).ToList();
+        var workingDays = doctors.SelectMany(d => d.WorkingDays).ToList();
         return GetWorkingDayIsFullyBooked(workingDays, date, appointments);
     }
 
