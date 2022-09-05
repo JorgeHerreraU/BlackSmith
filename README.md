@@ -1,5 +1,7 @@
 # Medical Center Application
 
+![image](https://user-images.githubusercontent.com/34349731/188518116-ba5b72f7-8830-4552-ab8b-a3894eb12007.png)
+
 ![GitHub repo size](https://img.shields.io/github/repo-size/JorgeHerreraU/ProductsApi?style=for-the-badge)
 ![GitHub language count](https://img.shields.io/github/languages/count/JorgeHerreraU/ProductsApi?style=for-the-badge)
 ![Github open issues](https://img.shields.io/github/issues/JorgeHerreraU/ProductsApi?style=for-the-badge)
