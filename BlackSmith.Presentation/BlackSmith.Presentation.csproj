@@ -45,9 +45,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="Assets\error.png">
+        <Resource Include="Assets\error.png">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
+        </Resource>
     </ItemGroup>
 
     <ItemGroup>
