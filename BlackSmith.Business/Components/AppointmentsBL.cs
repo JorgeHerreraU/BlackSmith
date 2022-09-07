@@ -41,22 +41,44 @@ public class AppointmentsBL
         foreach (var day in days)
         {
             var isAWorkingDay = _doctorsBL.GetSpecialityIsAvailable(doctors, day);
-            if (!isAWorkingDay)
-                continue;
+            if (!isAWorkingDay) continue;
             var isDayFullyBooked = GetDoctorsAreFullyBookedOnSpecificDay(
                 doctors,
                 appointments,
                 day
             );
-            if (!isDayFullyBooked)
-                yield return day;
+            if (!isDayFullyBooked) yield return day;
         }
     }
 
-    public async Task<bool> GetDoctorIsFullyBookedOnSpecificDate(Doctor doctor, DateTime date)
+    private async Task<bool> GetDoctorIsFullyBookedOnSpecificDate(Doctor doctor, DateTime date)
     {
         var appointments = await GetAppointmentsByDoctorAndDay(doctor, date);
         return GetWorkingDayIsFullyBooked(doctor.WorkingDays.ToList(), date, appointments);
+    }
+
+    public async Task<Appointment?> GetAppointmentByPatientAndDate(Patient patient, DateTime date)
+    {
+        return await _appointmentsRepository.Get(a => a.PatientId == patient.Id && a.Start == date);
+    }
+
+    public async IAsyncEnumerable<DateTime> GetAvailableHoursByDoctor(Doctor doctor, DateTime date)
+    {
+        var appointments = await GetAppointmentsByDoctorAndDay(doctor, date);
+        var scheduledTimes = appointments.Select(a => TimeOnly.FromDateTime(a.Start)).ToList();
+        var (workStartTime, workFinishTime) = GetWorkingTimes(doctor.WorkingDays, date);
+        var workTimeRange = TimeHelper.GetTimeRange(workStartTime, workFinishTime);
+        foreach (var time in workTimeRange)
+            if (!scheduledTimes.Contains(time))
+                yield return date.Date + time.ToTimeSpan();
+    }
+    private static (TimeOnly workStartTime, TimeOnly workFinishTime) GetWorkingTimes(
+        ICollection<WorkingDay> workingDays,
+        DateTime date)
+    {
+        var workStartTime = workingDays.Where(w => w.Day == date.DayOfWeek).Min(w => w.StartTime);
+        var workFinishTime = workingDays.Where(w => w.Day == date.DayOfWeek).Max(w => w.EndTime);
+        return (workStartTime, workFinishTime);
     }
 
     private async Task<IEnumerable<Appointment>> GetAppointmentsByDoctorsSpeciality(
@@ -75,8 +97,7 @@ public class AppointmentsBL
             appointment.Doctor,
             appointment.Start
         );
-        if (isDoctorFullyBooked)
-            throw new ArgumentException("Doctor is fully booked on this day");
+        if (isDoctorFullyBooked) throw new ArgumentException("Doctor is fully booked on this day");
         appointment.ClearClassInstances();
         await _appointmentsRepository.Add(appointment);
         return appointment;
@@ -89,14 +110,14 @@ public class AppointmentsBL
             appointment.Doctor,
             appointment.Start
         );
-        if (isDoctorFullyBooked)
-            throw new ArgumentException("Doctor is fully booked on this day");
+        if (isDoctorFullyBooked) throw new ArgumentException("Doctor is fully booked on this day");
         appointment.ClearClassInstances();
         return await _appointmentsRepository.Update(appointment);
     }
 
     public async Task<bool> DeleteAppointment(Appointment appointment)
     {
+        appointment.ClearClassInstances();
         return await _appointmentsRepository.Delete(appointment);
     }
 
@@ -121,13 +142,12 @@ public class AppointmentsBL
     }
 
     private static bool GetWorkingDayIsFullyBooked(
-        IReadOnlyCollection<WorkingDay> workingDays,
+        ICollection<WorkingDay> workingDays,
         DateTime date,
         IEnumerable<Appointment> appointments
     )
     {
-        var workStartTime = workingDays.Where(w => w.Day == date.DayOfWeek).Min(w => w.StartTime);
-        var workFinishTime = workingDays.Where(w => w.Day == date.DayOfWeek).Max(w => w.EndTime);
+        var (workStartTime, workFinishTime) = GetWorkingTimes(workingDays, date);
         var workTimeRange = TimeHelper.GetTimeRange(workStartTime, workFinishTime).ToList();
         var scheduledWorkTimeRange = appointments
             .Where(a => a.Start.Date == date.Date)

@@ -40,6 +40,13 @@ public class PatientEditViewModel : EditableViewModelBase, INavigationAware
         }
     }
 
+    public void OnNavigatedTo() { }
+
+    public void OnNavigatedFrom()
+    {
+        Dispose();
+    }
+
     protected override void OnGoBack()
     {
         _navigationService.Navigate(typeof(PatientList));
@@ -69,7 +76,7 @@ public class PatientEditViewModel : EditableViewModelBase, INavigationAware
         IsTouched = true;
     }
 
-    public override void SubscribeChanges()
+    protected override void SubscribeChanges()
     {
         Patient.PropertyChanged += OnPropertyChanged;
         Patient.Address.PropertyChanged += OnPropertyChanged;
@@ -83,12 +90,5 @@ public class PatientEditViewModel : EditableViewModelBase, INavigationAware
         Patient.Address.PropertyChanged -= OnPropertyChanged;
         Patient.ErrorsChanged -= RaiseCanChange;
         Patient.Address.ErrorsChanged -= RaiseCanChange;
-    }
-
-    public void OnNavigatedTo() { }
-
-    public void OnNavigatedFrom()
-    {
-        Dispose();
     }
 }

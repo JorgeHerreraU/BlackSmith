@@ -78,8 +78,7 @@ public class PatientListViewModel : BindableBase
         var confirmDeletion = await _modalService.ShowConfirmDialog(
             "Are you sure you want to delete this patient?"
         );
-        if (!confirmDeletion)
-            return;
+        if (!confirmDeletion) return;
         await _patientService.DeletePatient(_mapper.Map<PatientDTO>(patient));
         Load();
     }

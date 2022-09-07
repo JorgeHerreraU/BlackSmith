@@ -1,6 +1,7 @@
 ﻿using BlackSmith.Presentation.Enums;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
@@ -39,13 +40,14 @@ public partial class Modal : UserControl
     private void OnInitialize(IEnumerable<string> messages,
         ImageType image)
     {
-        var modalMessages = new List<ModalMessage>();
         var displayImage = GetDisplayImage(image);
 
-        foreach (var message in messages)
-        {
-            modalMessages.Add(new ModalMessage { Title = message, Image = displayImage });
-        }
+        var modalMessages = messages.Select(message => new ModalMessage
+            {
+                Title = message,
+                Image = displayImage
+            })
+            .ToList();
 
         MessageList.ItemsSource = modalMessages;
     }

@@ -1,4 +1,5 @@
 ﻿namespace BlackSmith.Service.DTOs;
+
 public enum SpecialityDTO
 {
     Allergology,

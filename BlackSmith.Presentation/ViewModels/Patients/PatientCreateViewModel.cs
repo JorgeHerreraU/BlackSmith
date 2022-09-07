@@ -76,7 +76,7 @@ public class PatientCreateViewModel : EditableViewModelBase, INavigationAware
         _navigationService.Navigate(typeof(PatientList));
     }
 
-    public override void SubscribeChanges()
+    protected override void SubscribeChanges()
     {
         Patient.PropertyChanged += OnPropertyChanged;
         Patient.Address.PropertyChanged += OnPropertyChanged;

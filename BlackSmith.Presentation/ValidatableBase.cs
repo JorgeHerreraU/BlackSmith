@@ -54,8 +54,7 @@ public class ValidatableBase : BindableBase, INotifyDataErrorInfo
 
             RemoveExistingErrors(validationResults);
 
-            if (result is null)
-                return;
+            if (result is null) return;
 
             var key = result.MemberNames.First();
 

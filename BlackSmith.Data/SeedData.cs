@@ -8,8 +8,7 @@ public static class SeedData
     {
         using var context = new AppDbContextFactory().CreateDbContext();
 
-        if (context.Patients.Any())
-            return;
+        if (context.Patients.Any()) return;
 
         var doctors = new List<Doctor>
         {

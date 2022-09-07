@@ -1,4 +1,5 @@
 ﻿namespace BlackSmith.Domain.Models;
+
 public enum Speciality
 {
     Allergology,

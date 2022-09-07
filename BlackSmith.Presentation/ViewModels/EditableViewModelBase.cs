@@ -39,7 +39,7 @@ public abstract class EditableViewModelBase : ValidatableBase, IDisposable
     protected abstract bool CanSave();
     protected abstract void OnSave();
     public abstract void Initialize();
-    public abstract void SubscribeChanges();
+    protected abstract void SubscribeChanges();
 
     private void OnClear()
     {
@@ -48,8 +48,7 @@ public abstract class EditableViewModelBase : ValidatableBase, IDisposable
 
     protected void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (sender != null)
-            IsTouched = !sender.IsAnyStringNullOrEmpty();
+        if (sender != null) IsTouched = !sender.IsAnyStringNullOrEmpty();
         SaveCommand.RaiseCanExecuteChanged();
     }
 

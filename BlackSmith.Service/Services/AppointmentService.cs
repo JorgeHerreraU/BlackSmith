@@ -49,16 +49,18 @@ public class AppointmentService : IAppointmentService
             .ToListAsync();
     }
 
-    public async Task<bool> GetDoctorFullyBooked(DoctorDTO doctorDTO, DateTime date)
+    public async Task<AppointmentDTO?> GetAppointmentByPatientAndDate(PatientDTO patientDTO, DateTime date)
     {
-        return await _appointmentsBl.GetDoctorIsFullyBookedOnSpecificDate(
-            _mapper.Map<Doctor>(doctorDTO),
-            date
-        );
+        return _mapper.Map<AppointmentDTO>(
+            await _appointmentsBl.GetAppointmentByPatientAndDate(_mapper.Map<Patient>(patientDTO), date));
     }
-
     public async Task<bool> DeleteAppointment(AppointmentDTO appointmentDTO)
     {
         return await _appointmentsBl.DeleteAppointment(_mapper.Map<Appointment>(appointmentDTO));
+    }
+
+    public async Task<IEnumerable<DateTime>> GetAvailableHoursByDoctor(DoctorDTO doctorDTO, DateTime date)
+    {
+        return await _appointmentsBl.GetAvailableHoursByDoctor(_mapper.Map<Doctor>(doctorDTO), date).ToListAsync();
     }
 }

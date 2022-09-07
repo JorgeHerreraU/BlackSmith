@@ -2,6 +2,7 @@
 using FluentValidation;
 
 namespace BlackSmith.Business.Validators;
+
 public class WorkingDayValidator : AbstractValidator<WorkingDay>
 {
     public WorkingDayValidator()

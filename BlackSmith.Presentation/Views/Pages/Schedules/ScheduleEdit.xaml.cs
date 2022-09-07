@@ -4,7 +4,7 @@ using System.Windows.Controls;
 namespace BlackSmith.Presentation.Views.Pages.Schedules;
 
 /// <summary>
-/// Interaction logic for ScheduleEdit.xaml
+///     Interaction logic for ScheduleEdit.xaml
 /// </summary>
 public partial class ScheduleEdit : Page
 {

@@ -83,8 +83,7 @@ public class ScheduleListViewModel : BindableBase
         var confirmDeletion = await _modalService.ShowConfirmDialog(
             "Are you sure you want to delete this appointment?"
         );
-        if (!confirmDeletion)
-            return;
+        if (!confirmDeletion) return;
         await _appointmentService.DeleteAppointment(_mapper.Map<AppointmentDTO>(appointment));
         Load();
     }

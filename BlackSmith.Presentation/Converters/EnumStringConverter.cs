@@ -1,5 +1,4 @@
-﻿using BlackSmith.Presentation.Enums;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
@@ -36,8 +35,7 @@ public class EnumStringConverter : MarkupExtension, IValueConverter
     {
         var type = @enum.GetType();
         var memberInformation = type.GetMember(@enum.ToString());
-        if (memberInformation.Length <= 0)
-            return @enum.ToString();
+        if (memberInformation.Length <= 0) return @enum.ToString();
         var attrs = memberInformation[0].GetCustomAttributes(typeof(DescriptionAttribute), false);
         return attrs.Length > 0 ? ((DescriptionAttribute)attrs[0]).Description : @enum.ToString();
     }

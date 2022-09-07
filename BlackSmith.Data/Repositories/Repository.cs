@@ -132,15 +132,13 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
                     }
                     else
                     {
-                        if (oldItem is null)
-                            continue;
+                        if (oldItem is null) continue;
                         context.Entry(oldItem).CurrentValues.SetValues(item);
                         dbItemsMap.Remove(item.Id);
                     }
                 }
 
-                foreach (var oldItem in dbItemsMap.Values)
-                    accessor.Remove(dbEntity, oldItem);
+                foreach (var oldItem in dbItemsMap.Values) accessor.Remove(dbEntity, oldItem);
             }
             else
             {

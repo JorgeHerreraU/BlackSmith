@@ -12,27 +12,21 @@ public static class ExtensionMethods
             .GetProperties()
             .Where(p => p.PropertyType.IsClass && p.GetValue(obj) != null);
 
-        foreach (var property in properties)
-        {
-            property.SetValue(obj, null);
-        }
+        foreach (var property in properties) property.SetValue(obj, null);
     }
 
     public static bool IsAnyStringNullOrEmpty(this object? obj)
     {
-        if (obj is null)
-            return true;
+        if (obj is null) return true;
         foreach (var propertyInfo in obj.GetType().GetProperties())
         {
             if (propertyInfo.PropertyType == typeof(string) && propertyInfo.CanWrite)
             {
-                if (string.IsNullOrEmpty((string)propertyInfo.GetValue(obj)!))
-                    return true;
+                if (string.IsNullOrEmpty((string)propertyInfo.GetValue(obj)!)) return true;
             }
             else if (propertyInfo.PropertyType.IsClass)
             {
-                if (IsAnyStringNullOrEmpty(propertyInfo.GetValue(obj)))
-                    return true;
+                if (IsAnyStringNullOrEmpty(propertyInfo.GetValue(obj))) return true;
             }
         }
 
