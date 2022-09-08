@@ -14,22 +14,9 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Page.Resources>
-        <converters:EnumStringConverter x:Key="EnumStringConverter" />
-        <Style
-            x:Key="ToolTipError"
-            BasedOn="{StaticResource {x:Type TextBox}}"
-            TargetType="{x:Type TextBox}">
-            <!--  Some style setters  -->
-            <Style.Triggers>
-                <Trigger Property="Validation.HasError" Value="true">
-                    <Setter Property="ToolTip"
-                            Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)/ErrorContent}" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
         <!--  ReSharper disable once Xaml.StaticResourceNotResolved  -->
         <Style
-            x:Key="NumerBoxToolTipError"
+            x:Key="NumberBoxToolTipError"
             BasedOn="{StaticResource {x:Type ui:NumberBox}}"
             TargetType="{x:Type ui:NumberBox}">
             <!--  Some style setters  -->
@@ -120,7 +107,7 @@
                         Padding="7,7,7,10"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Style="{StaticResource ToolTipError}"
+                        Style="{StaticResource TextBoxToolTipError}"
                         Text="{Binding FirstName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                         Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
                     <Label
@@ -138,7 +125,7 @@
                         Padding="7,7,7,10"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Style="{StaticResource ToolTipError}"
+                        Style="{StaticResource TextBoxToolTipError}"
                         Text="{Binding LastName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                         Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
                     <Label
@@ -159,7 +146,7 @@
                         IntegersOnly="True"
                         Min="0"
                         SpinButtonsEnabled="False"
-                        Style="{StaticResource NumerBoxToolTipError}"
+                        Style="{StaticResource NumberBoxToolTipError}"
                         Text="{Binding Age, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                         Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
                     <Label
@@ -177,7 +164,7 @@
                         Padding="7,7,7,10"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Style="{StaticResource ToolTipError}"
+                        Style="{StaticResource TextBoxToolTipError}"
                         Text="{Binding Email, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                         Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
                     <Label
@@ -196,7 +183,7 @@
                         Padding="7,7,7,10"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Style="{StaticResource ToolTipError}"
+                        Style="{StaticResource TextBoxToolTipError}"
                         Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
                         Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
                     <Label
@@ -215,8 +202,8 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         ItemsSource="{enums:EnumBindingSource enums:Speciality}"
-                        SelectedItem="{Binding Speciality, Converter={StaticResource EnumStringConverter}}"
-                        SelectedValue="{Binding Speciality, Converter={StaticResource EnumStringConverter}}" />
+                        SelectedItem="{Binding Speciality, Converter={converters:EnumStringConverter EnumType=enums:Speciality}}"
+                        SelectedValue="{Binding Speciality, Converter={converters:EnumStringConverter EnumType=enums:Speciality}}" />
                     <StackPanel
                         Grid.Row="8"
                         Grid.Column="1"
@@ -271,7 +258,7 @@
                         IntegersOnly="True"
                         Min="0"
                         SpinButtonsEnabled="False"
-                        Style="{StaticResource NumerBoxToolTipError}"
+                        Style="{StaticResource NumberBoxToolTipError}"
                         Text="{Binding Address.Number, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                         Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
                     <Label
@@ -290,7 +277,7 @@
                         Padding="7,7,7,10"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Style="{StaticResource ToolTipError}"
+                        Style="{StaticResource TextBoxToolTipError}"
                         Text="{Binding Address.Street, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                         Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
                     <Label
@@ -309,7 +296,7 @@
                         Padding="7,7,7,10"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Style="{StaticResource ToolTipError}"
+                        Style="{StaticResource TextBoxToolTipError}"
                         Text="{Binding Address.City, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                         Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
                     <Label
@@ -328,7 +315,7 @@
                         Padding="7,7,7,10"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Style="{StaticResource ToolTipError}"
+                        Style="{StaticResource TextBoxToolTipError}"
                         Text="{Binding Address.State, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                         Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
                     <Label
@@ -350,7 +337,7 @@
                         IntegersOnly="True"
                         Min="0"
                         SpinButtonsEnabled="False"
-                        Style="{StaticResource NumerBoxToolTipError}"
+                        Style="{StaticResource NumberBoxToolTipError}"
                         Text="{Binding Address.ZipCode, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                         Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
                     <Label
@@ -370,7 +357,9 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         ItemsSource="{Binding Source={enums:EnumBindingSource {x:Type enums:Country}}}"
-                        SelectedItem="{Binding Address.Country, UpdateSourceTrigger=PropertyChanged}" />
+                        SelectedItem="{Binding Address.Country, UpdateSourceTrigger=PropertyChanged}"
+                        Style="{StaticResource ComboboxToolTipError}"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
                     <!--  Working days caption  -->
                     <StackPanel
                         Grid.Row="1"

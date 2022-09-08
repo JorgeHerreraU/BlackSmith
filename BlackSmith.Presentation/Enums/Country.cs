@@ -5,5 +5,6 @@ namespace BlackSmith.Presentation.Enums;
 public enum Country
 {
     [Description("United States")]
-    UnitedStates
+    UnitedStates,
+    Australia
 }

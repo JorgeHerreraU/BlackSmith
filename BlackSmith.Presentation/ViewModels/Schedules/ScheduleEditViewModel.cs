@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using BlackSmith.Core.Helpers;
 using BlackSmith.Presentation.Enums;
-using BlackSmith.Presentation.Extensions;
 using BlackSmith.Presentation.Filters;
 using BlackSmith.Presentation.Interfaces;
 using BlackSmith.Presentation.Models;
@@ -14,16 +13,14 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using Wpf.Ui.Common.Interfaces;
 using Wpf.Ui.Mvvm.Contracts;
 
 namespace BlackSmith.Presentation.ViewModels.Schedules;
 
-public class ScheduleEditViewModel : EditableViewModelBase, INavigationAware
+public class ScheduleEditViewModel : ScheduleBaseViewModel
 {
     private readonly IAppointmentService _appointmentService;
     private readonly DateTimeFilter _dateTimeFilter;
-    private readonly DoctorFilter _doctorFilter;
     private readonly IDoctorService _doctorService;
     private readonly IMapper _mapper;
     private readonly INavigationService _navigationService;
@@ -31,7 +28,6 @@ public class ScheduleEditViewModel : EditableViewModelBase, INavigationAware
     private List<Doctor> _allDoctors = new();
     private List<Patient> _allPatients = new();
     private Appointment _appointment = null!;
-    private ObservableCollection<TimeOnly> _availableHours = new();
     private ObservableCollection<DateTime> _blackOutDates = new();
     private ObservableCollection<Doctor> _doctors = new();
     private ObservableCollection<Patient> _patients = new();
@@ -47,14 +43,13 @@ public class ScheduleEditViewModel : EditableViewModelBase, INavigationAware
         IDoctorService doctorService,
         IAppointmentService appointmentService,
         DoctorFilter doctorFilter,
-        DateTimeFilter dateTimeFilter) : base(modalService)
+        DateTimeFilter dateTimeFilter) : base(modalService, appointmentService, mapper, doctorFilter)
     {
         _patientService = patientService;
         _mapper = mapper;
         _navigationService = navigationService;
         _doctorService = doctorService;
         _appointmentService = appointmentService;
-        _doctorFilter = doctorFilter;
         _dateTimeFilter = dateTimeFilter;
     }
 
@@ -165,32 +160,15 @@ public class ScheduleEditViewModel : EditableViewModelBase, INavigationAware
         }
     }
 
-    public ObservableCollection<TimeOnly> AvailableHours
-    {
-        get => _availableHours;
-        private set
-        {
-            _availableHours = value;
-            NotifyPropertyChanged();
-        }
-    }
-
-    public void OnNavigatedTo() { }
-
-    public void OnNavigatedFrom()
-    {
-        Dispose();
-    }
-
     public override async void Initialize()
     {
         await LoadCollectionsData();
         ResetAvailableHours();
         SubscribeChanges();
-        SetAppointmentValues();
+        SetDefaultValues();
     }
 
-    private void SetAppointmentValues()
+    private void SetDefaultValues()
     {
         IsTouched = true;
         SelectedSpeciality = Doctors.FirstOrDefault(d => d.Id == Appointment.DoctorId)?.Speciality;
@@ -235,25 +213,10 @@ public class ScheduleEditViewModel : EditableViewModelBase, INavigationAware
             Doctors = new ObservableCollection<Doctor>();
             return;
         }
-        var specialityAvailableDays = await GetSpecialityAvailableDays();
-        var specifications = new AndSpecification<Doctor>(new List<ISpecification<Doctor>>
-        {
-            new DoctorSpecialitySpecification(SelectedSpeciality.Value),
-            new DoctorWorkingDaysSpecification(SelectedDate.Value.DayOfWeek),
-            new DoctorFullyBookedSpecification(SelectedDate.Value, specialityAvailableDays)
-        });
-        var filteredDoctors = _doctorFilter.Filter(_allDoctors, specifications);
-        Doctors = new ObservableCollection<Doctor>(filteredDoctors);
+        var availableDays = await GetSpecialityAvailableDays(SelectedSpeciality.Value, DateTime.Now, EndingDate);
+        var doctors = GetFilteredDoctors(SelectedSpeciality.Value, SelectedDate.Value, availableDays, _allDoctors);
+        Doctors = new ObservableCollection<Doctor>(doctors);
         SelectedDoctor = Doctors.FirstOrDefault(d => d.Id == Appointment.DoctorId);
-    }
-
-    private async Task<List<DateTime>> GetSpecialityAvailableDays()
-    {
-        return (await _appointmentService.GetAvailableDaysByDoctorsSpeciality(
-            SelectedSpeciality!.Value.ToSpecialityDTO(),
-            DateTime.Now,
-            EndingDate
-        )).ToList();
     }
 
     private async void FilterDates()
@@ -261,8 +224,8 @@ public class ScheduleEditViewModel : EditableViewModelBase, INavigationAware
         if (SelectedSpeciality == null) return;
         ClearDates();
         var days = DateHelper.GetDateRange(DateTime.Now, EndingDate).ToList();
-        var specialityAvailableDays = await GetSpecialityAvailableDays();
-        var specification = new DateTimeNotContainsSpecification(specialityAvailableDays);
+        var availableDays = await GetSpecialityAvailableDays(SelectedSpeciality.Value, DateTime.Now, EndingDate);
+        var specification = new DateTimeNotContainsSpecification(availableDays);
         var filteredDates = _dateTimeFilter.Filter(days, specification);
         foreach (var blackoutDay in filteredDates) BlackoutDates.Add(blackoutDay);
     }
@@ -271,12 +234,6 @@ public class ScheduleEditViewModel : EditableViewModelBase, INavigationAware
     {
         SelectedDate = null;
         BlackoutDates.Clear();
-    }
-
-    private void ResetAvailableHours()
-    {
-        AvailableHours = new ObservableCollection<TimeOnly>(
-            TimeHelper.GetTimeRange(Appointment.StartingHour, Appointment.EndingHour).ToList());
     }
 
     private async Task LoadCollectionsData()
@@ -291,7 +248,7 @@ public class ScheduleEditViewModel : EditableViewModelBase, INavigationAware
     {
         if (SelectedPatient == null || SelectedDate == null || SelectedDoctor == null || SelectedDoctor.Id == 0)
             return;
-        var availableHours = await GetDoctorAvailableHours();
+        var availableHours = await GetDoctorAvailableHours(SelectedDoctor, SelectedDate.Value);
         AvailableHours = new ObservableCollection<TimeOnly>(availableHours);
         if (Appointment.Start == null) return;
         var appointment = await GetAppointmentByPatientAndDate();
@@ -320,14 +277,6 @@ public class ScheduleEditViewModel : EditableViewModelBase, INavigationAware
         return await _appointmentService.GetAppointmentByPatientAndDate(
             _mapper.Map<PatientDTO>(Appointment.Patient),
             Appointment.Start!.Value);
-    }
-
-    private async Task<List<TimeOnly>> GetDoctorAvailableHours()
-    {
-        var availableHours = await _appointmentService.GetAvailableHoursByDoctor(
-            _mapper.Map<DoctorDTO>(SelectedDoctor),
-            SelectedDate!.Value);
-        return availableHours.Select(TimeOnly.FromDateTime).ToList();
     }
 
     public override void Dispose()

@@ -19,6 +19,19 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    <!--  TextBox Tooltip Error  -->
+    <Style
+        x:Key="TextBoxToolTipError"
+        BasedOn="{StaticResource {x:Type TextBox}}"
+        TargetType="{x:Type TextBox}">
+        <!--  Some style setters  -->
+        <Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="true">
+                <Setter Property="ToolTip"
+                        Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)/ErrorContent}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
     <!-- TextBox Error Template -->
     <ControlTemplate x:Key="TextBoxErrorTemplate">
         <Grid>

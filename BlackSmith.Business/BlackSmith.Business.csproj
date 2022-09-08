@@ -7,14 +7,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\BlackSmith.Core\BlackSmith.Core.csproj"/>
-        <ProjectReference Include="..\BlackSmith.Domain\BlackSmith.Domain.csproj"/>
+        <ProjectReference Include="..\BlackSmith.Core\BlackSmith.Core.csproj" />
+        <ProjectReference Include="..\BlackSmith.Domain\BlackSmith.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0"/>
-        <PackageReference Include="FluentValidation" Version="11.1.0"/>
-        <PackageReference Include="JetBrains.Annotations" Version="2022.1.0"/>
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+        <PackageReference Include="FluentValidation" Version="11.2.1" />
+        <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
     </ItemGroup>
 
 </Project>

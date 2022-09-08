@@ -97,7 +97,9 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         IsReadOnly="True"
-                        Text="{Binding FirstName}" />
+                        Text="{Binding FirstName}"
+                        Style="{StaticResource TextBoxToolTipError}"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
                     <Label
                         Grid.Row="3"
                         Grid.Column="0"
@@ -114,7 +116,9 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         IsReadOnly="True"
-                        Text="{Binding LastName}" />
+                        Text="{Binding LastName}"
+                        Style="{StaticResource TextBoxToolTipError}"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
                     <Label
                         Grid.Row="4"
                         Grid.Column="0"
@@ -131,7 +135,9 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         IsReadOnly="True"
-                        Text="{Binding Age}" />
+                        Text="{Binding Age}"
+                        Style="{StaticResource TextBoxToolTipError}"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
                     <Label
                         Grid.Row="5"
                         Grid.Column="0"
@@ -148,7 +154,9 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         IsReadOnly="True"
-                        Text="{Binding Email}" />
+                        Text="{Binding Email}"
+                        Style="{StaticResource TextBoxToolTipError}"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
                     <Label
                         Grid.Row="6"
                         Grid.Column="0"
@@ -166,7 +174,9 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         IsReadOnly="True"
-                        Text="{Binding Phone}" />
+                        Text="{Binding Phone}"
+                        Style="{StaticResource TextBoxToolTipError}"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
                     <Label
                         Grid.Row="7"
                         Grid.Column="0"
@@ -223,7 +233,9 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         IsReadOnly="True"
-                        Text="{Binding Address.Number}" />
+                        Text="{Binding Address.Number}"
+                        Style="{StaticResource TextBoxToolTipError}"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
                     <Label
                         Grid.Row="3"
                         Grid.Column="2"
@@ -241,7 +253,9 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         IsReadOnly="True"
-                        Text="{Binding Address.Street}" />
+                        Text="{Binding Address.Street}"
+                        Style="{StaticResource TextBoxToolTipError}"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
                     <Label
                         Grid.Row="4"
                         Grid.Column="2"
@@ -259,7 +273,9 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         IsReadOnly="True"
-                        Text="{Binding Address.City}" />
+                        Text="{Binding Address.City}"
+                        Style="{StaticResource TextBoxToolTipError}"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
                     <Label
                         Grid.Row="5"
                         Grid.Column="2"
@@ -277,7 +293,9 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         IsReadOnly="True"
-                        Text="{Binding Address.State}" />
+                        Text="{Binding Address.State}"
+                        Style="{StaticResource TextBoxToolTipError}"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
                     <Label
                         Grid.Row="6"
                         Grid.Column="2"
@@ -295,7 +313,9 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         IsReadOnly="True"
-                        Text="{Binding Address.ZipCode}" />
+                        Text="{Binding Address.ZipCode}"
+                        Style="{StaticResource TextBoxToolTipError}"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
                     <Label
                         Grid.Row="7"
                         Grid.Column="2"
@@ -313,7 +333,9 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         IsReadOnly="True"
-                        Text="{Binding Address.Country}" />
+                        Text="{Binding Address.Country}"
+                        Style="{StaticResource TextBoxToolTipError}"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" />
                     <!--  Working days caption  -->
                     <StackPanel
                         Grid.Row="1"
