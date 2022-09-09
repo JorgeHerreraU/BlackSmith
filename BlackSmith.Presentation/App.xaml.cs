@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using BlackSmith.Data;
-using BlackSmith.Presentation.Filters;
 using BlackSmith.Presentation.Interfaces;
 using BlackSmith.Presentation.Models;
 using BlackSmith.Presentation.Services;
@@ -88,7 +87,6 @@ public partial class App
         services.AddSingleton<DoctorCreateViewModel>();
         services.AddSingleton<DoctorEdit>();
         services.AddSingleton<DoctorEditViewModel>();
-        services.AddSingleton<DoctorFilter>();
 
         // Schedule Pages
         services.AddSingleton<ScheduleList>();
@@ -97,7 +95,6 @@ public partial class App
         services.AddSingleton<ScheduleCreateViewModel>();
         services.AddSingleton<ScheduleEdit>();
         services.AddSingleton<ScheduleEditViewModel>();
-        services.AddSingleton<DateTimeFilter>();
     }
 
     private static void RegisterLocalAutoMapperConfiguration(

@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using BlackSmith.Core.Helpers;
+using BlackSmith.Core.Structs;
 using BlackSmith.Core.ValidationAttributes;
 using BlackSmith.Presentation.Enums;
-using BlackSmith.Presentation.Filters;
+using BlackSmith.Presentation.Extensions;
 using BlackSmith.Presentation.Interfaces;
 using BlackSmith.Presentation.Models;
-using BlackSmith.Presentation.Views.Pages.Schedules;
 using BlackSmith.Service.DTOs;
 using BlackSmith.Service.Interfaces;
 using System;
@@ -21,12 +21,10 @@ namespace BlackSmith.Presentation.ViewModels.Schedules;
 public class ScheduleCreateViewModel : ScheduleBaseViewModel
 {
     private readonly IAppointmentService _appointmentService;
-    private readonly DateTimeFilter _dateTimeFilter;
     private readonly IDoctorService _doctorService;
     private readonly IMapper _mapper;
-    private readonly INavigationService _navigationService;
     private readonly IPatientService _patientService;
-    private List<Doctor> _allDoctors = new();
+    private IEnumerable<DoctorDTO> _allDoctors = new List<DoctorDTO>();
     private List<Patient> _allPatients = new();
     private Appointment _appointment = null!;
     private ObservableCollection<DateTime> _blackOutDates = new();
@@ -41,15 +39,11 @@ public class ScheduleCreateViewModel : ScheduleBaseViewModel
         IMapper mapper,
         INavigationService navigationService,
         IDoctorService doctorService,
-        IPatientService patientService,
-        DoctorFilter doctorFilter,
-        DateTimeFilter dateTimeFilter) : base(modalService, appointmentService, mapper, doctorFilter)
+        IPatientService patientService) : base(modalService, navigationService)
     {
         _appointmentService = appointmentService;
-        _navigationService = navigationService;
         _doctorService = doctorService;
         _patientService = patientService;
-        _dateTimeFilter = dateTimeFilter;
         _mapper = mapper;
     }
 
@@ -162,29 +156,36 @@ public class ScheduleCreateViewModel : ScheduleBaseViewModel
         }
     }
 
-    private async void FilterTimes()
+    public override async void Initialize()
     {
-        if (SelectedDate == null || SelectedDoctor == null || SelectedDoctor.Id == 0) return;
-        var availableHours = await GetDoctorAvailableHours(SelectedDoctor, SelectedDate.Value);
-        AvailableHours = new ObservableCollection<TimeOnly>(availableHours);
+        Appointment = new Appointment();
+        await LoadCollectionsData();
+        ResetAvailableHours();
+        SubscribeChanges();
+        SetDefaultValues();
+    }
+
+    private async Task LoadCollectionsData()
+    {
+        _allDoctors = await _doctorService.GetDoctors();
+        _allPatients = _mapper.Map<List<Patient>>(await _patientService.GetPatients());
+        Patients = new ObservableCollection<Patient>(_allPatients);
+    }
+
+    protected override void SubscribeChanges()
+    {
+        Appointment.PropertyChanged += OnPropertyChanged;
+        Appointment.ErrorsChanged += RaiseCanChange;
+    }
+
+    private void SetDefaultValues()
+    {
+        IsTouched = false;
+        SelectedSpeciality = Speciality.GeneralPractice;
+        SelectedPatient = null!;
+        SelectedDoctor = null!;
+        SelectedDate = null!;
         SelectedStartTime = AvailableHours.First();
-    }
-
-    private async void FilterDates()
-    {
-        if (SelectedSpeciality == null) return;
-        ClearDates();
-        var days = DateHelper.GetDateRange(DateTime.Now, EndingDate).ToList();
-        var availableDays = await GetSpecialityAvailableDays(SelectedSpeciality.Value, DateTime.Now, EndingDate);
-        var specification = new DateTimeNotContainsSpecification(availableDays);
-        var filteredDates = _dateTimeFilter.Filter(days, specification);
-        foreach (var blackoutDay in filteredDates) BlackoutDates.Add(blackoutDay);
-    }
-
-    private void ClearDates()
-    {
-        SelectedDate = null;
-        BlackoutDates.Clear();
     }
 
     private async void FilterDoctors()
@@ -194,14 +195,45 @@ public class ScheduleCreateViewModel : ScheduleBaseViewModel
             Doctors = new ObservableCollection<Doctor>();
             return;
         }
-        var availableDays = await GetSpecialityAvailableDays(SelectedSpeciality.Value, DateTime.Now, EndingDate);
-        var doctors = GetFilteredDoctors(SelectedSpeciality.Value, SelectedDate.Value, availableDays, _allDoctors);
-        Doctors = new ObservableCollection<Doctor>(doctors);
+        var speciality = SelectedSpeciality.Value.ToDTO();
+        var dateRange = new DateRange(DateTime.Now, EndingDate);
+        var selectedDate = SelectedDate.Value;
+        var doctors = await _appointmentService.FilterAvailableDoctors(
+            speciality,
+            dateRange,
+            selectedDate,
+            _allDoctors);
+        Doctors = new ObservableCollection<Doctor>(_mapper.Map<IEnumerable<Doctor>>(doctors));
     }
 
-    protected override void OnGoBack()
+    private async void FilterDates()
     {
-        _navigationService.Navigate(typeof(ScheduleList));
+        if (SelectedSpeciality == null) return;
+        ClearDates();
+        var speciality = SelectedSpeciality.Value.ToDTO();
+        var dateRange = new DateRange(DateTime.Now, EndingDate);
+        var days = dateRange.Dates;
+        var blackoutDays = await _appointmentService.GetSpecialityBlackoutDays(
+            speciality,
+            dateRange,
+            days);
+        foreach (var blackoutDay in blackoutDays) BlackoutDates.Add(blackoutDay);
+    }
+
+    private async void FilterTimes()
+    {
+        if (SelectedDate == null || SelectedDoctor == null || SelectedDoctor.Id == 0) return;
+        var selectedDoctor = _mapper.Map<DoctorDTO>(SelectedDoctor);
+        var selectedDate = SelectedDate.Value;
+        var availableHours = await _appointmentService.GetAvailableHoursByDoctor(selectedDoctor, selectedDate);
+        AvailableHours = new ObservableCollection<TimeOnly>(availableHours);
+        SelectedStartTime = AvailableHours.First();
+    }
+
+    private void ClearDates()
+    {
+        SelectedDate = null;
+        BlackoutDates.Clear();
     }
 
     protected override bool CanSave()
@@ -221,39 +253,6 @@ public class ScheduleCreateViewModel : ScheduleBaseViewModel
             OnSaveErrorHandler(ex);
         }
     }
-
-    public override async void Initialize()
-    {
-        Appointment = new Appointment();
-        await LoadCollectionsData();
-        ResetAvailableHours();
-        SubscribeChanges();
-        SetDefaultValues();
-    }
-
-    private void SetDefaultValues()
-    {
-        IsTouched = false;
-        SelectedSpeciality = Speciality.GeneralPractice;
-        SelectedPatient = null!;
-        SelectedDoctor = null!;
-        SelectedDate = null!;
-        SelectedStartTime = AvailableHours.First();
-    }
-
-    private async Task LoadCollectionsData()
-    {
-        _allDoctors = _mapper.Map<List<Doctor>>(await _doctorService.GetDoctors());
-        _allPatients = _mapper.Map<List<Patient>>(await _patientService.GetPatients());
-        Patients = new ObservableCollection<Patient>(_allPatients);
-    }
-
-    protected override void SubscribeChanges()
-    {
-        Appointment.PropertyChanged += OnPropertyChanged;
-        Appointment.ErrorsChanged += RaiseCanChange;
-    }
-
     public override void Dispose()
     {
         Appointment.PropertyChanged -= OnPropertyChanged;

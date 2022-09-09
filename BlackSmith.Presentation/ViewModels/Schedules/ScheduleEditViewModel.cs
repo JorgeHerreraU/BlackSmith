@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using BlackSmith.Core.Helpers;
+using BlackSmith.Core.Structs;
 using BlackSmith.Presentation.Enums;
-using BlackSmith.Presentation.Filters;
+using BlackSmith.Presentation.Extensions;
 using BlackSmith.Presentation.Interfaces;
 using BlackSmith.Presentation.Models;
-using BlackSmith.Presentation.Views.Pages.Schedules;
 using BlackSmith.Service.DTOs;
 using BlackSmith.Service.Interfaces;
 using System;
@@ -20,13 +20,11 @@ namespace BlackSmith.Presentation.ViewModels.Schedules;
 public class ScheduleEditViewModel : ScheduleBaseViewModel
 {
     private readonly IAppointmentService _appointmentService;
-    private readonly DateTimeFilter _dateTimeFilter;
     private readonly IDoctorService _doctorService;
     private readonly IMapper _mapper;
-    private readonly INavigationService _navigationService;
     private readonly IPatientService _patientService;
-    private List<Doctor> _allDoctors = new();
-    private List<Patient> _allPatients = new();
+    private IEnumerable<DoctorDTO> _allDoctors = new List<DoctorDTO>();
+    private IEnumerable<Patient> _allPatients = new List<Patient>();
     private Appointment _appointment = null!;
     private ObservableCollection<DateTime> _blackOutDates = new();
     private ObservableCollection<Doctor> _doctors = new();
@@ -41,16 +39,12 @@ public class ScheduleEditViewModel : ScheduleBaseViewModel
         IMapper mapper,
         INavigationService navigationService,
         IDoctorService doctorService,
-        IAppointmentService appointmentService,
-        DoctorFilter doctorFilter,
-        DateTimeFilter dateTimeFilter) : base(modalService, appointmentService, mapper, doctorFilter)
+        IAppointmentService appointmentService) : base(modalService, navigationService)
     {
         _patientService = patientService;
         _mapper = mapper;
-        _navigationService = navigationService;
         _doctorService = doctorService;
         _appointmentService = appointmentService;
-        _dateTimeFilter = dateTimeFilter;
     }
 
     public Appointment Appointment
@@ -168,6 +162,20 @@ public class ScheduleEditViewModel : ScheduleBaseViewModel
         SetDefaultValues();
     }
 
+    private async Task LoadCollectionsData()
+    {
+        _allDoctors = await _doctorService.GetDoctors();
+        _allPatients = _mapper.Map<List<Patient>>(await _patientService.GetPatients());
+        Doctors = new ObservableCollection<Doctor>(_mapper.Map<IEnumerable<Doctor>>(_allDoctors));
+        Patients = new ObservableCollection<Patient>(_allPatients);
+    }
+
+    protected override void SubscribeChanges()
+    {
+        Appointment.PropertyChanged += OnPropertyChanged;
+        Appointment.ErrorsChanged += RaiseCanChange;
+    }
+
     private void SetDefaultValues()
     {
         IsTouched = true;
@@ -177,20 +185,9 @@ public class ScheduleEditViewModel : ScheduleBaseViewModel
         SelectedStartTime = TimeOnly.FromDateTime(Appointment.Start!.Value);
     }
 
-    protected override void SubscribeChanges()
-    {
-        Appointment.PropertyChanged += OnPropertyChanged;
-        Appointment.ErrorsChanged += RaiseCanChange;
-    }
-
     protected override bool CanSave()
     {
         return !Appointment.HasErrors && SelectedSpeciality != null;
-    }
-
-    protected override void OnGoBack()
-    {
-        _navigationService.Navigate(typeof(ScheduleList));
     }
 
     protected override async void OnSave()
@@ -213,9 +210,15 @@ public class ScheduleEditViewModel : ScheduleBaseViewModel
             Doctors = new ObservableCollection<Doctor>();
             return;
         }
-        var availableDays = await GetSpecialityAvailableDays(SelectedSpeciality.Value, DateTime.Now, EndingDate);
-        var doctors = GetFilteredDoctors(SelectedSpeciality.Value, SelectedDate.Value, availableDays, _allDoctors);
-        Doctors = new ObservableCollection<Doctor>(doctors);
+        var speciality = SelectedSpeciality.Value.ToDTO();
+        var dateRange = new DateRange(DateTime.Now, EndingDate);
+        var selectedDate = SelectedDate.Value;
+        var doctors = await _appointmentService.FilterAvailableDoctors(
+            speciality,
+            dateRange,
+            selectedDate,
+            _allDoctors);
+        Doctors = new ObservableCollection<Doctor>(_mapper.Map<IEnumerable<Doctor>>(doctors));
         SelectedDoctor = Doctors.FirstOrDefault(d => d.Id == Appointment.DoctorId);
     }
 
@@ -223,11 +226,31 @@ public class ScheduleEditViewModel : ScheduleBaseViewModel
     {
         if (SelectedSpeciality == null) return;
         ClearDates();
-        var days = DateHelper.GetDateRange(DateTime.Now, EndingDate).ToList();
-        var availableDays = await GetSpecialityAvailableDays(SelectedSpeciality.Value, DateTime.Now, EndingDate);
-        var specification = new DateTimeNotContainsSpecification(availableDays);
-        var filteredDates = _dateTimeFilter.Filter(days, specification);
-        foreach (var blackoutDay in filteredDates) BlackoutDates.Add(blackoutDay);
+        var speciality = SelectedSpeciality.Value.ToDTO();
+        var dateRange = new DateRange(DateTime.Now, EndingDate);
+        var days = dateRange.Dates;
+        var blackoutDays = await _appointmentService.GetSpecialityBlackoutDays(
+            speciality,
+            dateRange,
+            days);
+        foreach (var blackoutDay in blackoutDays) BlackoutDates.Add(blackoutDay);
+    }
+
+    private async void FilterTimes()
+    {
+        if (SelectedPatient == null || SelectedDate == null || SelectedDoctor == null || SelectedDoctor.Id == 0)
+            return;
+        var selectedDoctor = _mapper.Map<DoctorDTO>(SelectedDoctor);
+        var selectedDate = SelectedDate.Value;
+        var availableHours = await _appointmentService.GetAvailableHoursByDoctor(selectedDoctor, selectedDate);
+        AvailableHours = new ObservableCollection<TimeOnly>(availableHours);
+        if (Appointment.Start == null) return;
+        var patient = _mapper.Map<PatientDTO>(Appointment.Patient);
+        var appointmentDate = Appointment.Start.Value;
+        var appointment = await _appointmentService.GetAppointmentByPatientAndDate(patient, appointmentDate);
+        var hourIsMissing = CheckAppointmentHourIsMissing(availableHours, appointment, appointmentDate);
+        if (hourIsMissing) AddAppointmentTimeToAvailableHours(availableHours, appointmentDate);
+        SelectedStartTime = TimeOnly.FromDateTime(appointmentDate);
     }
 
     private void ClearDates()
@@ -236,47 +259,21 @@ public class ScheduleEditViewModel : ScheduleBaseViewModel
         BlackoutDates.Clear();
     }
 
-    private async Task LoadCollectionsData()
-    {
-        _allDoctors = _mapper.Map<List<Doctor>>(await _doctorService.GetDoctors());
-        _allPatients = _mapper.Map<List<Patient>>(await _patientService.GetPatients());
-        Doctors = new ObservableCollection<Doctor>(_allDoctors);
-        Patients = new ObservableCollection<Patient>(_allPatients);
-    }
 
-    private async void FilterTimes()
+    private bool CheckAppointmentHourIsMissing(ICollection<TimeOnly> availableHours,
+        AppointmentDTO? appointment,
+        DateTime appointmentDate)
     {
-        if (SelectedPatient == null || SelectedDate == null || SelectedDoctor == null || SelectedDoctor.Id == 0)
-            return;
-        var availableHours = await GetDoctorAvailableHours(SelectedDoctor, SelectedDate.Value);
-        AvailableHours = new ObservableCollection<TimeOnly>(availableHours);
-        if (Appointment.Start == null) return;
-        var appointment = await GetAppointmentByPatientAndDate();
-        var hourIsMissing = CheckSelectedHourIsMissing(availableHours, appointment);
-        if (hourIsMissing) AddSelectedTimeToAvailableHours(availableHours);
-        SelectedStartTime = TimeOnly.FromDateTime(Appointment.Start.Value);
-    }
-
-    private bool CheckSelectedHourIsMissing(ICollection<TimeOnly> availableHours,
-        AppointmentDTO? appointment)
-    {
-        var hourNotExists = !availableHours.Contains(TimeOnly.FromDateTime(Appointment.Start!.Value));
+        var hourNotExists = !availableHours.Contains(TimeOnly.FromDateTime(appointmentDate));
         var isPatientAlreadyScheduled = appointment?.PatientId == Appointment.Patient?.Id;
         return hourNotExists && isPatientAlreadyScheduled;
     }
 
-    private void AddSelectedTimeToAvailableHours(List<TimeOnly> availableHours)
+    private void AddAppointmentTimeToAvailableHours(List<TimeOnly> availableHours, DateTime selectedDate)
     {
-        availableHours.Add(TimeOnly.FromDateTime(Appointment.Start!.Value));
+        availableHours.Add(TimeOnly.FromDateTime(selectedDate));
         availableHours.Sort();
         AvailableHours = new ObservableCollection<TimeOnly>(availableHours);
-    }
-
-    private async Task<AppointmentDTO?> GetAppointmentByPatientAndDate()
-    {
-        return await _appointmentService.GetAppointmentByPatientAndDate(
-            _mapper.Map<PatientDTO>(Appointment.Patient),
-            Appointment.Start!.Value);
     }
 
     public override void Dispose()

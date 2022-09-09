@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BlackSmith.Core.ExtensionMethods;
-using BlackSmith.Core.Helpers;
+using BlackSmith.Core.Structs;
 using BlackSmith.Presentation.Helpers;
 using BlackSmith.Presentation.Interfaces;
 using BlackSmith.Presentation.Models;
@@ -38,7 +38,7 @@ public class DoctorEditViewModel : EditableViewModelBase, INavigationAware
     }
 
     public List<TimeOnly> AvailableHours { get; } =
-        TimeHelper.GetTimeRange(Appointment.StartingHour, Appointment.EndingHour).ToList();
+        new TimeRange(Appointment.StartingHour, Appointment.EndingHour).Times.ToList();
     public BindingList<WorkingDay> AvailableWorkingDays
     {
         get => _availableWorkingDays;

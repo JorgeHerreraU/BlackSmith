@@ -29,12 +29,8 @@ public partial class Modal : UserControl
     private void OnInitialize(string message,
         ImageType image)
     {
-        MessageList.ItemsSource =
-            new List<ModalMessage>
-            {
-                new()
-                    { Title = message, Image = GetDisplayImage(image) }
-            };
+        MessageList.ItemsSource = new List<ModalMessage>
+            { new() { Title = message, Image = GetDisplayImage(image) } };
     }
 
     private void OnInitialize(IEnumerable<string> messages,
@@ -43,10 +39,7 @@ public partial class Modal : UserControl
         var displayImage = GetDisplayImage(image);
 
         var modalMessages = messages.Select(message => new ModalMessage
-            {
-                Title = message,
-                Image = displayImage
-            })
+            { Title = message, Image = displayImage })
             .ToList();
 
         MessageList.ItemsSource = modalMessages;

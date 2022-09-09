@@ -31,8 +31,7 @@ public class PatientsBL
 
     private async Task<bool> PatientEmailExists(string email)
     {
-        return await _repository.Get(patient =>
-            string.Equals(patient.Email, email, StringComparison.CurrentCultureIgnoreCase)) is not null;
+        return await _repository.Get(p => string.Equals(p.Email, email)) is not null;
     }
 
     public async Task<Patient> UpdatePatient(Patient patient)

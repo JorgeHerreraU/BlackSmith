@@ -41,12 +41,14 @@ public class DoctorsBL
     public async Task<Doctor> UpdateDoctor(Doctor doctor)
     {
         await _validator.ValidateAndThrowAsync(doctor);
+        // TODO: Check for existing appointments before updating
         await _repository.Update(doctor, d => d.WorkingDays, x => x.Address);
         return doctor;
     }
 
     public async Task<bool> DeleteDoctor(Doctor doctor)
     {
+        // TODO: Check for existing appointments before removing
         return await _repository.Delete(doctor);
     }
 
@@ -60,7 +62,6 @@ public class DoctorsBL
 
     private async Task<bool> DoctorEmailExists(string email)
     {
-        return await _repository.Get(doctor =>
-            string.Equals(doctor.Email, email, StringComparison.CurrentCultureIgnoreCase)) is not null;
+        return await _repository.Get(d => string.Equals(d.Email, email)) is not null;
     }
 }

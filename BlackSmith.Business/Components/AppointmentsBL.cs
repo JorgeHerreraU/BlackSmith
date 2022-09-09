@@ -1,5 +1,5 @@
 ﻿using BlackSmith.Core.ExtensionMethods;
-using BlackSmith.Core.Helpers;
+using BlackSmith.Core.Structs;
 using BlackSmith.Domain.Interfaces;
 using BlackSmith.Domain.Models;
 using FluentValidation;
@@ -28,17 +28,11 @@ public class AppointmentsBL
         return await _appointmentsRepository.GetAll(a => a.Doctor, a => a.Patient);
     }
 
-    public async IAsyncEnumerable<DateTime> GetAvailableDaysByDoctorsSpeciality(
-        Speciality speciality,
-        DateTime start,
-        DateTime end
-    )
+    public async IAsyncEnumerable<DateTime> GetAvailableDaysBySpeciality(Speciality speciality, DateRange dateRange)
     {
-        var days = DateHelper.GetDateRange(start, end);
         var doctors = (await _doctorsBL.GetDoctorsBySpeciality(speciality)).ToList();
         var appointments = (await GetAppointmentsByDoctorsSpeciality(speciality)).ToList();
-
-        foreach (var day in days)
+        foreach (var day in dateRange.Dates)
         {
             var isAWorkingDay = _doctorsBL.GetSpecialityIsAvailable(doctors, day);
             if (!isAWorkingDay) continue;
@@ -66,19 +60,17 @@ public class AppointmentsBL
     {
         var appointments = await GetAppointmentsByDoctorAndDay(doctor, date);
         var scheduledTimes = appointments.Select(a => TimeOnly.FromDateTime(a.Start)).ToList();
-        var (workStartTime, workFinishTime) = GetWorkingTimes(doctor.WorkingDays, date);
-        var workTimeRange = TimeHelper.GetTimeRange(workStartTime, workFinishTime);
-        foreach (var time in workTimeRange)
-            if (!scheduledTimes.Contains(time))
-                yield return date.Date + time.ToTimeSpan();
+        var workingRange = GetWorkingTimes(doctor.WorkingDays, date);
+        foreach (var time in workingRange.Times)
+        {
+            if (!scheduledTimes.Contains(time)) yield return date.Date + time.ToTimeSpan();
+        }
     }
-    private static (TimeOnly workStartTime, TimeOnly workFinishTime) GetWorkingTimes(
-        ICollection<WorkingDay> workingDays,
-        DateTime date)
+    private static TimeRange GetWorkingTimes(ICollection<WorkingDay> workingDays, DateTime date)
     {
         var workStartTime = workingDays.Where(w => w.Day == date.DayOfWeek).Min(w => w.StartTime);
         var workFinishTime = workingDays.Where(w => w.Day == date.DayOfWeek).Max(w => w.EndTime);
-        return (workStartTime, workFinishTime);
+        return new TimeRange(workStartTime, workFinishTime);
     }
 
     private async Task<IEnumerable<Appointment>> GetAppointmentsByDoctorsSpeciality(
@@ -121,10 +113,7 @@ public class AppointmentsBL
         return await _appointmentsRepository.Delete(appointment);
     }
 
-    private async Task<IEnumerable<Appointment>> GetAppointmentsByDoctorAndDay(
-        Doctor doctor,
-        DateTime date
-    )
+    private async Task<IEnumerable<Appointment>> GetAppointmentsByDoctorAndDay(Doctor doctor, DateTime date)
     {
         return await _appointmentsRepository.GetAll(a => a.Doctor == doctor && a.Start.DayOfWeek == date.DayOfWeek,
             a => a.Doctor,
@@ -147,18 +136,15 @@ public class AppointmentsBL
         IEnumerable<Appointment> appointments
     )
     {
-        var (workStartTime, workFinishTime) = GetWorkingTimes(workingDays, date);
-        var workTimeRange = TimeHelper.GetTimeRange(workStartTime, workFinishTime).ToList();
+        var workingRange = GetWorkingTimes(workingDays, date);
         var scheduledWorkTimeRange = appointments
             .Where(a => a.Start.Date == date.Date)
             .Select(a => TimeOnly.FromDateTime(a.Start)).ToList();
-        return HasAll(workTimeRange, scheduledWorkTimeRange);
+        return HasAll(workingRange.Times.ToList(), scheduledWorkTimeRange);
     }
 
-    private static bool HasAll(
-        IReadOnlyCollection<TimeOnly> workTimeRange,
-        IEnumerable<TimeOnly> scheduledWorkTimeRange
-    )
+    private static bool HasAll(IReadOnlyCollection<TimeOnly> workTimeRange,
+        IEnumerable<TimeOnly> scheduledWorkTimeRange)
     {
         return workTimeRange.Intersect(scheduledWorkTimeRange).Count() == workTimeRange.Count;
     }
