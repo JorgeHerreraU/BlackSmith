@@ -113,7 +113,7 @@ public class DoctorEditViewModel : EditableViewModelBase, INavigationAware
     private void RaiseCanChange(object? sender, ListChangedEventArgs e)
     {
         if (sender is null) return;
-        IsTouched = Doctor.IsAnyStringNullOrEmpty();
+        IsTouched = !Doctor.IsAnyStringNullOrEmpty();
         SaveCommand.RaiseCanExecuteChanged();
     }
 

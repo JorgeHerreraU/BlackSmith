@@ -45,4 +45,14 @@ public static class ExtensionMethods
             .Where(x => x.IsStatic)
             .Select(x => x.GetCustomAttribute<DescriptionAttribute>()?.Description ?? x.Name);
     }
+
+    public static bool HasAll<T>(this IReadOnlyCollection<T> a, IEnumerable<T> b)
+    {
+        return a.Intersect(b).Count() == a.Count;
+    }
+    
+    public static bool HasNotAll<T>(this IReadOnlyCollection<T> a, IEnumerable<T> b)
+    {
+        return a.Intersect(b).Count() != a.Count;
+    }
 }

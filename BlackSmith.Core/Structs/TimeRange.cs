@@ -2,8 +2,8 @@
 
 public readonly struct TimeRange
 {
-    private TimeOnly Start { get; }
-    private TimeOnly End { get; }
+    public TimeOnly Start { get; }
+    public TimeOnly End { get; }
 
     public TimeRange(TimeOnly startTime, TimeOnly endTime)
     {

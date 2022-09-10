@@ -1,4 +1,5 @@
-﻿using BlackSmith.Domain.Interfaces;
+﻿using BlackSmith.Core.ExtensionMethods;
+using BlackSmith.Domain.Interfaces;
 using BlackSmith.Domain.Models;
 using FluentValidation;
 
@@ -6,27 +7,22 @@ namespace BlackSmith.Business.Components;
 
 public class DoctorsBL
 {
+    private readonly AppointmentsDoctorsBL _appointmentsDoctorsBL;
     private readonly IRepository<Doctor> _repository;
     private readonly IValidator<Doctor> _validator;
 
     public DoctorsBL(IRepository<Doctor> repository,
-        IValidator<Doctor> validator)
+        IValidator<Doctor> validator,
+        AppointmentsDoctorsBL appointmentsDoctorsBL)
     {
         _repository = repository;
         _validator = validator;
+        _appointmentsDoctorsBL = appointmentsDoctorsBL;
     }
 
     public async Task<IEnumerable<Doctor>> GetDoctors()
     {
         return await _repository.GetAll(doctor => doctor.Address, doctor => doctor.WorkingDays);
-    }
-
-    public async Task<IEnumerable<Doctor>> GetDoctorsBySpeciality(Speciality speciality)
-    {
-        return await _repository.GetAll(
-            doctor => doctor.Speciality == speciality,
-            doctor => doctor.Address,
-            x => x.WorkingDays);
     }
 
     public async Task<Doctor> CreateDoctor(Doctor doctor)
@@ -42,8 +38,23 @@ public class DoctorsBL
     {
         await _validator.ValidateAndThrowAsync(doctor);
         // TODO: Check for existing appointments before updating
+        var appointments = (await _appointmentsDoctorsBL.GetUpcomingAppointmentsByDoctor(doctor)).ToList();
+        if (HasMissingWorkingDay(appointments, doctor))
+            throw new ArgumentException("Doctor has one or more appointments, please review the agenda");
+        if (HasMissingWorkingHour(appointments, doctor))
+            throw new ArgumentException("Doctor has one or more appointments, please review the agenda");
         await _repository.Update(doctor, d => d.WorkingDays, x => x.Address);
         return doctor;
+    }
+    private bool HasMissingWorkingHour(IEnumerable<Appointment> appointments, Doctor doctor)
+    {
+        var appointmentDates = appointments.Select(x => x.Start).ToList();
+        var incomingWorkingDays = doctor.WorkingDays;
+        var matchingDays = appointmentDates.Where(d => incomingWorkingDays.Any(w => w.Day == d.DayOfWeek));
+        return (from scheduled in matchingDays
+            let workingRange = _appointmentsDoctorsBL.GetWorkingTimes(incomingWorkingDays, scheduled.DayOfWeek)
+            where scheduled.Hour <= workingRange.Start.Hour || scheduled.Hour >= workingRange.End.Hour
+            select scheduled).Any();
     }
 
     public async Task<bool> DeleteDoctor(Doctor doctor)
@@ -52,16 +63,15 @@ public class DoctorsBL
         return await _repository.Delete(doctor);
     }
 
-    public bool GetSpecialityIsAvailable(IEnumerable<Doctor> doctors, DateTime day)
-    {
-        return doctors.SelectMany(doctor => doctor.WorkingDays)
-            .Select(workingDay => workingDay.Day)
-            .Distinct()
-            .Contains(day.DayOfWeek);
-    }
-
     private async Task<bool> DoctorEmailExists(string email)
     {
         return await _repository.Get(d => string.Equals(d.Email, email)) is not null;
+    }
+
+    private bool HasMissingWorkingDay(IEnumerable<Appointment> appointments, Doctor doctor)
+    {
+        var appointmentsDayOfWeek = appointments.Select(x => x.Start.DayOfWeek).Distinct().ToList();
+        var incomingDayOfWeek = doctor.WorkingDays.Select(x => x.Day).ToList();
+        return appointmentsDayOfWeek.HasNotAll(incomingDayOfWeek);
     }
 }

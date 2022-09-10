@@ -22,6 +22,7 @@ public static class ServiceDependencies
         services.AddSingleton<AppointmentsBL>();
         services.AddSingleton<PatientsBL>();
         services.AddSingleton<DoctorsBL>();
+        services.AddSingleton<AppointmentsDoctorsBL>();
         services.AddSingleton<IAppointmentService, AppointmentService>();
         services.AddSingleton<IPatientService, PatientService>();
         services.AddSingleton<IDoctorService, DoctorService>();
