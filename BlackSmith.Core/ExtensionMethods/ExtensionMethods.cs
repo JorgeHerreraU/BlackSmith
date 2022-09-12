@@ -6,7 +6,7 @@ namespace BlackSmith.Core.ExtensionMethods;
 
 public static class ExtensionMethods
 {
-    public static void ClearClassInstances(this object obj)
+    public static void SetInstancesOfTypeClassToNull(this object obj)
     {
         var properties = obj.GetType()
             .GetProperties()
@@ -15,7 +15,7 @@ public static class ExtensionMethods
         foreach (var property in properties) property.SetValue(obj, null);
     }
 
-    public static bool IsAnyStringNullOrEmpty(this object? obj)
+    public static bool CheckAnyStringNullOrEmpty(this object? obj)
     {
         if (obj is null) return true;
         foreach (var propertyInfo in obj.GetType().GetProperties())
@@ -26,7 +26,7 @@ public static class ExtensionMethods
             }
             else if (propertyInfo.PropertyType.IsClass)
             {
-                if (IsAnyStringNullOrEmpty(propertyInfo.GetValue(obj))) return true;
+                if (CheckAnyStringNullOrEmpty(propertyInfo.GetValue(obj))) return true;
             }
         }
 
@@ -50,7 +50,7 @@ public static class ExtensionMethods
     {
         return a.Intersect(b).Count() == a.Count;
     }
-    
+
     public static bool HasNotAll<T>(this IReadOnlyCollection<T> a, IEnumerable<T> b)
     {
         return a.Intersect(b).Count() != a.Count;

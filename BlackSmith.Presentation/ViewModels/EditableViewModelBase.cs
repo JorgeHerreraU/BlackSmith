@@ -48,7 +48,7 @@ public abstract class EditableViewModelBase : ValidatableBase, IDisposable
 
     protected void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (sender != null) IsTouched = !sender.IsAnyStringNullOrEmpty();
+        if (sender != null) IsTouched = !sender.CheckAnyStringNullOrEmpty();
         SaveCommand.RaiseCanExecuteChanged();
     }
 

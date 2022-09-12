@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using BlackSmith.Business.ComplexValidators;
 using BlackSmith.Business.Components;
+using BlackSmith.Business.Interfaces;
 using BlackSmith.Business.Validators;
 using BlackSmith.Data;
 using BlackSmith.Data.Repositories;
@@ -19,16 +21,31 @@ public static class ServiceDependencies
     {
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddSingleton<AppDbContextFactory>();
+
         services.AddSingleton<AppointmentsBL>();
         services.AddSingleton<PatientsBL>();
         services.AddSingleton<DoctorsBL>();
         services.AddSingleton<AppointmentsDoctorsBL>();
+
         services.AddSingleton<IAppointmentService, AppointmentService>();
         services.AddSingleton<IPatientService, PatientService>();
         services.AddSingleton<IDoctorService, DoctorService>();
+
         services.AddScoped<IValidator<Patient>, PatientValidator>();
         services.AddScoped<IValidator<Doctor>, DoctorValidator>();
         services.AddScoped<IValidator<Appointment>, AppointmentValidator>();
+
+        services.AddSingleton<IComplexValidator<Doctor>, DoctorComplexValidator>();
+        services.AddTransient<ICreateComplexValidation<Doctor>, DoctorExistsValidation>();
+        services.AddTransient<IUpdateComplexValidation<Doctor>, DoctorMissingDayValidation>();
+        services.AddTransient<IUpdateComplexValidation<Doctor>, DoctorMissingHourValidation>();
+
+        services.AddSingleton<IComplexValidator<Patient>, PatientComplexValidator>();
+        services.AddTransient<ICreateComplexValidation<Patient>, PatientExistsValidation>();
+
+        services.AddSingleton<IComplexValidator<Appointment>, AppointmentComplexValidator>();
+        services.AddTransient<ICreateComplexValidation<Appointment>, AppointmentFullValidation>();
+        services.AddTransient<IUpdateComplexValidation<Appointment>, AppointmentFullValidation>();
     }
 
     public static void RegisterAutoMapperConfiguration(
