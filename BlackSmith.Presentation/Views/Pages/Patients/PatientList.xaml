@@ -26,7 +26,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-
         <wpfui:CardAction
             Grid.Row="0"
             Margin="0,0,4,0"
@@ -229,7 +228,8 @@
             IsReadOnly="True"
             ItemsSource="{Binding Patients}">
             <DataGrid.Columns>
-                <DataGridTemplateColumn Width="Auto" Header="First Name">
+                <DataGridTemplateColumn Width="Auto" Header="First Name" SortMemberPath="FirstName"
+                                        CanUserSort="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBox
@@ -242,7 +242,8 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="Auto" Header="Last Name">
+                <DataGridTemplateColumn Width="Auto" Header="Last Name" SortMemberPath="LastName"
+                                        CanUserSort="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBox
@@ -255,7 +256,8 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="Auto" Header="Age">
+                <DataGridTemplateColumn Width="Auto" Header="Age" SortMemberPath="Age"
+                                        CanUserSort="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBox
@@ -268,7 +270,8 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="Auto" Header="Email">
+                <DataGridTemplateColumn Width="Auto" Header="Email" SortMemberPath="Email"
+                                        CanUserSort="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBox
@@ -281,7 +284,8 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="Auto" Header="Phone">
+                <DataGridTemplateColumn Width="Auto" Header="Phone" SortMemberPath="Phone"
+                                        CanUserSort="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBox
@@ -294,7 +298,8 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="Auto" Header="Identification">
+                <DataGridTemplateColumn Width="Auto" Header="Identification" SortMemberPath="Identification"
+                                        CanUserSort="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBox
@@ -307,7 +312,8 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="Auto" Header="Address">
+                <DataGridTemplateColumn Width="Auto" Header="Address" SortMemberPath="Address.FullAddress"
+                                        CanUserSort="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBox

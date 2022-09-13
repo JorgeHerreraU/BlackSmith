@@ -16,7 +16,7 @@
     <Page.Resources>
         <converters:EnumStringConverter x:Key="EnumStringConverter" />
     </Page.Resources>
-    <!-- Load Data Trigger -->
+    <!--  Load Data Trigger  -->
     <b:Interaction.Triggers>
         <b:EventTrigger EventName="Loaded">
             <b:CallMethodAction MethodName="Load" TargetObject="{Binding}" />
@@ -112,8 +112,7 @@
                                                         BorderThickness="0,0,0,0"
                                                         CornerRadius="4">
                                                         <Border.BorderBrush>
-                                                            <SolidColorBrush
-                                                                Color="{DynamicResource ControlStrokeColorSecondary}" />
+                                                            <SolidColorBrush Color="{DynamicResource ControlStrokeColorSecondary}" />
                                                         </Border.BorderBrush>
                                                         <ScrollViewer
                                                             x:Name="PART_ContentHost"
@@ -126,8 +125,7 @@
                                                     <Trigger Property="IsFocused" Value="True">
                                                         <Setter TargetName="BottomBorder" Property="BorderBrush">
                                                             <Setter.Value>
-                                                                <SolidColorBrush
-                                                                    Color="{DynamicResource SystemAccentColorLight2}" />
+                                                                <SolidColorBrush Color="{DynamicResource SystemAccentColorLight2}" />
                                                             </Setter.Value>
                                                         </Setter>
                                                     </Trigger>
@@ -185,21 +183,17 @@
                                                 </Border>
                                                 <ControlTemplate.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter TargetName="Border" Property="Background"
-                                                                Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                        <Setter TargetName="Border" Property="Background" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                                                     </Trigger>
                                                     <Trigger Property="IsEnabled" Value="False">
                                                         <Setter Property="Background">
                                                             <Setter.Value>
-                                                                <SolidColorBrush
-                                                                    Color="{DynamicResource ControlFillColorDisabled}" />
+                                                                <SolidColorBrush Color="{DynamicResource ControlFillColorDisabled}" />
                                                             </Setter.Value>
                                                         </Setter>
-                                                        <Setter TargetName="Presenter"
-                                                                Property="TextElement.Foreground">
+                                                        <Setter TargetName="Presenter" Property="TextElement.Foreground">
                                                             <Setter.Value>
-                                                                <SolidColorBrush
-                                                                    Color="{DynamicResource TextFillColorTertiary}" />
+                                                                <SolidColorBrush Color="{DynamicResource TextFillColorTertiary}" />
                                                             </Setter.Value>
                                                         </Setter>
                                                     </Trigger>
@@ -231,7 +225,11 @@
             HeadersVisibility="Column"
             ItemsSource="{Binding Appointments}">
             <DataGrid.Columns>
-                <DataGridTemplateColumn Width="Auto" Header="Patient Name">
+                <DataGridTemplateColumn
+                    Width="Auto"
+                    CanUserSort="True"
+                    Header="Patient Name"
+                    SortMemberPath="Patient.FullName">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBox
@@ -244,7 +242,11 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="Auto" Header="Patient ID">
+                <DataGridTemplateColumn
+                    Width="Auto"
+                    CanUserSort="True"
+                    Header="Patient ID"
+                    SortMemberPath="Patient.Identification">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBox
@@ -262,7 +264,11 @@
                     Binding="{Binding Path=Doctor.Speciality, Converter={StaticResource EnumStringConverter}, FallbackValue=''}"
                     Header="Speciality"
                     IsReadOnly="True" />
-                <DataGridTemplateColumn Width="Auto" Header="Doctor Name">
+                <DataGridTemplateColumn
+                    Width="Auto"
+                    CanUserSort="True"
+                    Header="Doctor Name"
+                    SortMemberPath="Doctor.FullName">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBox
@@ -275,7 +281,11 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="Auto" Header="Scheduled Time">
+                <DataGridTemplateColumn
+                    Width="Auto"
+                    CanUserSort="True"
+                    Header="Scheduled Time"
+                    SortMemberPath="Start">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBox
@@ -288,6 +298,21 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="Auto" Header="Confirmed">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ui:ToggleSwitch
+                                HorizontalAlignment="Center"
+                                Command="{Binding DataContext.ConfirmAppointmentCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                CommandParameter="{Binding DataContext, RelativeSource={RelativeSource Self}}"
+                                IsChecked="{Binding IsConfirmed, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridCheckBoxColumn
+                    Binding="{Binding IsCompleted, Mode=OneWay}"
+                    Header="Completed"
+                    IsReadOnly="True" />
                 <DataGridTemplateColumn Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

@@ -45,6 +45,7 @@ public static class ServiceDependencies
 
         services.AddSingleton<IComplexValidator<Appointment>, AppointmentComplexValidator>();
         services.AddTransient<ICreateComplexValidation<Appointment>, AppointmentFullValidation>();
+        services.AddTransient<ICreateComplexValidation<Appointment>, AppointmentExistsValidation>();
         services.AddTransient<IUpdateComplexValidation<Appointment>, AppointmentFullValidation>();
     }
 

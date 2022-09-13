@@ -124,7 +124,7 @@ public class ScheduleCreateViewModel : ScheduleBaseViewModel
             _selectedStartTime = value;
             if (SelectedDate != null)
             {
-                Appointment.Start = SelectedDate.Value.Date + _selectedStartTime.ToTimeSpan();
+                Appointment.Start = DateHelper.CombineDateAndTime(SelectedDate.Value, _selectedStartTime);
                 Appointment.End = Appointment.Start.Value.AddMinutes(Appointment.Duration);
             }
             NotifyPropertyChanged();

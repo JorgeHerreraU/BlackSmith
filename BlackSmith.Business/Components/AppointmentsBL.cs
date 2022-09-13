@@ -1,5 +1,6 @@
 ﻿using BlackSmith.Business.Interfaces;
 using BlackSmith.Core.ExtensionMethods;
+using BlackSmith.Core.Helpers;
 using BlackSmith.Core.Structs;
 using BlackSmith.Domain.Interfaces;
 using BlackSmith.Domain.Models;
@@ -28,7 +29,7 @@ public class AppointmentsBL
 
     public async Task<IEnumerable<Appointment>> GetAppointments()
     {
-        return await _appointmentsRepository.GetAll(a => a.Doctor, a => a.Patient);
+        return await _appointmentsRepository.GetAll(a => a.Doctor, a => a.Patient, a => a.Doctor.WorkingDays);
     }
 
     public async IAsyncEnumerable<DateTime> GetAvailableDaysBySpeciality(Speciality speciality, DateRange dateRange)
@@ -60,7 +61,7 @@ public class AppointmentsBL
         var workingRange = _appointmentsDoctorsBL.GetWorkingTimes(doctor.WorkingDays, date.DayOfWeek);
         foreach (var time in workingRange.Times)
         {
-            if (!scheduledTimes.Contains(time)) yield return date.Date + time.ToTimeSpan();
+            if (!scheduledTimes.Contains(time)) yield return DateHelper.CombineDateAndTime(date, time);
         }
     }
 
@@ -69,7 +70,7 @@ public class AppointmentsBL
         await _validator.ValidateAndThrowAsync(appointment);
         await _complexValidator.ValidateCreateAndThrowAsync(appointment);
         appointment.SetInstancesOfTypeClassToNull();
-        await _appointmentsRepository.Add(appointment);
+        _ = await _appointmentsRepository.Add(appointment);
         return appointment;
     }
 

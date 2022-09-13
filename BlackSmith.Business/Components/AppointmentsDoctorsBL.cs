@@ -40,6 +40,7 @@ public class AppointmentsDoctorsBL
 
     public async Task<bool> GetDoctorIsFullyBookedOnSpecificDate(Doctor doctor, DateTime date)
     {
+        if (doctor.WorkingDays.FirstOrDefault() == null) return true;
         var appointments = await GetAppointmentsByDoctorAndDay(doctor, date);
         return GetWorkingDayIsFullyBooked(doctor.WorkingDays.ToList(), date, appointments);
     }

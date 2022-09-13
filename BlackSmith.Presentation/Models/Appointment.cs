@@ -15,6 +15,7 @@ public class Appointment : ValidatableBase
     private Patient? _patient;
     private int _patientId;
     private DateTime? _start;
+    private bool _isConfirmed;
     public int Id
     {
         get => _id;
@@ -88,5 +89,20 @@ public class Appointment : ValidatableBase
             _end = value;
             NotifyPropertyChanged();
         }
+    }
+
+    public bool IsConfirmed
+    {
+        get => _isConfirmed;
+        set
+        {
+            _isConfirmed = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    public bool IsCompleted
+    {
+        get => End < DateTime.Now;
     }
 }

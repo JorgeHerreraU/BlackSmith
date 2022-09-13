@@ -125,17 +125,12 @@
         <!--  The title bar contains window navigation elements and some Tray related extras.  -->
         <!--  You can put additional controls in the header, such as a search bar.  -->
         <!--  <wpfui:TitleBar.Header />  -->
-        <ui:TitleBar Title="BlackSmith Medical Center" Grid.Row="0">
-            <ui:TitleBar.Tray>
-                <ui:NotifyIcon
-                    FocusOnLeftClick="True"
-                    MenuOnRightClick="True"
-                    TooltipText="WPF UI">
-                    <ui:NotifyIcon.Menu>
-                        <ContextMenu />
-                    </ui:NotifyIcon.Menu>
-                </ui:NotifyIcon>
-            </ui:TitleBar.Tray>
-        </ui:TitleBar>
+        <ui:TitleBar
+            Title="BlackSmith Medical Center"
+            Grid.Row="0"
+            FontSize="18"
+            FontWeight="SemiBold"
+            Margin="60,0,0,0"
+            Icon="pack://application:,,,/Assets/hammer.ico" />
     </Grid>
 </ui:UiWindow>

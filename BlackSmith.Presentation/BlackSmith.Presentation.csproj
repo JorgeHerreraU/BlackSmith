@@ -7,14 +7,14 @@
         <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
-        <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
+        <ApplicationIcon>Assets\hammer.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Remove="Profiles\**" />
-        <EmbeddedResource Remove="Profiles\**" />
-        <None Remove="Profiles\**" />
-        <Page Remove="Profiles\**" />
+        <Compile Remove="Profiles\**"/>
+        <EmbeddedResource Remove="Profiles\**"/>
+        <None Remove="Profiles\**"/>
+        <Page Remove="Profiles\**"/>
         <Page Update="Controls\UserControls\Modal.xaml">
             <SubType>Designer</SubType>
         </Page>
@@ -24,43 +24,35 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="Assets\BebasNeue-Regular.ttf" />
-        <None Remove="Assets\bg.jpg" />
-        <None Remove="Assets\BungeeShade-Regular.ttf" />
-        <None Remove="Assets\calendar.png" />
-        <None Remove="Assets\doctor.png" />
-        <None Remove="Assets\error.png" />
-        <None Remove="Assets\headquarter.jpg" />
-        <None Remove="Assets\patient.png" />
+        <None Remove="Assets\BebasNeue-Regular.ttf"/>
+        <None Remove="Assets\bg.jpg"/>
+        <None Remove="Assets\error.png"/>
+        <None Remove="Assets\hammer.ico"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper" Version="11.0.1" />
-        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
-        <PackageReference Include="Prism.Core" Version="8.1.97" />
-        <PackageReference Include="WPF-UI" Version="2.0.2" />
+        <PackageReference Include="AutoMapper" Version="11.0.1"/>
+        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39"/>
+        <PackageReference Include="Prism.Core" Version="8.1.97"/>
+        <PackageReference Include="WPF-UI" Version="2.0.2"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\BlackSmith.Data\BlackSmith.Data.csproj" />
-        <ProjectReference Include="..\BlackSmith.Service\BlackSmith.Service.csproj" />
+        <ProjectReference Include="..\BlackSmith.Data\BlackSmith.Data.csproj"/>
+        <ProjectReference Include="..\BlackSmith.Service\BlackSmith.Service.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
         <Resource Include="Assets\error.png">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Resource>
-    </ItemGroup>
-
-    <ItemGroup>
         <Resource Include="Assets\BebasNeue-Regular.ttf">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Resource>
         <Resource Include="Assets\bg.jpg">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Resource>
-        <None Remove="Assets\icon.ico" />
-        <Resource Include="Assets\icon.ico">
+        <Resource Include="Assets\hammer.ico">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Resource>
     </ItemGroup>

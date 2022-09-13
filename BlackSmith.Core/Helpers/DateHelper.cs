@@ -11,4 +11,9 @@ public static class DateHelper
             .AddMonths(OneMonth)
             .AddDays(DaysOfWeek);
     }
+
+    public static DateTime CombineDateAndTime(DateTime dateTime, TimeOnly timeOnly)
+    {
+        return dateTime.Date + timeOnly.ToTimeSpan();
+    }
 }

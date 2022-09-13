@@ -9,4 +9,5 @@ public class AppointmentDTO
     public DoctorDTO Doctor { get; set; } = new();
     public DateTime Start { get; set; }
     public DateTime End { get; set; }
+    public bool IsConfirmed { get; set; }
 }
