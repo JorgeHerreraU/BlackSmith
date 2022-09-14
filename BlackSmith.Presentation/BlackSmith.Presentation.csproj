@@ -11,10 +11,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Remove="Profiles\**"/>
-        <EmbeddedResource Remove="Profiles\**"/>
-        <None Remove="Profiles\**"/>
-        <Page Remove="Profiles\**"/>
+        <Compile Remove="Profiles\**" />
+        <EmbeddedResource Remove="Profiles\**" />
+        <None Remove="Profiles\**" />
+        <Page Remove="Profiles\**" />
         <Page Update="Controls\UserControls\Modal.xaml">
             <SubType>Designer</SubType>
         </Page>
@@ -24,22 +24,22 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="Assets\BebasNeue-Regular.ttf"/>
-        <None Remove="Assets\bg.jpg"/>
-        <None Remove="Assets\error.png"/>
-        <None Remove="Assets\hammer.ico"/>
+        <None Remove="Assets\BebasNeue-Regular.ttf" />
+        <None Remove="Assets\bg.jpg" />
+        <None Remove="Assets\error.png" />
+        <None Remove="Assets\hammer.ico" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper" Version="11.0.1"/>
-        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39"/>
-        <PackageReference Include="Prism.Core" Version="8.1.97"/>
-        <PackageReference Include="WPF-UI" Version="2.0.2"/>
+        <PackageReference Include="AutoMapper" Version="11.0.1" />
+        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+        <PackageReference Include="Prism.Core" Version="8.1.97" />
+        <PackageReference Include="WPF-UI" Version="2.0.2" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\BlackSmith.Data\BlackSmith.Data.csproj"/>
-        <ProjectReference Include="..\BlackSmith.Service\BlackSmith.Service.csproj"/>
+        <ProjectReference Include="..\BlackSmith.Data\BlackSmith.Data.csproj" />
+        <ProjectReference Include="..\BlackSmith.Service\BlackSmith.Service.csproj" />
     </ItemGroup>
 
     <ItemGroup>

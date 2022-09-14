@@ -34,19 +34,14 @@ public abstract class EditableViewModelBase : ValidatableBase, IDisposable
         }
     }
     public abstract void Dispose();
+    public abstract void Initialize();
 
     protected abstract void OnGoBack();
     protected abstract bool CanSave();
     protected abstract void OnSave();
-    public abstract void Initialize();
     protected abstract void SubscribeChanges();
 
-    private void OnClear()
-    {
-        Initialize();
-    }
-
-    protected void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    protected virtual void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (sender != null) IsTouched = !sender.CheckAnyStringNullOrEmpty();
         SaveCommand.RaiseCanExecuteChanged();
@@ -68,5 +63,10 @@ public abstract class EditableViewModelBase : ValidatableBase, IDisposable
                 _modalService.ShowErrorMessage(ex.Message);
                 break;
         }
+    }
+
+    private void OnClear()
+    {
+        Initialize();
     }
 }

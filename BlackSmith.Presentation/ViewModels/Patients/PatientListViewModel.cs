@@ -85,15 +85,15 @@ public class PatientListViewModel : BindableBase
 
     private void OnEdit(Patient patient)
     {
-        _eventAggregator.GetEvent<EditPatientEvent>().Publish(patient);
         _navigationService.Navigate(typeof(PatientEdit));
+        _eventAggregator.GetEvent<EditPatientEvent>().Publish(patient);
     }
 
     private void OnCreate()
     {
         OnClearSearch();
-        _eventAggregator.GetEvent<CreatePatientEvent>().Publish();
         _navigationService.Navigate(typeof(PatientCreate));
+        _eventAggregator.GetEvent<CreatePatientEvent>().Publish();
     }
 
     [PublicAPI]

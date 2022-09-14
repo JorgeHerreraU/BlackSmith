@@ -103,14 +103,14 @@ public class DoctorListViewModel : BindableBase
 
     private void OnEdit(Doctor doctor)
     {
-        _eventAggregator.GetEvent<EditDoctorEvent>().Publish(doctor);
         _navigationService.Navigate(typeof(DoctorEdit));
+        _eventAggregator.GetEvent<EditDoctorEvent>().Publish(doctor);
     }
 
     private void OnCreate()
     {
-        _eventAggregator.GetEvent<CreateDoctorEvent>().Publish();
         _navigationService.Navigate(typeof(DoctorCreate));
+        _eventAggregator.GetEvent<CreateDoctorEvent>().Publish();
     }
 
     private void OnClearSearch()

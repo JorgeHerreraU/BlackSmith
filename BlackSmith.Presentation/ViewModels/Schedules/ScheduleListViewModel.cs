@@ -75,12 +75,12 @@ public class ScheduleListViewModel : BindableBase
             RaisePropertyChanged();
         }
     }
-    private bool CanConfirm(Appointment appointment)
+    private static bool CanConfirm(Appointment appointment)
     {
         return appointment.Start > DateTime.Now;
     }
 
-    private bool CanEdit(Appointment appointment)
+    private static bool CanEdit(Appointment appointment)
     {
         return appointment.Start > DateTime.Now;
     }
@@ -97,15 +97,15 @@ public class ScheduleListViewModel : BindableBase
 
     private void OnEdit(Appointment appointment)
     {
-        _eventAggregator.GetEvent<EditScheduleEvent>().Publish(appointment);
         _navigationService.Navigate(typeof(ScheduleEdit));
+        _eventAggregator.GetEvent<EditScheduleEvent>().Publish(appointment);
     }
 
     private void OnCreate()
     {
         OnClearSearch();
-        _eventAggregator.GetEvent<CreateScheduleEvent>().Publish();
         _navigationService.Navigate(typeof(ScheduleCreate));
+        _eventAggregator.GetEvent<CreateScheduleEvent>().Publish();
     }
 
     private async void OnConfirmAppointment(Appointment appointment)

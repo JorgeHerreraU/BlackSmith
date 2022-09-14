@@ -15,7 +15,13 @@ public static class ExtensionMethods
         foreach (var property in properties) property.SetValue(obj, null);
     }
 
-    public static bool CheckAnyStringNullOrEmpty(this object? obj)
+    /// <summary>
+    /// Look for empty string properties recursively
+    /// </summary>
+    /// <param name="obj">The Object to compare</param>
+    /// <param name="nested">Check for nested empty string</param>
+    /// <returns>True if empty</returns>
+    public static bool CheckAnyStringNullOrEmpty(this object? obj, bool nested = true)
     {
         if (obj is null) return true;
         foreach (var propertyInfo in obj.GetType().GetProperties())
@@ -24,7 +30,7 @@ public static class ExtensionMethods
             {
                 if (string.IsNullOrEmpty((string)propertyInfo.GetValue(obj)!)) return true;
             }
-            else if (propertyInfo.PropertyType.IsClass)
+            else if (propertyInfo.PropertyType.IsClass && nested)
             {
                 if (CheckAnyStringNullOrEmpty(propertyInfo.GetValue(obj))) return true;
             }

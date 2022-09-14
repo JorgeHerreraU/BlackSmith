@@ -6,7 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace BlackSmith.Presentation.Controls.ControlsAttachedProperties;
+namespace BlackSmith.Presentation.Controls.AttachedProperties;
 
 public class CalendarAttachedProperties : DependencyObject
 {
@@ -73,7 +73,7 @@ public class CalendarAttachedProperties : DependencyObject
 
     #region Dependency Properties
 
-    public static DependencyProperty RegisterBlackoutDatesProperty =
+    public static readonly DependencyProperty RegisterBlackoutDatesProperty =
         DependencyProperty.RegisterAttached(
             "RegisterBlackoutDates",
             typeof(ObservableCollection<DateTime>),
