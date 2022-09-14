@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BlackSmith.Core.Helpers;
 using BlackSmith.Presentation.Events;
 using BlackSmith.Presentation.Interfaces;
 using BlackSmith.Presentation.Models;
@@ -13,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Linq.Expressions;
 using Wpf.Ui.Mvvm.Contracts;
 
 namespace BlackSmith.Presentation.ViewModels.Schedules;
@@ -75,6 +77,14 @@ public class ScheduleListViewModel : BindableBase
             RaisePropertyChanged();
         }
     }
+
+    [PublicAPI]
+    public async void Load()
+    {
+        var appointments = await _appointmentService.GetAppointments();
+        _allAppointments = _mapper.Map<IEnumerable<Appointment>>(appointments).ToList().OrderBy(a => a.Start);
+        Appointments = new ObservableCollection<Appointment>(_allAppointments);
+    }
     private static bool CanConfirm(Appointment appointment)
     {
         return appointment.Start > DateTime.Now;
@@ -114,14 +124,6 @@ public class ScheduleListViewModel : BindableBase
         await _appointmentService.UpdateAppointment(_mapper.Map<AppointmentDTO>(appointment));
     }
 
-    [PublicAPI]
-    public async void Load()
-    {
-        var appointments = await _appointmentService.GetAppointments();
-        _allAppointments = _mapper.Map<IEnumerable<Appointment>>(appointments).ToList().OrderBy(a => a.Start);
-        Appointments = new ObservableCollection<Appointment>(_allAppointments);
-    }
-
     private void OnClearSearch()
     {
         SearchInput = "";
@@ -131,22 +133,29 @@ public class ScheduleListViewModel : BindableBase
     {
         var isSearchInputNull = string.IsNullOrWhiteSpace(searchInput);
         var appointments = new ObservableCollection<Appointment>(_allAppointments);
+        var predicate = PredicateBuilder.True<Appointment>();
+        predicate = predicate.Or(HasPatientName(searchInput)).Or(HasDoctorName(searchInput))
+            .Or(HasPatientIdentification(searchInput));
         var filteredResults = new ObservableCollection<Appointment>(
-            _allAppointments.ToList().Where(a =>
-                HasPatientName(searchInput, a) || HasDoctorName(searchInput, a) || HasPatientId(searchInput, a))
+            _allAppointments.ToList().Where(predicate.Compile())
         );
         Appointments = isSearchInputNull ? appointments : filteredResults;
     }
-    private static bool HasPatientId(string searchInput, Appointment appointment)
+
+    private static Expression<Func<Appointment, bool>> HasPatientName(string searchInput)
     {
-        return appointment.Patient!.Identification.ToLower().Contains(searchInput.ToLower());
+        return a =>
+            a.Patient!.FullName.ToLower().Contains(searchInput.ToLower());
     }
-    private static bool HasDoctorName(string searchInput, Appointment appointment)
+
+    private static Expression<Func<Appointment, bool>> HasDoctorName(string searchInput)
     {
-        return appointment.Doctor!.FullName.ToLower().Contains(searchInput.ToLower());
+        return a =>
+            a.Doctor!.FullName.ToLower().Contains(searchInput.ToLower());
     }
-    private static bool HasPatientName(string searchInput, Appointment appointment)
+
+    private static Expression<Func<Appointment, bool>> HasPatientIdentification(string searchInput)
     {
-        return appointment.Patient!.FullName.ToLower().Contains(searchInput.ToLower());
+        return a => a.Patient!.Identification.ToLower().Contains(searchInput.ToLower());
     }
 }

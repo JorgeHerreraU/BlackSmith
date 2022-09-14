@@ -114,7 +114,11 @@ public abstract class ScheduleBaseViewModel : EditableViewModelBase, INavigation
         set
         {
             _selectedPatient = value;
-            if (value != null) Appointment.PatientId = value.Id;
+            if (value != null)
+            {
+                Appointment.Patient = value;
+                Appointment.PatientId = value.Id;
+            }
             NotifyPropertyChanged();
         }
     }
@@ -126,7 +130,11 @@ public abstract class ScheduleBaseViewModel : EditableViewModelBase, INavigation
         set
         {
             _selectedDoctor = value;
-            if (value != null) Appointment.DoctorId = value.Id;
+            if (value != null)
+            {
+                Appointment.Doctor = value;
+                Appointment.DoctorId = value.Id;
+            }
             NotifyPropertyChanged();
             FilterTimes();
         }
