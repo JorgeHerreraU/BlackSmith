@@ -133,8 +133,10 @@ public class ScheduleListViewModel : BindableBase
     {
         var isSearchInputNull = string.IsNullOrWhiteSpace(searchInput);
         var appointments = new ObservableCollection<Appointment>(_allAppointments);
-        var predicate = PredicateBuilder.True<Appointment>();
-        predicate = predicate.Or(HasPatientName(searchInput)).Or(HasDoctorName(searchInput))
+        var predicate = PredicateBuilder.False<Appointment>();
+        predicate = predicate
+            .Or(HasPatientName(searchInput))
+            .Or(HasDoctorName(searchInput))
             .Or(HasPatientIdentification(searchInput));
         var filteredResults = new ObservableCollection<Appointment>(
             _allAppointments.ToList().Where(predicate.Compile())
