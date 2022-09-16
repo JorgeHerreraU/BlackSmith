@@ -36,13 +36,13 @@ public class ModalService : IModalService
         }.Show();
     }
 
-    public async Task<bool> ShowConfirmDialog(string message)
+    public async Task<bool> ShowConfirmDialog(string message, object? obj)
     {
         var completionSource = new TaskCompletionSource<bool>();
         var messageBox = new MessageBox
         {
             Title = ConfirmTitle,
-            Content = message,
+            Content = $"{message}\n{obj}",
             ButtonLeftName = "OK",
             ButtonRightName = "Cancel"
         };

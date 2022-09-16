@@ -229,7 +229,7 @@
             CanUserAddRows="False"
             GridLinesVisibility="None"
             HeadersVisibility="Column"
-            EnableRowVirtualization="False"
+            EnableRowVirtualization="True"
             ItemsSource="{Binding Appointments}">
             <DataGrid.Columns>
                 <DataGridTemplateColumn

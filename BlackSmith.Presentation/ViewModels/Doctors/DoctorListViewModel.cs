@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BlackSmith.Core;
 using BlackSmith.Presentation.Events;
 using BlackSmith.Presentation.Interfaces;
 using BlackSmith.Presentation.Models;
@@ -9,6 +10,7 @@ using JetBrains.Annotations;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -85,17 +87,13 @@ public class DoctorListViewModel : BindableBase
     {
         var isSearchInputNull = string.IsNullOrWhiteSpace(searchInput);
         var doctors = new ObservableCollection<Doctor>(_allDoctors);
-        var filteredResults = new ObservableCollection<Doctor>(
-            _allDoctors.ToList().Where(c => c.FullName.ToLower().Contains(searchInput.ToLower()))
-        );
+        var filteredResults = new ObservableCollection<Doctor>(_allDoctors.Where(HasDoctorName(searchInput)));
         Doctors = isSearchInputNull ? doctors : filteredResults;
     }
 
     private async void OnDelete(Doctor doctor)
     {
-        var confirmDeletion = await _modalService.ShowConfirmDialog(
-            "Are you sure you want to delete this doctor?"
-        );
+        var confirmDeletion = await _modalService.ShowConfirmDialog(Constants.Messages.ConfirmDeletion, doctor);
         if (!confirmDeletion) return;
         await _doctorService.DeleteDoctor(_mapper.Map<DoctorDTO>(doctor));
         Load();
@@ -116,6 +114,11 @@ public class DoctorListViewModel : BindableBase
     private void OnClearSearch()
     {
         SearchInput = "";
+    }
+
+    private static Func<Doctor, bool> HasDoctorName(string searchInput)
+    {
+        return d => d.FullName.ToLower().Contains(searchInput.ToLower());
     }
 
     [PublicAPI]

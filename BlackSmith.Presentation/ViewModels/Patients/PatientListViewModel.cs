@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BlackSmith.Core;
 using BlackSmith.Presentation.Events;
 using BlackSmith.Presentation.Interfaces;
 using BlackSmith.Presentation.Models;
@@ -9,6 +10,7 @@ using JetBrains.Annotations;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -54,7 +56,7 @@ public class PatientListViewModel : BindableBase
         {
             _searchInput = value;
             RaisePropertyChanged();
-            FilterPatients(_searchInput);
+            FilterData(_searchInput);
         }
     }
 
@@ -75,9 +77,7 @@ public class PatientListViewModel : BindableBase
 
     private async void OnDelete(Patient patient)
     {
-        var confirmDeletion = await _modalService.ShowConfirmDialog(
-            "Are you sure you want to delete this patient?"
-        );
+        var confirmDeletion = await _modalService.ShowConfirmDialog(Constants.Messages.ConfirmDeletion, patient);
         if (!confirmDeletion) return;
         await _patientService.DeletePatient(_mapper.Map<PatientDTO>(patient));
         Load();
@@ -104,14 +104,17 @@ public class PatientListViewModel : BindableBase
         Patients = new ObservableCollection<Patient>(_allPatients);
     }
 
-    private void FilterPatients(string searchInput)
+    private void FilterData(string searchInput)
     {
         var isSearchInputNull = string.IsNullOrWhiteSpace(searchInput);
         var patients = new ObservableCollection<Patient>(_allPatients);
-        var filteredResults = new ObservableCollection<Patient>(
-            _allPatients.ToList().Where(c => c.FullName.ToLower().Contains(searchInput.ToLower()))
-        );
+        var filteredResults = new ObservableCollection<Patient>(_allPatients.Where(HasPatientName(searchInput)));
         Patients = isSearchInputNull ? patients : filteredResults;
+    }
+
+    private static Func<Patient, bool> HasPatientName(string searchInput)
+    {
+        return c => c.FullName.ToLower().Contains(searchInput.ToLower());
     }
 
     private void OnClearSearch()

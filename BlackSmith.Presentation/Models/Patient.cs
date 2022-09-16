@@ -111,4 +111,9 @@ public class Patient : ValidatableBase
     {
         get => $"{FirstName} {LastName}";
     }
+
+    public override string ToString()
+    {
+        return $"Patient: {FullName}, \nIdentification: {Identification}";
+    }
 }

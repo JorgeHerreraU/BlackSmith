@@ -196,7 +196,6 @@ public abstract class ScheduleBaseViewModel : EditableViewModelBase, INavigation
         Appointment.ErrorsChanged -= RaiseCanChange;
     }
 
-
     protected override bool CanSave()
     {
         return !Appointment.HasErrors

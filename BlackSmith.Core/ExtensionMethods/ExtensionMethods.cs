@@ -52,6 +52,14 @@ public static class ExtensionMethods
             .Select(x => x.GetCustomAttribute<DescriptionAttribute>()?.Description ?? x.Name);
     }
 
+    public static string GetEnumDescription(this Enum enumValue)
+    {
+        var field = enumValue.GetType().GetField(enumValue.ToString());
+        if (Attribute.GetCustomAttribute(field!, typeof(DescriptionAttribute)) is DescriptionAttribute attribute)
+            return attribute.Description;
+        return enumValue.ToString();
+    }
+
     public static bool HasAll<T>(this IReadOnlyCollection<T> a, IEnumerable<T> b)
     {
         return a.Intersect(b).Count() == a.Count;

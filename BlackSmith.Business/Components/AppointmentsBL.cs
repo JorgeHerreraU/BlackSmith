@@ -60,9 +60,8 @@ public class AppointmentsBL
         var scheduledTimes = appointments.Select(a => TimeOnly.FromDateTime(a.Start)).ToList();
         var workingRange = _appointmentsDoctorsBL.GetWorkingTimes(doctor.WorkingDays, date.DayOfWeek);
         foreach (var time in workingRange.Times)
-        {
-            if (!scheduledTimes.Contains(time)) yield return DateHelper.CombineDateAndTime(date, time);
-        }
+            if (!scheduledTimes.Contains(time))
+                yield return DateHelper.CombineDateAndTime(date, time);
     }
 
     public async Task<Appointment> CreateAppointment(Appointment appointment)
@@ -70,7 +69,7 @@ public class AppointmentsBL
         await _validator.ValidateAndThrowAsync(appointment);
         await _complexValidator.ValidateCreateAndThrowAsync(appointment);
         appointment.SetInstancesOfTypeClassToNull();
-        _ = await _appointmentsRepository.Add(appointment);
+        await _appointmentsRepository.Add(appointment);
         return appointment;
     }
 

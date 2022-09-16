@@ -43,7 +43,6 @@ public class DoctorsBL
 
     public async Task<bool> DeleteDoctor(Doctor doctor)
     {
-        // TODO: Check for existing appointments before removing
         return await _repository.Delete(doctor);
     }
 }

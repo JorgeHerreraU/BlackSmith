@@ -1,4 +1,5 @@
-﻿using BlackSmith.Presentation.Enums;
+﻿using BlackSmith.Core.ExtensionMethods;
+using BlackSmith.Presentation.Enums;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -130,5 +131,10 @@ public class Doctor : ValidatableBase
     public string DaysWorking
     {
         get => string.Join(", ", WorkingDays.Select(x => x.Day.ToString()).ToList());
+    }
+
+    public override string ToString()
+    {
+        return $"Doctor: {FullName}, \nSpeciality: {Speciality.GetEnumDescription()}";
     }
 }

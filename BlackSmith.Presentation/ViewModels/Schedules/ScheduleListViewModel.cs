@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BlackSmith.Core;
 using BlackSmith.Core.Helpers;
 using BlackSmith.Presentation.Events;
 using BlackSmith.Presentation.Interfaces;
@@ -97,9 +98,8 @@ public class ScheduleListViewModel : BindableBase
 
     private async void OnDelete(Appointment appointment)
     {
-        var confirmDeletion = await _modalService.ShowConfirmDialog(
-            "Are you sure you want to delete this appointment?"
-        );
+        var confirmDeletion =
+            await _modalService.ShowConfirmDialog(Constants.Messages.ConfirmDeletion, appointment);
         if (!confirmDeletion) return;
         await _appointmentService.DeleteAppointment(_mapper.Map<AppointmentDTO>(appointment));
         Load();
@@ -138,9 +138,7 @@ public class ScheduleListViewModel : BindableBase
             .Or(HasPatientName(searchInput))
             .Or(HasDoctorName(searchInput))
             .Or(HasPatientIdentification(searchInput));
-        var filteredResults = new ObservableCollection<Appointment>(
-            _allAppointments.ToList().Where(predicate.Compile())
-        );
+        var filteredResults = new ObservableCollection<Appointment>(_allAppointments.Where(predicate.Compile()));
         Appointments = isSearchInputNull ? appointments : filteredResults;
     }
 

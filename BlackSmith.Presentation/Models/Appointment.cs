@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlackSmith.Core.ExtensionMethods;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace BlackSmith.Presentation.Models;
@@ -104,5 +105,10 @@ public class Appointment : ValidatableBase
     public bool IsCompleted
     {
         get => End < DateTime.Now;
+    }
+
+    public override string ToString()
+    {
+        return $"Schedule: {Start:yyyy/MM/dd HH:mm}, \nPatient: {Patient?.FullName}, \nSpeciality: {Doctor?.Speciality.GetEnumDescription()}";
     }
 }
