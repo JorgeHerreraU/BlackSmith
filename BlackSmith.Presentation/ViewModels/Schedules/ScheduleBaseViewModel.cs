@@ -29,7 +29,7 @@ public abstract class ScheduleBaseViewModel : EditableViewModelBase, INavigation
     private readonly INavigationService _navigationService;
     private readonly IPatientService _patientService;
     private IEnumerable<DoctorDTO> _allDoctors = new List<DoctorDTO>();
-    private IEnumerable<Patient> _allPatients = new List<Patient>();
+    private IEnumerable<PatientDTO> _allPatients = new List<PatientDTO>();
     private Appointment _appointment = null!;
     private ObservableCollection<TimeOnly> _availableHours = new();
     private ObservableCollection<DateTime> _blackOutDates = new();
@@ -235,9 +235,9 @@ public abstract class ScheduleBaseViewModel : EditableViewModelBase, INavigation
     protected async Task LoadCollectionsData()
     {
         _allDoctors = await _doctorService.GetDoctors();
-        _allPatients = _mapper.Map<List<Patient>>(await _patientService.GetPatients());
+        _allPatients = await _patientService.GetPatients();
         Doctors = new ObservableCollection<Doctor>(_mapper.Map<IEnumerable<Doctor>>(_allDoctors));
-        Patients = new ObservableCollection<Patient>(_allPatients);
+        Patients = new ObservableCollection<Patient>(_mapper.Map<IEnumerable<Patient>>(_allPatients));
     }
 
     protected abstract void SetDefaultValues();

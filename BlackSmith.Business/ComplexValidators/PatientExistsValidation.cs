@@ -13,7 +13,6 @@ public class PatientExistsValidation : ICreateComplexValidation<Patient>
         _repository = repository;
     }
 
-
     public async Task ValidateAsync(Patient patient)
     {
         if (await PatientEmailExists(patient.Email))
